@@ -1,1 +1,4 @@
 Hello World!
+
+Be Sure to ASk if having two devices connect to a repository as repo and
+ repo2 makes a difference to checkpoints
