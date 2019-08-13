@@ -1,0 +1,57 @@
+import "string"
+#pragma link("mega65hyper.ld")
+const char* RASTER = 0xd012;
+const char* VIC_MEMORY = 0xd018;
+const char* SCREEN = 0x0400;
+const char* BGCOL = 0xd021;
+const char* COLS = 0xd800;
+const char BLACK = 0;
+const char BLUE = 6;
+const char WHITE = 1;
+
+char[] MESSAGE = "checkpoint 2.1 liew0093";
+
+void main(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,'',40*25);
+	memset(COLS,WHITE,40*25);
+	char* sc = SCREEN+40;
+	char*msg= MESSAGE;
+	while(*msg){
+	  *sc++=*msg++;
+	}
+	while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  }else{
+	    *BGCOL=BLACK;
+	  }
+	}
+}
+void syscall1(){
+  *(SCREEN+79)= ')';
+}
+void syscall2(){
+  *(SCREEN+78)='(';
+}
+
+#pragma data_seg(Syscall)
+struct Syscall{
+  char xjmp;
+  void()*syscall;
+  char xnop;
+};
+const char JMP = 0x4c;
+const char NOP = 0xea;
+
+export struct Syscall[]SYSCALLS = {
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall2, NOP}
+};
+
+export align(0x100) struct Syscall[] SYSCALL_RESET= {
+  {JMP, &main, NOP}
+};
+
+	
+	    
