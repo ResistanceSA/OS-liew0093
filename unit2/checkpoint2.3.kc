@@ -42,210 +42,210 @@ void syscall2(){
 }
 
 void syscall3(){
-*(SCREEN+78)= ')';
+*(SCREEN+77)= ')';
 }
 void syscall4(){
-  *(SCREEN+79)= '(';
+  *(SCREEN+76)= '(';
 }
 void syscall5(){
-  *(SCREEN+78)=')';
+  *(SCREEN+75)=')';
 }
 
 void syscall6(){
-*(SCREEN+78)= 'a';
+*(SCREEN+74)= 'a';
 }
 void syscall7(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+73)= ')';
 }
 void syscall8(){
-  *(SCREEN+78)='(';
+  *(SCREEN+72)='(';
 }
 
 void syscall9(){
-*(SCREEN+78)= 'a';
+*(SCREEN+71)= 'a';
 }
 void syscall10(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+70)= ')';
 }
 void syscall11(){
-  *(SCREEN+78)='(';
+  *(SCREEN+69)='(';
 }
 
 void syscall12(){
-*(SCREEN+78)= 'a';
+*(SCREEN+68)= 'a';
 }
 void syscall13(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+67)= ')';
 }
 void syscall14(){
-  *(SCREEN+78)='(';
+  *(SCREEN+66)='(';
 }
 
 void syscall15(){
-*(SCREEN+78)= 'a';
+*(SCREEN+65)= 'a';
 }
 void syscall16(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+64)= ')';
 }
 void SECURENTR(){
-  *(SCREEN+78)='(';
+  *(SCREEN+63)='(';
 }
 
 void SECUREXIT(){
-*(SCREEN+78)= 'a';
+  *(SCREEN+62)= 'a';
 }
  void syscall19(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+61)= ')';
 }
 void syscall20(){
-  *(SCREEN+78)='(';
+  *(SCREEN+60)='(';
 }
 
 void syscall21(){
-*(SCREEN+78)= 'a';
+*(SCREEN+59)= 'a';
 }
 void syscall22(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+58)= ')';
 }
 void syscall23(){
-  *(SCREEN+78)='(';
+  *(SCREEN+57)='(';
 }
 
 void syscall24(){
-*(SCREEN+78)= 'a';
+*(SCREEN+56)= 'a';
 }
  void syscall25(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+55)= ')';
 }
 void syscall26(){
-  *(SCREEN+78)='(';
+  *(SCREEN+54)='(';
 }
 
 void syscall27(){
-*(SCREEN+78)= 'a';
+*(SCREEN+53)= 'a';
 }
 void syscall28(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+52)= ')';
 }
 void syscall29(){
-  *(SCREEN+78)='(';
+  *(SCREEN+51)='(';
 }
 
 void syscall30(){
-*(SCREEN+78)= 'a';
+*(SCREEN+50)= 'a';
 }
  void syscall31(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+49)= ')';
 }
 void syscall32(){
-  *(SCREEN+78)='(';
+  *(SCREEN+48)='(';
 }
 
 void syscall33(){
-*(SCREEN+78)= 'a';
+*(SCREEN+47)= 'a';
 }
 void syscall34(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+46)= ')';
 }
 void syscall35(){
-  *(SCREEN+78)='(';
+  *(SCREEN+45)='(';
 }
 
 void syscall36(){
-*(SCREEN+78)= 'a';
+*(SCREEN+44)= 'a';
 }
  void syscall37(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+43)= ')';
 }
 void syscall38(){
-  *(SCREEN+78)='(';
+  *(SCREEN+42)='(';
 }
 
 void syscall39(){
-*(SCREEN+78)= 'a';
+*(SCREEN+41)= 'a';
 }
 void syscall40(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+40)= ')';
 }
 void syscall41(){
-  *(SCREEN+78)='(';
+  *(SCREEN+39)='(';
 }
 
 void syscall42(){
-*(SCREEN+78)= 'a';
+*(SCREEN+38)= 'a';
 }
  void syscall43(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+37)= ')';
 }
 void syscall44(){
-  *(SCREEN+78)='(';
+  *(SCREEN+36)='(';
 }
 
 void syscall45(){
-*(SCREEN+78)= 'a';
+*(SCREEN+35)= 'a';
 }
 void syscall46(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+34)= ')';
 }
 void syscall47(){
-  *(SCREEN+78)='(';
+  *(SCREEN+33)='(';
 }
 
 void syscall48(){
-*(SCREEN+78)= 'a';
+*(SCREEN+32)= 'a';
 }
 void syscall49(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+31)= ')';
 }
 void syscall50(){
-  *(SCREEN+78)='(';
+  *(SCREEN+30)='(';
 }
 
 void syscall51(){
-*(SCREEN+78)= 'a';
+*(SCREEN+29)= 'a';
 }
 void syscall52(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+28)= ')';
 }
 void syscall53(){
-  *(SCREEN+78)='(';
+  *(SCREEN+27)='(';
 }
 
 void syscall54(){
-*(SCREEN+78)= 'a';
+*(SCREEN+26)= 'a';
 }
 void syscall55(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+25)= ')';
 }
 void syscall56(){
-  *(SCREEN+78)='(';
+  *(SCREEN+24)='(';
 }
 
 void syscall57(){
-*(SCREEN+78)= 'a';
+*(SCREEN+23)= 'a';
 }
 void syscall58(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+22)= ')';
 }
 void syscall59(){
-  *(SCREEN+78)='(';
+  *(SCREEN+21)='(';
 }
 
 void syscall60(){
-*(SCREEN+78)= 'a';
+*(SCREEN+20)= 'a';
 }
  void syscall61(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+19)= ')';
 }
 void syscall62(){
-  *(SCREEN+78)='(';
+  *(SCREEN+18)='(';
 }
 
 void syscall63(){
-*(SCREEN+78)= 'a';
+*(SCREEN+17)= 'a';
 }
 void syscall64(){
-  *(SCREEN+79)= ')';
+  *(SCREEN+16)= ')';
 }
 
 
@@ -269,19 +269,26 @@ void RESET(){
 }
 
 void PAGFAULT(){
+ *(SCREEN+15)= ')';
 }
 
 void RESTORKEY(){
+ *(SCREEN+14)= ')';
 }
 void ALTTABKEY(){
+ *(SCREEN+13)= ')';
 }
 void VF011RD(){
+ *(SCREEN+12)= ')';
 }
 void VF011WR(){
+ *(SCREEN+11)= ')';
 }
 void CPUKIL(){
+ *(SCREEN+10)= ')';
 }
 void undefined_trap(){
+ *(SCREEN+09)= ')';
 }
 
 
@@ -359,9 +366,9 @@ export struct Syscall[]SYSCALLS = {
  {JMP, &syscall61, NOP},
  {JMP, &syscall62, NOP},
  {JMP, &syscall63, NOP},
- {JMP, &syscall64, NOP},
+ {JMP, &syscall64, NOP}
  //64//    
- exit_hypervisor
+
 
 };
 
