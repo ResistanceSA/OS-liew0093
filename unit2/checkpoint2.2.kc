@@ -109,14 +109,63 @@ export struct Syscall[]SYSCALLS = {
  {JMP, &syscall2, NOP},
  {JMP, &syscall2, NOP},
  {JMP, &syscall2, NOP},
- {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP}
  //64//    
  
 
 };
 
 export align(0x100) struct Syscall[] TRAPS= {
-  {JMP, &main, NOP}
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+  {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP}
+//48 entries//
 };
 
 	
