@@ -55,8 +55,71 @@ void RESET(){
 
 void undefined_trap(){
 }
-
-
+void SYSCALL00(){}
+void SYSCALL01(){}
+void SYSCALL02(){}
+void SYSCALL03(){}
+void SYSCALL04(){}
+void SYSCALL05(){}
+void SYSCALL06(){}
+void SYSCALL07(){}
+void SYSCALL08(){}
+void SYSCALL09(){}
+void SYSCALL0A(){}
+void SYSCALL0B(){}
+void SYSCALL0C(){}
+void SYSCALL0D(){}
+void SYSCALL0E(){}
+void SYSCALL0F(){}
+void SYSCALL10(){}
+void SECURENTR(){}
+void SECUREXIT(){}
+void SYSCALL13(){}
+void SYSCALL14(){}
+void SYSCALL15(){}
+void SYSCALL16(){}
+void SYSCALL17(){}
+void SYSCALL18(){}
+void SYSCALL19(){}
+void SYSCALL1A(){}
+void SYSCALL1B(){}
+void SYSCALL1C(){}
+void SYSCALL1D(){}
+void SYSCALL1E(){}
+void SYSCALL1F(){}
+void SYSCALL20(){}
+void SYSCALL21(){}
+void SYSCALL22(){}
+void SYSCALL23(){}
+void SYSCALL24(){}
+void SYSCALL25(){}
+void SYSCALL26(){}
+void SYSCALL27(){}
+void SYSCALL28(){}
+void SYSCALL29(){}
+void SYSCALL2A(){}
+void SYSCALL2B(){}
+void SYSCALL2C(){}
+void SYSCALL2D(){}
+void SYSCALL2E(){}
+void SYSCALL2F(){}
+void SYSCALL30(){}
+void SYSCALL31(){}
+void SYSCALL32(){}
+void SYSCALL33(){}
+void SYSCALL34(){}
+void SYSCALL35(){}
+void SYSCALL36(){}
+void SYSCALL37(){}
+void SYSCALL38(){}
+void SYSCALL39(){}
+void SYSCALL3A(){}
+void SYSCALL3B(){}
+void SYSCALL3C(){}
+void SYSCALL3D(){}
+void SYSCALL3E(){}
+void SYSCALL3F(){}
+ 
 #pragma data_seg(Syscall)
 struct Syscall{
   char xjmp;
@@ -130,9 +193,9 @@ export struct Syscall[]SYSCALLS = {
  {JMP, &SYSCALL3C, NOP},
  {JMP, &SYSCALL3D, NOP},
  {JMP, &SYSCALL3E, NOP},
- {JMP, &SYSCALL3F, NOP}
+ {JMP, &SYSCALL3F, NOP},
  //64//    
-
+exit_hypervisor();
 
 };
 
@@ -187,7 +250,7 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &CPUKIL, NOP},
 //48 entries//
-exit_hypervisor
+exit_hypervisor();
 };
 
 	
