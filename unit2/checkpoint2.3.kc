@@ -53,8 +53,6 @@ void RESET(){
 	}
 }
 
-void undefined_trap(){
-}
 void SYSCALL00(){}
 void SYSCALL01(){}
 void SYSCALL02(){}
@@ -119,6 +117,14 @@ void SYSCALL3C(){}
 void SYSCALL3D(){}
 void SYSCALL3E(){}
 void SYSCALL3F(){}
+void PAGFAULT(){}
+void RESTORKEY(){}
+void ALTTABKEY(){}
+void VF011RD(){}
+void VF011WR(){}
+void RESERVED(){}
+void CPUKIL(){}
+void undefined_trap(){}
  
 #pragma data_seg(Syscall)
 struct Syscall{
@@ -195,7 +201,7 @@ export struct Syscall[]SYSCALLS = {
  {JMP, &SYSCALL3E, NOP},
  {JMP, &SYSCALL3F, NOP},
  //64//    
-exit_hypervisor();
+exit_hypervisor()
 
 };
 
@@ -247,10 +253,9 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
- {JMP, &undefined_trap, NOP},
  {JMP, &CPUKIL, NOP},
 //48 entries//
-exit_hypervisor();
+exit_hypervisor()
 };
 
 	
