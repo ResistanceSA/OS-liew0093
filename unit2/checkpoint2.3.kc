@@ -34,222 +34,7 @@ void exit_hypervisor()
 	*(unsigned char *)$D67F = $01;
 }
 
-void syscall1(){
-  *(SCREEN+79)= ')';
-}
-void syscall2(){
-  *(SCREEN+78)='(';
-}
 
-void syscall3(){
-*(SCREEN+77)= ')';
-}
-void syscall4(){
-  *(SCREEN+76)= '(';
-}
-void syscall5(){
-  *(SCREEN+75)=')';
-}
-
-void syscall6(){
-*(SCREEN+74)= 'a';
-}
-void syscall7(){
-  *(SCREEN+73)= ')';
-}
-void syscall8(){
-  *(SCREEN+72)='(';
-}
-
-void syscall9(){
-*(SCREEN+71)= 'a';
-}
-void syscall10(){
-  *(SCREEN+70)= ')';
-}
-void syscall11(){
-  *(SCREEN+69)='(';
-}
-
-void syscall12(){
-*(SCREEN+68)= 'a';
-}
-void syscall13(){
-  *(SCREEN+67)= ')';
-}
-void syscall14(){
-  *(SCREEN+66)='(';
-}
-
-void syscall15(){
-*(SCREEN+65)= 'a';
-}
-void syscall16(){
-  *(SCREEN+64)= ')';
-}
-void SECURENTR(){
-  *(SCREEN+63)='(';
-}
-
-void SECUREXIT(){
-  *(SCREEN+62)= 'a';
-}
- void syscall19(){
-  *(SCREEN+61)= ')';
-}
-void syscall20(){
-  *(SCREEN+60)='(';
-}
-
-void syscall21(){
-*(SCREEN+59)= 'a';
-}
-void syscall22(){
-  *(SCREEN+58)= ')';
-}
-void syscall23(){
-  *(SCREEN+57)='(';
-}
-
-void syscall24(){
-*(SCREEN+56)= 'a';
-}
- void syscall25(){
-  *(SCREEN+55)= ')';
-}
-void syscall26(){
-  *(SCREEN+54)='(';
-}
-
-void syscall27(){
-*(SCREEN+53)= 'a';
-}
-void syscall28(){
-  *(SCREEN+52)= ')';
-}
-void syscall29(){
-  *(SCREEN+51)='(';
-}
-
-void syscall30(){
-*(SCREEN+50)= 'a';
-}
- void syscall31(){
-  *(SCREEN+49)= ')';
-}
-void syscall32(){
-  *(SCREEN+48)='(';
-}
-
-void syscall33(){
-*(SCREEN+47)= 'a';
-}
-void syscall34(){
-  *(SCREEN+46)= ')';
-}
-void syscall35(){
-  *(SCREEN+45)='(';
-}
-
-void syscall36(){
-*(SCREEN+44)= 'a';
-}
- void syscall37(){
-  *(SCREEN+43)= ')';
-}
-void syscall38(){
-  *(SCREEN+42)='(';
-}
-
-void syscall39(){
-*(SCREEN+41)= 'a';
-}
-void syscall40(){
-  *(SCREEN+40)= ')';
-}
-void syscall41(){
-  *(SCREEN+39)='(';
-}
-
-void syscall42(){
-*(SCREEN+38)= 'a';
-}
- void syscall43(){
-  *(SCREEN+37)= ')';
-}
-void syscall44(){
-  *(SCREEN+36)='(';
-}
-
-void syscall45(){
-*(SCREEN+35)= 'a';
-}
-void syscall46(){
-  *(SCREEN+34)= ')';
-}
-void syscall47(){
-  *(SCREEN+33)='(';
-}
-
-void syscall48(){
-*(SCREEN+32)= 'a';
-}
-void syscall49(){
-  *(SCREEN+31)= ')';
-}
-void syscall50(){
-  *(SCREEN+30)='(';
-}
-
-void syscall51(){
-*(SCREEN+29)= 'a';
-}
-void syscall52(){
-  *(SCREEN+28)= ')';
-}
-void syscall53(){
-  *(SCREEN+27)='(';
-}
-
-void syscall54(){
-*(SCREEN+26)= 'a';
-}
-void syscall55(){
-  *(SCREEN+25)= ')';
-}
-void syscall56(){
-  *(SCREEN+24)='(';
-}
-
-void syscall57(){
-*(SCREEN+23)= 'a';
-}
-void syscall58(){
-  *(SCREEN+22)= ')';
-}
-void syscall59(){
-  *(SCREEN+21)='(';
-}
-
-void syscall60(){
-*(SCREEN+20)= 'a';
-}
- void syscall61(){
-  *(SCREEN+19)= ')';
-}
-void syscall62(){
-  *(SCREEN+18)='(';
-}
-
-void syscall63(){
-*(SCREEN+17)= 'a';
-}
-void syscall64(){
-  *(SCREEN+16)= ')';
-}
-
-
-   
 void RESET(){
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
@@ -268,27 +53,7 @@ void RESET(){
 	}
 }
 
-void PAGFAULT(){
- *(SCREEN+15)= ')';
-}
-
-void RESTORKEY(){
- *(SCREEN+14)= ')';
-}
-void ALTTABKEY(){
- *(SCREEN+13)= ')';
-}
-void VF011RD(){
- *(SCREEN+12)= ')';
-}
-void VF011WR(){
- *(SCREEN+11)= ')';
-}
-void CPUKIL(){
- *(SCREEN+10)= ')';
-}
 void undefined_trap(){
- *(SCREEN+09)= ')';
 }
 
 
@@ -302,84 +67,82 @@ const char JMP = 0x4c;
 const char NOP = 0xea;
 
 export struct Syscall[]SYSCALLS = {
- {JMP, &syscall1, NOP},
- {JMP, &syscall2, NOP},
- {JMP, &syscall3, NOP},
- {JMP, &syscall4, NOP},
- {JMP, &syscall5, NOP},
- {JMP, &syscall6, NOP},
- {JMP, &syscall7, NOP},
- {JMP, &syscall8, NOP},
- {JMP, &syscall9, NOP},
- {JMP, &syscall10, NOP},
- {JMP, &syscall11, NOP},
- {JMP, &syscall12, NOP},
- {JMP, &syscall13, NOP},
- {JMP, &syscall14, NOP},
- {JMP, &syscall15, NOP},
- {JMP, &syscall16, NOP},
+ {JMP, &SYSCALL00, NOP},
+ {JMP, &SYSCALL01, NOP},
+ {JMP, &SYSCALL02, NOP},
+ {JMP, &SYSCALL03, NOP},
+ {JMP, &SYSCALL04, NOP},
+ {JMP, &SYSCALL05, NOP},
+ {JMP, &SYSCALL06, NOP},
+ {JMP, &SYSCALL07, NOP},
+ {JMP, &SYSCALL08, NOP},
+ {JMP, &SYSCALL09, NOP},
+ {JMP, &SYSCALL0A, NOP},
+ {JMP, &SYSCALL0B, NOP},
+ {JMP, &SYSCALL0C, NOP},
+ {JMP, &SYSCALL0D, NOP},
+ {JMP, &SYSCALL0E, NOP},
+ {JMP, &SYSCALL0F, NOP},
+ {JMP, &SYSCALL10, NOP},
  {JMP, &SECURENTR, NOP},
  {JMP, &SECUREXIT, NOP},
- {JMP, &syscall19, NOP},
- {JMP, &syscall20, NOP},
- {JMP, &syscall21, NOP},
- {JMP, &syscall22, NOP},
- {JMP, &syscall23, NOP},
- {JMP, &syscall24, NOP},
- {JMP, &syscall25, NOP},
- {JMP, &syscall26, NOP},
- {JMP, &syscall27, NOP},
- {JMP, &syscall28, NOP},
- {JMP, &syscall29, NOP},
- {JMP, &syscall30, NOP},
- {JMP, &syscall31, NOP},
- {JMP, &syscall32, NOP},
- {JMP, &syscall33, NOP},
- {JMP, &syscall34, NOP},
- {JMP, &syscall35, NOP},
- {JMP, &syscall36, NOP},
- {JMP, &syscall37, NOP},
- {JMP, &syscall38, NOP},
- {JMP, &syscall39, NOP},
- {JMP, &syscall40, NOP},
- {JMP, &syscall41, NOP}, 
- {JMP, &syscall42, NOP},
- {JMP, &syscall43, NOP},
- {JMP, &syscall44, NOP},
- {JMP, &syscall45, NOP},
- {JMP, &syscall46, NOP},
- {JMP, &syscall47, NOP},
- {JMP, &syscall48, NOP},
- {JMP, &syscall49, NOP},
- {JMP, &syscall50, NOP},
- {JMP, &syscall51, NOP},
- {JMP, &syscall52, NOP},
- {JMP, &syscall53, NOP},
- {JMP, &syscall54, NOP},
- //54//
- {JMP, &syscall55, NOP},
- {JMP, &syscall56, NOP},
- {JMP, &syscall57, NOP},
- {JMP, &syscall58, NOP},
- {JMP, &syscall59, NOP},
- {JMP, &syscall60, NOP},
- {JMP, &syscall61, NOP},
- {JMP, &syscall62, NOP},
- {JMP, &syscall63, NOP},
- {JMP, &syscall64, NOP}
+ {JMP, &SYSCALL13, NOP},
+ {JMP, &SYSCALL14, NOP},
+ {JMP, &SYSCALL15, NOP},
+ {JMP, &SYSCALL16, NOP},
+ {JMP, &SYSCALL17, NOP},
+ {JMP, &SYSCALL18, NOP},
+ {JMP, &SYSCALL19, NOP},
+ {JMP, &SYSCALL1A, NOP},
+ {JMP, &SYSCALL1B, NOP},
+ {JMP, &SYSCALL1C, NOP},
+ {JMP, &SYSCALL1D, NOP},
+ {JMP, &SYSCALL1E, NOP},
+ {JMP, &SYSCALL1F, NOP},
+ {JMP, &SYSCALL20, NOP},
+ {JMP, &SYSCALL21, NOP},
+ {JMP, &SYSCALL22, NOP},
+ {JMP, &SYSCALL23, NOP},
+ {JMP, &SYSCALL24, NOP},
+ {JMP, &SYSCALL25, NOP},
+ {JMP, &SYSCALL26, NOP},
+ {JMP, &SYSCALL27, NOP},
+ {JMP, &SYSCALL28, NOP}, 
+ {JMP, &SYSCALL29, NOP},
+ {JMP, &SYSCALL2A, NOP},
+ {JMP, &SYSCALL2B, NOP},
+ {JMP, &SYSCALL2C, NOP},
+ {JMP, &SYSCALL2D, NOP},
+ {JMP, &SYSCALL2E, NOP},
+ {JMP, &SYSCALL2F, NOP},
+ {JMP, &SYSCALL30, NOP},
+ {JMP, &SYSCALL31, NOP},
+ {JMP, &SYSCALL32, NOP},
+ {JMP, &SYSCALL33, NOP},
+ {JMP, &SYSCALL34, NOP},
+ {JMP, &SYSCALL35, NOP},
+ {JMP, &SYSCALL36, NOP},
+ {JMP, &SYSCALL37, NOP},
+ {JMP, &SYSCALL38, NOP},
+ {JMP, &SYSCALL39, NOP},
+ {JMP, &SYSCALL3A, NOP},
+ {JMP, &SYSCALL3B, NOP},
+ {JMP, &SYSCALL3C, NOP},
+ {JMP, &SYSCALL3D, NOP},
+ {JMP, &SYSCALL3E, NOP},
+ {JMP, &SYSCALL3F, NOP}
  //64//    
 
 
 };
 
 export align(0x100) struct Syscall[] TRAPS= {
-  {JMP, &RESET, NOP},
-  {JMP, &PAGFAULT, NOP},
-   {JMP, &RESTORKEY, NOP},
-   {JMP, &ALTTABKEY, NOP},
-   {JMP, &VF011RD, NOP},
-   {JMP, &VF011WR, NOP},
-   {JMP, &undefined_trap, NOP},
+ {JMP, &RESET, NOP},
+ {JMP, &PAGFAULT, NOP},
+ {JMP, &RESTORKEY, NOP},
+ {JMP, &ALTTABKEY, NOP},
+ {JMP, &VF011RD, NOP},
+ {JMP, &VF011WR, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
@@ -389,7 +152,6 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
-  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
@@ -398,7 +160,6 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
-  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
@@ -407,7 +168,6 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
-  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
@@ -416,7 +176,11 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
-  {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
