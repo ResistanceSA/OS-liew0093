@@ -11,23 +11,8 @@ const char WHITE = 1;
 
 char[] MESSAGE = "checkpoint 2.3 liew0093";
 
-void main(){
-	*VIC_MEMORY = 0x14;
-	memset(SCREEN,' ',40*25);
-	memset(COLS,WHITE,40*25);
-	char* sc = SCREEN+40;
-	char* msg= MESSAGE;
-	while(*msg){
-	  *sc++=*msg++;
-	}
-	while(true){
-	  if(*RASTER==54 || *RASTER==66){
-	    *BGCOL = WHITE;
-	  } else {
-	    *BGCOL=BLUE;
-	  }
-	}
-}
+void main(){}
+
 void exit_hypervisor()
 {
 	//Trigger exit from Hypervisor mode
@@ -200,7 +185,6 @@ export struct Syscall[]SYSCALLS = {
  {JMP, &SYSCALL3D, NOP},
  {JMP, &SYSCALL3E, NOP},
  {JMP, &SYSCALL3F, NOP},
- //64//    
 exit_hypervisor()
 
 };
@@ -253,10 +237,7 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
  {JMP, &CPUKIL, NOP},
-//48 entries//
 exit_hypervisor()
 };
-
-	
-	    
