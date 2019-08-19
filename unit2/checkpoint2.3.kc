@@ -11,7 +11,7 @@ const char WHITE = 1;
 
 char[] MESSAGE = "checkpoint 2.3 liew0093";
 
-void main(){}
+void main(){ *(SCREEN+79)= ')';}
 
 void exit_hypervisor()
 {
@@ -20,6 +20,70 @@ void exit_hypervisor()
 }
 
 
+void SYSCALL00(){ *(SCREEN+79)= ')';}
+void SYSCALL01(){ *(SCREEN+79)= ')';}
+void SYSCALL02(){ *(SCREEN+79)= ')';}
+void SYSCALL03(){ *(SCREEN+79)= ')';}
+void SYSCALL04(){ *(SCREEN+79)= ')';}
+void SYSCALL05(){ *(SCREEN+79)= ')';}
+void SYSCALL06(){ *(SCREEN+79)= ')';}
+void SYSCALL07(){ *(SCREEN+79)= ')';}
+void SYSCALL08(){ *(SCREEN+79)= ')';}
+void SYSCALL09(){ *(SCREEN+79)= ')';}
+void SYSCALL0A(){ *(SCREEN+79)= ')';}
+void SYSCALL0B(){ *(SCREEN+79)= ')';}
+void SYSCALL0C(){ *(SCREEN+79)= ')';}
+void SYSCALL0D(){ *(SCREEN+79)= ')';}
+void SYSCALL0E(){ *(SCREEN+79)= ')';}
+void SYSCALL0F(){ *(SCREEN+79)= ')';}
+void SYSCALL10(){ *(SCREEN+79)= ')';}
+void SECURENTR(){ *(SCREEN+79)= ')';}
+void SECUREXIT(){ *(SCREEN+79)= ')';}
+void SYSCALL13(){ *(SCREEN+79)= ')';}
+void SYSCALL14(){ *(SCREEN+79)= ')';}
+void SYSCALL15(){ *(SCREEN+79)= ')';}
+void SYSCALL16(){ *(SCREEN+79)= ')';}
+void SYSCALL17(){ *(SCREEN+79)= ')';}
+void SYSCALL18(){ *(SCREEN+79)= ')';}
+void SYSCALL19(){ *(SCREEN+79)= ')';}
+void SYSCALL1A(){ *(SCREEN+79)= ')';}
+void SYSCALL1B(){ *(SCREEN+79)= ')';}
+void SYSCALL1C(){ *(SCREEN+79)= ')';}
+void SYSCALL1D(){ *(SCREEN+79)= ')';}
+void SYSCALL1E(){ *(SCREEN+79)= ')';}
+void SYSCALL1F(){ *(SCREEN+79)= ')';}
+void SYSCALL20(){ *(SCREEN+79)= ')';}
+void SYSCALL21(){ *(SCREEN+79)= ')';}
+void SYSCALL22(){ *(SCREEN+79)= ')';}
+void SYSCALL23(){ *(SCREEN+79)= ')';}
+void SYSCALL24(){ *(SCREEN+79)= ')';}
+void SYSCALL25(){ *(SCREEN+79)= ')';}
+void SYSCALL26(){ *(SCREEN+79)= ')';}
+void SYSCALL27(){ *(SCREEN+79)= ')';}
+void SYSCALL28(){ *(SCREEN+79)= ')';}
+void SYSCALL29(){ *(SCREEN+79)= ')';}
+void SYSCALL2A(){ *(SCREEN+79)= ')';}
+void SYSCALL2B(){ *(SCREEN+79)= ')';}
+void SYSCALL2C(){ *(SCREEN+79)= ')';}
+void SYSCALL2D(){ *(SCREEN+79)= ')';}
+void SYSCALL2E(){ *(SCREEN+79)= ')';}
+void SYSCALL2F(){ *(SCREEN+79)= ')';}
+void SYSCALL30(){ *(SCREEN+79)= ')';}
+void SYSCALL31(){ *(SCREEN+79)= ')';}
+void SYSCALL32(){ *(SCREEN+79)= ')';}
+void SYSCALL33(){ *(SCREEN+79)= ')';}
+void SYSCALL34(){ *(SCREEN+79)= ')';}
+void SYSCALL35(){ *(SCREEN+79)= ')';}
+void SYSCALL36(){ *(SCREEN+79)= ')';}
+void SYSCALL37(){ *(SCREEN+79)= ')';}
+void SYSCALL38(){ *(SCREEN+79)= ')';}
+void SYSCALL39(){ *(SCREEN+79)= ')';}
+void SYSCALL3A(){ *(SCREEN+79)= ')';}
+void SYSCALL3B(){ *(SCREEN+79)= ')';}
+void SYSCALL3C(){ *(SCREEN+79)= ')';}
+void SYSCALL3D(){ *(SCREEN+79)= ')';}
+void SYSCALL3E(){ *(SCREEN+79)= ')';}
+void SYSCALL3F(){ *(SCREEN+79)= ')';}
 void RESET(){
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
@@ -38,78 +102,14 @@ void RESET(){
 	}
 }
 
-void SYSCALL00(){}
-void SYSCALL01(){}
-void SYSCALL02(){}
-void SYSCALL03(){}
-void SYSCALL04(){}
-void SYSCALL05(){}
-void SYSCALL06(){}
-void SYSCALL07(){}
-void SYSCALL08(){}
-void SYSCALL09(){}
-void SYSCALL0A(){}
-void SYSCALL0B(){}
-void SYSCALL0C(){}
-void SYSCALL0D(){}
-void SYSCALL0E(){}
-void SYSCALL0F(){}
-void SYSCALL10(){}
-void SECURENTR(){}
-void SECUREXIT(){}
-void SYSCALL13(){}
-void SYSCALL14(){}
-void SYSCALL15(){}
-void SYSCALL16(){}
-void SYSCALL17(){}
-void SYSCALL18(){}
-void SYSCALL19(){}
-void SYSCALL1A(){}
-void SYSCALL1B(){}
-void SYSCALL1C(){}
-void SYSCALL1D(){}
-void SYSCALL1E(){}
-void SYSCALL1F(){}
-void SYSCALL20(){}
-void SYSCALL21(){}
-void SYSCALL22(){}
-void SYSCALL23(){}
-void SYSCALL24(){}
-void SYSCALL25(){}
-void SYSCALL26(){}
-void SYSCALL27(){}
-void SYSCALL28(){}
-void SYSCALL29(){}
-void SYSCALL2A(){}
-void SYSCALL2B(){}
-void SYSCALL2C(){}
-void SYSCALL2D(){}
-void SYSCALL2E(){}
-void SYSCALL2F(){}
-void SYSCALL30(){}
-void SYSCALL31(){}
-void SYSCALL32(){}
-void SYSCALL33(){}
-void SYSCALL34(){}
-void SYSCALL35(){}
-void SYSCALL36(){}
-void SYSCALL37(){}
-void SYSCALL38(){}
-void SYSCALL39(){}
-void SYSCALL3A(){}
-void SYSCALL3B(){}
-void SYSCALL3C(){}
-void SYSCALL3D(){}
-void SYSCALL3E(){}
-void SYSCALL3F(){}
-void PAGFAULT(){}
-void RESTORKEY(){}
-void ALTTABKEY(){}
-void VF011RD(){}
-void VF011WR(){}
-void RESERVED(){}
-void CPUKIL(){}
-void undefined_trap(){}
+void PAGFAULT(){ *(SCREEN+79)= ')';}
+void RESTORKEY(){ *(SCREEN+79)= ')';}
+void ALTTABKEY(){ *(SCREEN+79)= ')';}
+void VF011RD(){ *(SCREEN+79)= ')';}
+void VF011WR(){ *(SCREEN+79)= ')';}
+void RESERVED(){ *(SCREEN+79)= ')';}
+void CPUKIL(){ *(SCREEN+79)= ')';}
+void undefined_trap(){ *(SCREEN+79)= ')';}
  
 #pragma data_seg(Syscall)
 struct Syscall{
