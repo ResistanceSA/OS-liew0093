@@ -14,76 +14,77 @@ void main(){
 }
 
 
-void SYSCALL00(){}
-void SYSCALL01(){}
-void SYSCALL02(){}
-void SYSCALL03(){}
-void SYSCALL04(){}
-void SYSCALL05(){}
-void SYSCALL06(){}
-void SYSCALL07(){}
-void SYSCALL08(){}
-void SYSCALL09(){}
-void SYSCALL0A(){}
-void SYSCALL0B(){}
-void SYSCALL0C(){}
-void SYSCALL0D(){}
-void SYSCALL0E(){}
-void SYSCALL0F(){}
-void SYSCALL10(){}
-void SECURENTR(){}
-void SECUREXIT(){}
-void SYSCALL13(){}
-void SYSCALL14(){}
-void SYSCALL15(){}
-void SYSCALL16(){}
-void SYSCALL17(){}
-void SYSCALL18(){}
-void SYSCALL19(){}
-void SYSCALL1A(){}
-void SYSCALL1B(){}
-void SYSCALL1C(){}
-void SYSCALL1D(){}
-void SYSCALL1E(){}
-void SYSCALL1F(){}
-void SYSCALL20(){}
-void SYSCALL21(){}
-void SYSCALL22(){}
-void SYSCALL23(){}
-void SYSCALL24(){}
-void SYSCALL25(){}
-void SYSCALL26(){}
-void SYSCALL27(){}
-void SYSCALL28(){}
-void SYSCALL29(){}
-void SYSCALL2A(){}
-void SYSCALL2B(){}
-void SYSCALL2C(){}
-void SYSCALL2D(){}
-void SYSCALL2E(){}
-void SYSCALL2F(){}
-void SYSCALL30(){}
-void SYSCALL31(){}
-void SYSCALL32(){}
-void SYSCALL33(){}
-void SYSCALL34(){}
-void SYSCALL35(){}
-void SYSCALL36(){}
-void SYSCALL37(){}
-void SYSCALL38(){}
-void SYSCALL39(){}
-void SYSCALL3A(){}
-void SYSCALL3B(){}
-void SYSCALL3C(){}
-void SYSCALL3D(){}
-void SYSCALL3E(){}
-void SYSCALL3F(){}
-
 void exit_hypervisor()
 {
 	//Trigger exit from Hypervisor mode
 	*(unsigned char *)$D67F = $01;
 }
+
+void SYSCALL00(){exit_hypervisor();}
+void SYSCALL01(){exit_hypervisor();}
+void SYSCALL02(){exit_hypervisor();}
+void SYSCALL03(){exit_hypervisor();}
+void SYSCALL04(){exit_hypervisor();}
+void SYSCALL05(){exit_hypervisor();}
+void SYSCALL06(){exit_hypervisor();}
+void SYSCALL07(){exit_hypervisor();}
+void SYSCALL08(){exit_hypervisor();}
+void SYSCALL09(){exit_hypervisor();}
+void SYSCALL0A(){exit_hypervisor();}
+void SYSCALL0B(){exit_hypervisor();}
+void SYSCALL0C(){exit_hypervisor();}
+void SYSCALL0D(){exit_hypervisor();}
+void SYSCALL0E(){exit_hypervisor();}
+void SYSCALL0F(){exit_hypervisor();}
+void SYSCALL10(){exit_hypervisor();}
+void SECURENTR(){exit_hypervisor();}
+void SECUREXIT(){exit_hypervisor();}
+void SYSCALL13(){exit_hypervisor();}
+void SYSCALL14(){exit_hypervisor();}
+void SYSCALL15(){exit_hypervisor();}
+void SYSCALL16(){exit_hypervisor();}
+void SYSCALL17(){exit_hypervisor();}
+void SYSCALL18(){exit_hypervisor();}
+void SYSCALL19(){exit_hypervisor();}
+void SYSCALL1A(){exit_hypervisor();}
+void SYSCALL1B(){exit_hypervisor();}
+void SYSCALL1C(){exit_hypervisor();}
+void SYSCALL1D(){exit_hypervisor();}
+void SYSCALL1E(){exit_hypervisor();}
+void SYSCALL1F(){exit_hypervisor();}
+void SYSCALL20(){exit_hypervisor();}
+void SYSCALL21(){exit_hypervisor();}
+void SYSCALL22(){exit_hypervisor();}
+void SYSCALL23(){exit_hypervisor();}
+void SYSCALL24(){exit_hypervisor();}
+void SYSCALL25(){exit_hypervisor();}
+void SYSCALL26(){exit_hypervisor();}
+void SYSCALL27(){exit_hypervisor();}
+void SYSCALL28(){exit_hypervisor();}
+void SYSCALL29(){exit_hypervisor();}
+void SYSCALL2A(){exit_hypervisor();}
+void SYSCALL2B(){exit_hypervisor();}
+void SYSCALL2C(){exit_hypervisor();}
+void SYSCALL2D(){exit_hypervisor();}
+void SYSCALL2E(){exit_hypervisor();}
+void SYSCALL2F(){exit_hypervisor();}
+void SYSCALL30(){exit_hypervisor();}
+void SYSCALL31(){exit_hypervisor();}
+void SYSCALL32(){exit_hypervisor();}
+void SYSCALL33(){exit_hypervisor();}
+void SYSCALL34(){exit_hypervisor();}
+void SYSCALL35(){exit_hypervisor();}
+void SYSCALL36(){exit_hypervisor();}
+void SYSCALL37(){exit_hypervisor();}
+void SYSCALL38(){exit_hypervisor();}
+void SYSCALL39(){exit_hypervisor();}
+void SYSCALL3A(){exit_hypervisor();}
+void SYSCALL3B(){exit_hypervisor();}
+void SYSCALL3C(){exit_hypervisor();}
+void SYSCALL3D(){exit_hypervisor();}
+void SYSCALL3E(){exit_hypervisor();}
+void SYSCALL3F(){exit_hypervisor();}
+
 
 void RESET(){
 	*VIC_MEMORY = 0x14;
@@ -102,13 +103,13 @@ void RESET(){
 	  }
 	}
 }
-void PAGFAULT(){}
-void RESTORKEY(){}
-void ALTTABKEY(){}
-void VF011RD(){}
-void VF011WR(){}
-void undefined_trap(){}
-void CPUKIL(){}
+void PAGFAULT(){exit_hypervisor();}
+void RESTORKEY(){exit_hypervisor();}
+void ALTTABKEY(){exit_hypervisor();}
+void VF011RD(){exit_hypervisor();}
+void VF011WR(){exit_hypervisor();}
+void undefined_trap(){exit_hypervisor();}
+void CPUKIL(){exit_hypervisor();}
 
 
  
@@ -185,8 +186,7 @@ export struct Syscall[]SYSCALLS = {
  {JMP, &SYSCALL3C, NOP},
  {JMP, &SYSCALL3D, NOP},
  {JMP, &SYSCALL3E, NOP},
- {JMP, &SYSCALL3F, NOP},
-exit_hypervisor()
+ {JMP, &SYSCALL3F, NOP}
 
 };
 
@@ -238,6 +238,5 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
- {JMP, &CPUKIL, NOP},
-exit_hypervisor()
+ {JMP, &CPUKIL, NOP}
 };
