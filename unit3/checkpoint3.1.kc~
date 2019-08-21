@@ -14,11 +14,11 @@ unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
 
-void print_to_screen(char *message);
+void print_to_screen(char *message){}
 
   void print_newline(){
-*current_screen_x = 0;
-*current_screen_line = current_screen_line +40;
+current_screen_x = 0;
+current_screen_line = current_screen_line +40;
   // advance current_screen_line to next line
   // reset current_screen_x to 0
 }

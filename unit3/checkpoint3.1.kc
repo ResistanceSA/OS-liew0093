@@ -1,5 +1,4 @@
 import "string"
-import "print"
 #pragma link("mega65hyper.ld")
 const char* RASTER = 0xd012;
 const char* VIC_MEMORY = 0xd018;
@@ -25,13 +24,16 @@ current_screen_line = current_screen_line +40;
 
 
 void RESET(){
-  /*   *VIC_MEMORY = 0x14;
+	 *VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	char* sc = SCREEN+40;
-	char* msg= message;
+	char* msg= MESSAGE;
+  print_to_screen("liew0093 operating system starting...");
+  print_newline();
+  print_to_screen("testing hardware");
 	while(*msg){
-	  *sc++=*msg++;
+	 *sc++=*msg++;
 	}
 	while(true){
 	  if(*RASTER==54 || *RASTER==66){
@@ -39,11 +41,8 @@ void RESET(){
 	  } else {
 	    *BGCOL=BLACK;
 	  }    
- */
-  print_to_screen("liew0093 operating system starting...");
-  print_newline();
-  print_to_screen("testing hardware");
 
+}
 }
 void main(){
 }
