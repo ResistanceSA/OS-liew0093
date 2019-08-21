@@ -32,9 +32,9 @@ void RESET(){
   print_to_screen("liew0093 operating system starting...");
   print_newline();
   print_to_screen("testing hardware");
-	while(*msg){
-	 *sc++=*msg++;
-	}
+//	while(*msg){
+	// *sc++=*msg++;
+//	}
 	while(true){
 	  if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;

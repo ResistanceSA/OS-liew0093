@@ -1,5 +1,4 @@
 al C:8257 .SYSCALL32
-al C:2 .msg
 al C:8253 .SYSCALL33
 al C:825f .SYSCALL30
 al C:825b .SYSCALL31
@@ -11,14 +10,12 @@ al C:824b .SYSCALL35
 al C:2 .num
 al C:8200 .main
 al C:8323 .RESET
-al C:836b .b1
+al C:835b .b1
 al C:8233 .SYSCALL3B
-al C:8391 .b2__0
-al C:83bd .b2__1
+al C:8371 .b2__0
+al C:8390 .b2__1
 al C:822f .SYSCALL3C
-al C:8373 .b3__0
-al C:83ca .b3__1
-al C:8389 .b4
+al C:839d .b3
 al C:8237 .SYSCALL3A
 al C:400 .SCREEN
 al C:8223 .SYSCALL3F
@@ -35,8 +32,8 @@ al C:8293 .SYSCALL23
 al C:828f .SYSCALL24
 al C:82db .SECURENTR
 al C:82a3 .SYSCALL1F
-al C:83a6 .print_to_screen
-al C:83a8 .memset
+al C:8379 .print_to_screen
+al C:837b .memset
 al C:821b .RESTORKEY
 al C:8277 .SYSCALL2A
 al C:4 .str
@@ -60,9 +57,7 @@ al C:82cb .SYSCALL15
 al C:82d3 .SYSCALL13
 al C:82e7 .SYSCALL0E
 al C:82e3 .SYSCALL0F
-al C:4 .sc
 al C:82b7 .SYSCALL1A
-al C:83d8 .MESSAGE
 al C:d018 .VIC_MEMORY
 al C:8213 .VF011RD
 al C:82ab .SYSCALL1D
@@ -76,9 +71,9 @@ al C:82bb .SYSCALL19
 al C:82c7 .SYSCALL16
 al C:2 .end
 al C:82c3 .SYSCALL17
-al C:83a7 .print_newline
+al C:837a .print_newline
 al C:831f .SYSCALL00
-al C:83c9 .breturn
+al C:839c .breturn
 al C:8313 .SYSCALL03
 al C:830f .SYSCALL04
 al C:831b .SYSCALL01

@@ -309,8 +309,6 @@ SYSCALL00: {
     rts
 }
 RESET: {
-    .label sc = 4
-    .label msg = 2
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -336,45 +334,19 @@ RESET: {
     jsr print_to_screen
     jsr print_newline
     jsr print_to_screen
-    lda #<SCREEN+$28
-    sta.z sc
-    lda #>SCREEN+$28
-    sta.z sc+1
-    lda #<MESSAGE
-    sta.z msg
-    lda #>MESSAGE
-    sta.z msg+1
   b1:
-    ldy #0
-    lda (msg),y
-    cmp #0
-    bne b2
-  b3:
     lda #$36
     cmp RASTER
-    beq b4
+    beq b2
     lda #$42
     cmp RASTER
-    beq b4
+    beq b2
     lda #BLACK
     sta BGCOL
-    jmp b3
-  b4:
+    jmp b1
+  b2:
     lda #WHITE
     sta BGCOL
-    jmp b3
-  b2:
-    ldy #0
-    lda (msg),y
-    sta (sc),y
-    inc.z sc
-    bne !+
-    inc.z sc+1
-  !:
-    inc.z msg
-    bne !+
-    inc.z msg+1
-  !:
     jmp b1
 }
 print_to_screen: {
@@ -421,9 +393,6 @@ memset: {
   !:
     jmp b2
 }
-.segment Data
-  MESSAGE: .text "liew0093 checkpoint3.1"
-  .byte 0
 .segment Syscall
 SYSCALLS:
   .byte JMP
