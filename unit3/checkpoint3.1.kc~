@@ -14,17 +14,13 @@ unsigned char current_screen_x = 0;
 
 
 void print_to_screen(char *message){
-	char* sc = SCREEN+40;
+	*VIC_MEMORY = 0x14;
+	memset(current_screen_line,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	char* sc = current_screen_line+40;
 	char* msg= message;
 	while(*msg){
 	  *sc++=*msg++;
-	}
-	while(true){
-	  if(*RASTER==54 || *RASTER==66){
-	    *BGCOL = WHITE;
-	  } else {
-	    *BGCOL=BLACK;
-	  }   
 	}
 }
   void print_newline(){

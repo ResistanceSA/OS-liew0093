@@ -15,9 +15,9 @@ unsigned char current_screen_x = 0;
 
 void print_to_screen(char *message){
 	*VIC_MEMORY = 0x14;
-	memset(current_screen_line,' ',40*25);
+	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
-	char* sc = current_screen_line+40;
+	char* sc = SCREEN+40;
 	char* msg= message;
 	while(*msg){
 	  *sc++=*msg++;
@@ -25,7 +25,7 @@ void print_to_screen(char *message){
 }
   void print_newline(){
 current_screen_x = 0;
- current_screen_line = current_screen_line+40;
+current_screen_line = SCREEN+40;
   // advance current_screen_line to next line
   // reset current_screen_x to 0
 }
