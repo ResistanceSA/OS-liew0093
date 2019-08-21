@@ -14,6 +14,7 @@
   .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
+  .label current_screen_line = 2
 .segment Code
 main: {
     rts
@@ -313,12 +314,20 @@ RESET: {
     sta.z print_to_screen.message
     lda #>message
     sta.z print_to_screen.message+1
+    lda #<$400
+    sta.z current_screen_line
+    lda #>$400
+    sta.z current_screen_line+1
     jsr print_to_screen
     jsr print_newline
     lda #<message1
     sta.z print_to_screen.message
     lda #>message1
     sta.z print_to_screen.message+1
+    lda #<SCREEN+$28
+    sta.z current_screen_line
+    lda #>SCREEN+$28
+    sta.z current_screen_line+1
     jsr print_to_screen
     rts
   .segment Data
@@ -328,18 +337,18 @@ RESET: {
     .byte 0
 }
 .segment Code
-// print_to_screen(byte* zeropage(2) message)
+// print_to_screen(byte* zeropage(4) message)
 print_to_screen: {
-    .label sc = 4
-    .label msg = 2
-    .label message = 2
+    .label sc = 6
+    .label msg = 4
+    .label message = 4
     lda #$14
     sta VIC_MEMORY
-    ldx #' '
-    lda #<SCREEN
+    lda.z current_screen_line
     sta.z memset.str
-    lda #>SCREEN
+    lda.z current_screen_line+1
     sta.z memset.str+1
+    ldx #' '
     lda #<$28*$19
     sta.z memset.num
     lda #>$28*$19
@@ -355,9 +364,9 @@ print_to_screen: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<SCREEN+$28
+    lda #<$28
     sta.z sc
-    lda #>SCREEN+$28
+    lda #>$28
     sta.z sc+1
   b1:
     ldy #0
@@ -393,12 +402,12 @@ print_to_screen: {
     jmp b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(6) str, byte register(X) c, word zeropage(4) num)
+// memset(void* zeropage(8) str, byte register(X) c, word zeropage(6) num)
 memset: {
-    .label end = 4
-    .label dst = 6
-    .label num = 4
-    .label str = 6
+    .label end = 6
+    .label dst = 8
+    .label str = 8
+    .label num = 6
     lda.z num
     bne !+
     lda.z num+1
