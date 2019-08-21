@@ -14,9 +14,6 @@ unsigned char current_screen_x = 0;
 
 
 void print_to_screen(char *message){
-*VIC_MEMORY = 0x14;
-	memset(SCREEN,' ',40*25);
-	memset(COLS,WHITE,40*25);
 	char* sc = SCREEN+40;
 	char* msg= message;
 	while(*msg){
