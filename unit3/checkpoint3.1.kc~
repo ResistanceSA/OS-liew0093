@@ -14,13 +14,21 @@ unsigned char current_screen_x = 0;
 
 
 void print_to_screen(char *message){
-  int i = 0;
-  for (i=0; message[i]!= NUL;i++)
-    {
-      print(*current_screen_line, message[i]);
-      current_screen_x++;
-//acccept a string, write each character of string to screen
-//increase current_screen_x variable for each character
+*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	char* sc = SCREEN+40;
+	char* msg= message;
+	while(*msg){
+	  *sc++=*msg++;
+	}
+	while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLACK;
+	  }   
+	}
 }
   void print_newline(){
 current_screen_x = 0;
@@ -48,7 +56,7 @@ void RESET(){
  */
   print_to_screen("liew0093 operating system starting...");
   print_newline();
-  print_to_Screen("testing hardware");
+  print_to_screen("testing hardware");
 
 }
 void main(){

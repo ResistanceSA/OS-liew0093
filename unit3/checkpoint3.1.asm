@@ -6,10 +6,8 @@
 .segmentdef Stack [min=$be00, max=$beff, fill]
 .segmentdef Zeropage [min=$bf00, max=$bfff, fill]
   .label RASTER = $d012
-  .label VIC_MEMORY = $d018
   .label SCREEN = $400
   .label BGCOL = $d021
-  .label COLS = $d800
   .const BLACK = 0
   .const WHITE = 1
   .const JMP = $4c
@@ -310,15 +308,15 @@ SYSCALL00: {
 }
 RESET: {
     lda #<message
-    sta.z print_to_screen.message
+    sta.z print_to_screen.msg
     lda #>message
-    sta.z print_to_screen.message+1
+    sta.z print_to_screen.msg+1
     jsr print_to_screen
     jsr print_newline
     lda #<message1
-    sta.z print_to_screen.message
+    sta.z print_to_screen.msg
     lda #>message1
-    sta.z print_to_screen.message+1
+    sta.z print_to_screen.msg+1
     jsr print_to_screen
     rts
   .segment Data
@@ -328,33 +326,9 @@ RESET: {
     .byte 0
 }
 .segment Code
-// print_to_screen(byte* zeropage(2) message)
 print_to_screen: {
-    .label sc = 4
     .label msg = 2
-    .label message = 2
-    lda #$14
-    sta VIC_MEMORY
-    ldx #' '
-    lda #<SCREEN
-    sta.z memset.str
-    lda #>SCREEN
-    sta.z memset.str+1
-    lda #<$28*$19
-    sta.z memset.num
-    lda #>$28*$19
-    sta.z memset.num+1
-    jsr memset
-    ldx #WHITE
-    lda #<COLS
-    sta.z memset.str
-    lda #>COLS
-    sta.z memset.str+1
-    lda #<$28*$19
-    sta.z memset.num
-    lda #>$28*$19
-    sta.z memset.num+1
-    jsr memset
+    .label sc = 4
     lda #<SCREEN+$28
     sta.z sc
     lda #>SCREEN+$28
@@ -391,44 +365,6 @@ print_to_screen: {
     inc.z msg+1
   !:
     jmp b1
-}
-// Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(6) str, byte register(X) c, word zeropage(4) num)
-memset: {
-    .label end = 4
-    .label dst = 6
-    .label num = 4
-    .label str = 6
-    lda.z num
-    bne !+
-    lda.z num+1
-    beq breturn
-  !:
-    lda.z end
-    clc
-    adc.z str
-    sta.z end
-    lda.z end+1
-    adc.z str+1
-    sta.z end+1
-  b2:
-    lda.z dst+1
-    cmp.z end+1
-    bne b3
-    lda.z dst
-    cmp.z end
-    bne b3
-  breturn:
-    rts
-  b3:
-    txa
-    ldy #0
-    sta (dst),y
-    inc.z dst
-    bne !+
-    inc.z dst+1
-  !:
-    jmp b2
 }
 print_newline: {
     rts
