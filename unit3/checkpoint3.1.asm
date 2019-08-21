@@ -5,12 +5,9 @@
 .segmentdef Data [startAfter="Code", min=$8200, max=$bdff]
 .segmentdef Stack [min=$be00, max=$beff, fill]
 .segmentdef Zeropage [min=$bf00, max=$bfff, fill]
-  .label RASTER = $d012
   .label VIC_MEMORY = $d018
   .label SCREEN = $400
-  .label BGCOL = $d021
   .label COLS = $d800
-  .const BLACK = 0
   .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
@@ -364,29 +361,19 @@ print_to_screen: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<$28
+    lda #$28
+    clc
+    adc.z current_screen_line
     sta.z sc
-    lda #>$28
+    lda #0
+    adc.z current_screen_line+1
     sta.z sc+1
   b1:
     ldy #0
     lda (msg),y
     cmp #0
     bne b2
-  b3:
-    lda #$36
-    cmp RASTER
-    beq b4
-    lda #$42
-    cmp RASTER
-    beq b4
-    lda #BLACK
-    sta BGCOL
-    jmp b3
-  b4:
-    lda #WHITE
-    sta BGCOL
-    jmp b3
+    rts
   b2:
     ldy #0
     lda (msg),y
