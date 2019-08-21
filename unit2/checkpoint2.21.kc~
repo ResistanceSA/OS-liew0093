@@ -1,0 +1,421 @@
+import "string"
+#pragma link("mega65hyper.ld")
+const char* RASTER = 0xd012;
+const char* VIC_MEMORY = 0xd018;
+const char* SCREEN = 0x0400;
+const char* BGCOL = 0xd021;
+const char* COLS = 0xd800;
+const char BLACK = 0;
+const char BLUE = 6;
+const char WHITE = 1;
+
+char[] MESSAGE = "checkpoint 2.2 liew0093";
+
+void main(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	char* sc = SCREEN+40;
+	char* msg= MESSAGE;
+	while(*msg){
+	  *sc++=*msg++;
+	}
+	while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLUE;
+	  }
+	}
+}
+void syscall1(){
+
+}
+void syscall2(){
+
+}
+
+void syscall3(){
+
+}
+void syscall4(){
+
+}
+void syscall5(){
+
+}
+
+void syscall6(){
+
+}
+void syscall7(){
+
+}
+void syscall8(){
+
+}
+
+void syscall9(){
+
+}
+void syscall10(){
+
+}
+void syscall11(){
+
+}
+
+void syscall12(){
+
+}
+void syscall13(){
+
+}
+void syscall14(){
+
+}
+
+void syscall15(){
+
+}
+void syscall16(){
+
+}
+void SECURENTR(){
+
+}
+
+void SECUREXIT(){
+
+}
+ void syscall19(){
+;
+}
+void syscall20(){
+  
+}
+
+void syscall21(){
+
+}
+void syscall22(){
+
+}
+void syscall23(){
+
+}
+
+void syscall24(){
+
+}
+ void syscall25(){
+
+}
+void syscall26(){
+
+}
+
+void syscall27(){
+
+}
+void syscall28(){
+
+}
+void syscall29(){
+
+}
+
+void syscall30(){
+
+}
+ void syscall31(){
+
+}
+void syscall32(){
+
+}
+
+void syscall33(){
+
+}
+void syscall34(){
+
+}
+void syscall35(){
+
+}
+
+void syscall36(){
+
+}
+ void syscall37(){
+
+}
+void syscall38(){
+
+}
+
+void syscall39(){
+
+}
+void syscall40(){
+
+}
+void syscall41(){
+
+}
+
+void syscall42(){
+
+}
+ void syscall43(){
+
+}
+void syscall44(){
+
+}
+
+void syscall45(){
+
+}
+void syscall46(){
+
+}
+void syscall47(){
+
+}
+
+void syscall48(){
+
+}
+void syscall49(){
+
+}
+void syscall50(){
+
+}
+
+void syscall51(){
+
+}
+void syscall52(){
+
+}
+void syscall53(){
+
+}
+
+void syscall54(){
+
+}
+void syscall55(){
+
+}
+void syscall56(){
+
+}
+
+void syscall57(){
+
+}
+void syscall58(){
+
+}
+void syscall59(){
+
+}
+
+void syscall60(){
+
+}
+ void syscall61(){
+
+}
+void syscall62(){
+
+}
+
+void syscall63(){
+
+}
+void syscall64(){
+
+}
+
+
+   
+void RESET(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	char* sc = SCREEN+40;
+	char* msg= MESSAGE;
+	while(*msg){
+	  *sc++=*msg++;
+	}
+	while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLUE;
+	  }
+	}
+}
+
+void PAGFAULT(){
+
+}
+
+void RESTORKEY(){
+
+}
+void ALTTABKEY(){
+
+}
+void VF011RD(){
+
+}
+void VF011WR(){
+
+}
+void CPUKIL(){
+
+}
+void undefined_trap(){
+}
+
+#pragma data_seg(Syscall)
+struct Syscall{
+  char xjmp;
+  void()*syscall;
+  char xnop;
+};
+const char JMP = 0x4c;
+const char NOP = 0xea;
+
+export struct Syscall[]SYSCALLS = {
+ {JMP, &syscall1, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP}, 
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ //54//
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP},
+ {JMP, &syscall2, NOP}
+ //64//    
+ 
+
+};
+
+export align(0x100) struct Syscall[] TRAPS= {
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+  {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP},
+   {JMP, &main, NOP}
+//48 entries//
+};
+
+	
+	    
