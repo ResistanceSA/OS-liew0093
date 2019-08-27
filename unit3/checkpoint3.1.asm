@@ -332,9 +332,9 @@ RESET: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<current_screen_line+$28
+    lda #<current_screen_line
     sta.z sc
-    lda #>current_screen_line+$28
+    lda #>current_screen_line
     sta.z sc+1
     lda #<MESSAGE
     sta.z msg

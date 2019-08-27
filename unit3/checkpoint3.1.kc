@@ -38,7 +38,7 @@ void RESET(){
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
-	char* sc = current_screen_line+40;
+	char* sc = current_screen_line;
 	char* msg= MESSAGE;
 	while(*msg){
 	  *sc++=*msg++;
