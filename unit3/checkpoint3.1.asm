@@ -307,9 +307,9 @@ RESET: {
     sta.z print_to_screen.at
     lda #>current_screen_x
     sta.z print_to_screen.at+1
-    lda #<msg
+    lda #<msg1
     sta.z print_to_screen.msg
-    lda #>msg
+    lda #>msg1
     sta.z print_to_screen.msg+1
     jsr print_to_screen
     jsr print_newline
@@ -317,16 +317,31 @@ RESET: {
     sta.z print_to_screen.at
     lda #>current_screen_x
     sta.z print_to_screen.at+1
-    lda #<msg1
+    lda #<msg2
     sta.z print_to_screen.msg
-    lda #>msg1
+    lda #>msg2
     sta.z print_to_screen.msg+1
     jsr print_to_screen
     rts
   .segment Data
-    msg: .text "liew0093 operating system starting..."
+    /*   *VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	char* sc = SCREEN+40;
+	char* msg= message;
+	while(*msg){
+	  *sc++=*msg++;
+	}
+	while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLACK;
+	  }    
+ */
+    msg1: .text "liew0093 operating system starting..."
     .byte 0
-    msg1: .text "testing hardware"
+    msg2: .text "testing hardware"
     .byte 0
 }
 .segment Code

@@ -1,6 +1,5 @@
 al C:8257 .SYSCALL32
-al C:2 .msg__0
-al C:836a .msg__1
+al C:2 .msg
 al C:8253 .SYSCALL33
 al C:825f .SYSCALL30
 al C:825b .SYSCALL31
@@ -65,7 +64,8 @@ al C:82c7 .SYSCALL16
 al C:82c3 .SYSCALL17
 al C:8369 .print_newline
 al C:831f .SYSCALL00
-al C:8390 .msg1
+al C:8390 .msg2
+al C:836a .msg1
 al C:8313 .SYSCALL03
 al C:830f .SYSCALL04
 al C:831b .SYSCALL01
