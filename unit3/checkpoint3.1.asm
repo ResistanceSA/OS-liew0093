@@ -10,9 +10,9 @@
   .label SCREEN = $400
   .label COLS = $d800
   .const WHITE = 1
-  .label current_screen_line = $400
   .const JMP = $4c
   .const NOP = $ea
+  .label current_screen_line = 2
 .segment Code
 main: {
     jsr exit_hypervisor
@@ -313,6 +313,10 @@ RESET: {
     sta.z print_to_screen.msg
     lda #>message
     sta.z print_to_screen.msg+1
+    lda #<$400
+    sta.z current_screen_line
+    lda #>$400
+    sta.z current_screen_line+1
     jsr print_to_screen
     jsr print_newline
     lda #<message1
@@ -330,8 +334,8 @@ RESET: {
 }
 .segment Code
 print_to_screen: {
-    .label msg = 6
-    .label sc = 2
+    .label sc = 6
+    .label msg = 4
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -354,9 +358,9 @@ print_to_screen: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<current_screen_line
+    lda.z current_screen_line
     sta.z sc
-    lda #>current_screen_line
+    lda.z current_screen_line+1
     sta.z sc+1
     ldx #0
   b1:
@@ -380,12 +384,12 @@ print_to_screen: {
     jmp b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(4) str, byte register(X) c, word zeropage(2) num)
+// memset(void* zeropage(8) str, byte register(X) c, word zeropage(6) num)
 memset: {
-    .label end = 2
-    .label dst = 4
-    .label num = 2
-    .label str = 4
+    .label end = 6
+    .label dst = 8
+    .label num = 6
+    .label str = 8
     lda.z num
     bne !+
     lda.z num+1
@@ -418,10 +422,10 @@ memset: {
     jmp b2
 }
 print_newline: {
-    .label newline = 6
-    lda #<current_screen_line+$28
+    .label newline = 2
+    lda #<$400+$28
     sta.z newline
-    lda #>current_screen_line+$28
+    lda #>$400+$28
     sta.z newline+1
   b1:
     lda.z newline+1
