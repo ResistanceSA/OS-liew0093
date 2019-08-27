@@ -23,16 +23,13 @@ void print_to_screen(char* message){
 	for(current_screen_x=0;msg[current_screen_x];current_screen_x++){
 		*sc++=msg[current_screen_x];
 	}
+exit_hypervisor();
 }
 void print_newline(){
-	char* newline = current_screen_line+80;	
-	while(newline<=80){
-	newline++;
-		}
+	current_screen_line = current_screen_line+80;	
 	while(current_screen_x !=0){
 		current_screen_x = 0;
 	}
-current_screen_line = newline;
 }
 
 void exit_hypervisor()
@@ -49,9 +46,9 @@ void RESET(){
 	    *BGCOL=BLACK;
 	  }
 	}*/
-  print_to_screen("liew0093 operating system starting...");
-  print_newline();
- // print_to_screen("testing hardware");
+ print_to_screen("liew0093 operating system starting...");
+ print_newline();
+ print_to_screen("testing hardware");
 
 
 
