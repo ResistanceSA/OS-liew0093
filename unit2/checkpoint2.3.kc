@@ -6,12 +6,13 @@ const char* SCREEN = 0x0400;
 const char* BGCOL = 0xd021;
 const char* COLS = 0xd800;
 const char BLACK = 0;
-const char BLUE = 6;
 const char WHITE = 1;
 
 char[] MESSAGE = "checkpoint 2.3 liew0093";
 
-void main(){const char* Null = Null;};
+void main(){
+}
+
 
 void exit_hypervisor()
 {
@@ -19,71 +20,72 @@ void exit_hypervisor()
 	*(unsigned char *)$D67F = $01;
 }
 
+void SYSCALL00(){exit_hypervisor();}
+void SYSCALL01(){exit_hypervisor();}
+void SYSCALL02(){exit_hypervisor();}
+void SYSCALL03(){exit_hypervisor();}
+void SYSCALL04(){exit_hypervisor();}
+void SYSCALL05(){exit_hypervisor();}
+void SYSCALL06(){exit_hypervisor();}
+void SYSCALL07(){exit_hypervisor();}
+void SYSCALL08(){exit_hypervisor();}
+void SYSCALL09(){exit_hypervisor();}
+void SYSCALL0A(){exit_hypervisor();}
+void SYSCALL0B(){exit_hypervisor();}
+void SYSCALL0C(){exit_hypervisor();}
+void SYSCALL0D(){exit_hypervisor();}
+void SYSCALL0E(){exit_hypervisor();}
+void SYSCALL0F(){exit_hypervisor();}
+void SYSCALL10(){exit_hypervisor();}
+void SECURENTR(){exit_hypervisor();}
+void SECUREXIT(){exit_hypervisor();}
+void SYSCALL13(){exit_hypervisor();}
+void SYSCALL14(){exit_hypervisor();}
+void SYSCALL15(){exit_hypervisor();}
+void SYSCALL16(){exit_hypervisor();}
+void SYSCALL17(){exit_hypervisor();}
+void SYSCALL18(){exit_hypervisor();}
+void SYSCALL19(){exit_hypervisor();}
+void SYSCALL1A(){exit_hypervisor();}
+void SYSCALL1B(){exit_hypervisor();}
+void SYSCALL1C(){exit_hypervisor();}
+void SYSCALL1D(){exit_hypervisor();}
+void SYSCALL1E(){exit_hypervisor();}
+void SYSCALL1F(){exit_hypervisor();}
+void SYSCALL20(){exit_hypervisor();}
+void SYSCALL21(){exit_hypervisor();}
+void SYSCALL22(){exit_hypervisor();}
+void SYSCALL23(){exit_hypervisor();}
+void SYSCALL24(){exit_hypervisor();}
+void SYSCALL25(){exit_hypervisor();}
+void SYSCALL26(){exit_hypervisor();}
+void SYSCALL27(){exit_hypervisor();}
+void SYSCALL28(){exit_hypervisor();}
+void SYSCALL29(){exit_hypervisor();}
+void SYSCALL2A(){exit_hypervisor();}
+void SYSCALL2B(){exit_hypervisor();}
+void SYSCALL2C(){exit_hypervisor();}
+void SYSCALL2D(){exit_hypervisor();}
+void SYSCALL2E(){exit_hypervisor();}
+void SYSCALL2F(){exit_hypervisor();}
+void SYSCALL30(){exit_hypervisor();}
+void SYSCALL31(){exit_hypervisor();}
+void SYSCALL32(){exit_hypervisor();}
+void SYSCALL33(){exit_hypervisor();}
+void SYSCALL34(){exit_hypervisor();}
+void SYSCALL35(){exit_hypervisor();}
+void SYSCALL36(){exit_hypervisor();}
+void SYSCALL37(){exit_hypervisor();}
+void SYSCALL38(){exit_hypervisor();}
+void SYSCALL39(){exit_hypervisor();}
+void SYSCALL3A(){exit_hypervisor();}
+void SYSCALL3B(){exit_hypervisor();}
+void SYSCALL3C(){exit_hypervisor();}
+void SYSCALL3D(){exit_hypervisor();}
+void SYSCALL3E(){exit_hypervisor();}
+void SYSCALL3F(){exit_hypervisor();}
 
-void SYSCALL00(){ *(SCREEN+79)= ')';}
-void SYSCALL01(){ *(SCREEN+79)= ')';}
-void SYSCALL02(){ *(SCREEN+79)= ')';}
-void SYSCALL03(){ *(SCREEN+79)= ')';}
-void SYSCALL04(){ *(SCREEN+79)= ')';}
-void SYSCALL05(){ *(SCREEN+79)= ')';}
-void SYSCALL06(){ *(SCREEN+79)= ')';}
-void SYSCALL07(){ *(SCREEN+79)= ')';}
-void SYSCALL08(){ *(SCREEN+79)= ')';}
-void SYSCALL09(){ *(SCREEN+79)= ')';}
-void SYSCALL0A(){ *(SCREEN+79)= ')';}
-void SYSCALL0B(){ *(SCREEN+79)= ')';}
-void SYSCALL0C(){ *(SCREEN+79)= ')';}
-void SYSCALL0D(){ *(SCREEN+79)= ')';}
-void SYSCALL0E(){ *(SCREEN+79)= ')';}
-void SYSCALL0F(){ *(SCREEN+79)= ')';}
-void SYSCALL10(){ *(SCREEN+79)= ')';}
-void SECURENTR(){ *(SCREEN+79)= ')';}
-void SECUREXIT(){ *(SCREEN+79)= ')';}
-void SYSCALL13(){ *(SCREEN+79)= ')';}
-void SYSCALL14(){ *(SCREEN+79)= ')';}
-void SYSCALL15(){ *(SCREEN+79)= ')';}
-void SYSCALL16(){ *(SCREEN+79)= ')';}
-void SYSCALL17(){ *(SCREEN+79)= ')';}
-void SYSCALL18(){ *(SCREEN+79)= ')';}
-void SYSCALL19(){ *(SCREEN+79)= ')';}
-void SYSCALL1A(){ *(SCREEN+79)= ')';}
-void SYSCALL1B(){ *(SCREEN+79)= ')';}
-void SYSCALL1C(){ *(SCREEN+79)= ')';}
-void SYSCALL1D(){ *(SCREEN+79)= ')';}
-void SYSCALL1E(){ *(SCREEN+79)= ')';}
-void SYSCALL1F(){ *(SCREEN+79)= ')';}
-void SYSCALL20(){ *(SCREEN+79)= ')';}
-void SYSCALL21(){ *(SCREEN+79)= ')';}
-void SYSCALL22(){ *(SCREEN+79)= ')';}
-void SYSCALL23(){ *(SCREEN+79)= ')';}
-void SYSCALL24(){ *(SCREEN+79)= ')';}
-void SYSCALL25(){ *(SCREEN+79)= ')';}
-void SYSCALL26(){ *(SCREEN+79)= ')';}
-void SYSCALL27(){ *(SCREEN+79)= ')';}
-void SYSCALL28(){ *(SCREEN+79)= ')';}
-void SYSCALL29(){ *(SCREEN+79)= ')';}
-void SYSCALL2A(){ *(SCREEN+79)= ')';}
-void SYSCALL2B(){ *(SCREEN+79)= ')';}
-void SYSCALL2C(){ *(SCREEN+79)= ')';}
-void SYSCALL2D(){ *(SCREEN+79)= ')';}
-void SYSCALL2E(){ *(SCREEN+79)= ')';}
-void SYSCALL2F(){ *(SCREEN+79)= ')';}
-void SYSCALL30(){ *(SCREEN+79)= ')';}
-void SYSCALL31(){ *(SCREEN+79)= ')';}
-void SYSCALL32(){ *(SCREEN+79)= ')';}
-void SYSCALL33(){ *(SCREEN+79)= ')';}
-void SYSCALL34(){ *(SCREEN+79)= ')';}
-void SYSCALL35(){ *(SCREEN+79)= ')';}
-void SYSCALL36(){ *(SCREEN+79)= ')';}
-void SYSCALL37(){ *(SCREEN+79)= ')';}
-void SYSCALL38(){ *(SCREEN+79)= ')';}
-void SYSCALL39(){ *(SCREEN+79)= ')';}
-void SYSCALL3A(){ *(SCREEN+79)= ')';}
-void SYSCALL3B(){ *(SCREEN+79)= ')';}
-void SYSCALL3C(){ *(SCREEN+79)= ')';}
-void SYSCALL3D(){ *(SCREEN+79)= ')';}
-void SYSCALL3E(){ *(SCREEN+79)= ')';}
-void SYSCALL3F(){ *(SCREEN+79)= ')';}
+
 void RESET(){
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
@@ -97,19 +99,19 @@ void RESET(){
 	  if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
 	  } else {
-	    *BGCOL=BLUE;
+	    *BGCOL=BLACK;
 	  }
 	}
 }
+void PAGFAULT(){exit_hypervisor();}
+void RESTORKEY(){exit_hypervisor();}
+void ALTTABKEY(){exit_hypervisor();}
+void VF011RD(){exit_hypervisor();}
+void VF011WR(){exit_hypervisor();}
+void undefined_trap(){exit_hypervisor();}
+void CPUKIL(){exit_hypervisor();}
 
-void PAGFAULT(){ *(SCREEN+79)= ')';}
-void RESTORKEY(){ *(SCREEN+79)= ')';}
-void ALTTABKEY(){ *(SCREEN+79)= ')';}
-void VF011RD(){ *(SCREEN+79)= ')';}
-void VF011WR(){ *(SCREEN+79)= ')';}
-void RESERVED(){ *(SCREEN+79)= ')';}
-void CPUKIL(){ *(SCREEN+79)= ')';}
-void undefined_trap(){ *(SCREEN+79)= ')';}
+
  
 #pragma data_seg(Syscall)
 struct Syscall{
@@ -184,15 +186,14 @@ export struct Syscall[]SYSCALLS = {
  {JMP, &SYSCALL3C, NOP},
  {JMP, &SYSCALL3D, NOP},
  {JMP, &SYSCALL3E, NOP},
- {JMP, &SYSCALL3F, NOP},
-exit_hypervisor()
+ {JMP, &SYSCALL3F, NOP}
 
 };
 
-export align(0x100) struct Syscall[] TRAPS ={
+export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &RESET, NOP},
  {JMP, &PAGFAULT, NOP},
- {JMP, &RESTORKEY, NOP},
+ {JMP, &RESTORKEY, NOP}, 
  {JMP, &ALTTABKEY, NOP},
  {JMP, &VF011RD, NOP},
  {JMP, &VF011WR, NOP},
@@ -209,6 +210,7 @@ export align(0x100) struct Syscall[] TRAPS ={
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},//20
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
@@ -228,6 +230,7 @@ export align(0x100) struct Syscall[] TRAPS ={
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP}, //40
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
@@ -235,9 +238,5 @@ export align(0x100) struct Syscall[] TRAPS ={
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
- {JMP, &undefined_trap, NOP},
- {JMP, &undefined_trap, NOP},
- {JMP, &undefined_trap, NOP},
- {JMP, &CPUKIL, NOP},
-exit_hypervisor()
+ {JMP, &CPUKIL, NOP}
 };
