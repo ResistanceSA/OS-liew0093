@@ -318,17 +318,9 @@ RESET: {
     sta.z current_screen_line+1
     jsr print_to_screen
     jsr print_newline
-    jsr exit_hypervisor
-    rts
-  .segment Data
-    message: .text "liew0093 operating system starting..."
-    .byte 0
-}
-.segment Code
-print_newline: {
-    lda #<message
+    lda #<message1
     sta.z print_to_screen.msg
-    lda #>message
+    lda #>message1
     sta.z print_to_screen.msg+1
     lda #<$400+$78
     sta.z current_screen_line
@@ -338,7 +330,9 @@ print_newline: {
     jsr exit_hypervisor
     rts
   .segment Data
-    message: .text "testing hardware"
+    message: .text "liew0093 operating system starting..."
+    .byte 0
+    message1: .text "testing hardware"
     .byte 0
 }
 .segment Code
@@ -385,7 +379,6 @@ print_to_screen: {
     bne !+
     inc.z sc+1
   !:
-    jsr exit_hypervisor
     jmp b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
@@ -425,6 +418,9 @@ memset: {
     inc.z dst+1
   !:
     jmp b2
+}
+print_newline: {
+    rts
 }
 .segment Syscall
 SYSCALLS:
