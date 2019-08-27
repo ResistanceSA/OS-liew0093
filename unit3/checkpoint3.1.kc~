@@ -19,13 +19,13 @@ void print_to_screen(char* message){
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	char* sc = current_screen_line;
-	char* msg= message;
-	for(current_screen_x=0;*msg;current_screen_x++){
-		*sc++=*msg++;
+	char[] msg= message;
+	for(current_screen_x=0;msg[current_screen_x];current_screen_x++){
+		*sc++=msg[current_screen_x];
 	}
 }
 void print_newline(){
-current_screen_line = current_screen_line+230;
+current_screen_line = current_screen_line+40;
 current_screen_x = 0;
 
 }

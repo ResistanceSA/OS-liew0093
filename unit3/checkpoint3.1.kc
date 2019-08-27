@@ -25,9 +25,13 @@ void print_to_screen(char* message){
 	}
 }
 void print_newline(){
-current_screen_line = current_screen_line+40;
-current_screen_x = 0;
-
+	char* newline = current_screen_line+40;	
+	while(newline<=40){
+	newline++;
+		}
+	while(current_screen_x !=0){
+		current_screen_x = 0;
+	}
 }
 
 void exit_hypervisor()

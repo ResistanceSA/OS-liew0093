@@ -10,9 +10,9 @@
   .label SCREEN = $400
   .label COLS = $d800
   .const WHITE = 1
+  .label current_screen_line = $400
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 2
 .segment Code
 main: {
     jsr exit_hypervisor
@@ -313,20 +313,12 @@ RESET: {
     sta.z print_to_screen.msg
     lda #>message
     sta.z print_to_screen.msg+1
-    lda #<$400
-    sta.z current_screen_line
-    lda #>$400
-    sta.z current_screen_line+1
     jsr print_to_screen
     jsr print_newline
     lda #<message1
     sta.z print_to_screen.msg
     lda #>message1
     sta.z print_to_screen.msg+1
-    lda #<$400+$28
-    sta.z current_screen_line
-    lda #>$400+$28
-    sta.z current_screen_line+1
     jsr print_to_screen
     jsr exit_hypervisor
     rts
@@ -338,8 +330,8 @@ RESET: {
 }
 .segment Code
 print_to_screen: {
-    .label sc = 6
-    .label msg = 4
+    .label msg = 6
+    .label sc = 2
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -362,9 +354,9 @@ print_to_screen: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda.z current_screen_line
+    lda #<current_screen_line
     sta.z sc
-    lda.z current_screen_line+1
+    lda #>current_screen_line
     sta.z sc+1
     ldx #0
   b1:
@@ -388,12 +380,12 @@ print_to_screen: {
     jmp b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(8) str, byte register(X) c, word zeropage(6) num)
+// memset(void* zeropage(4) str, byte register(X) c, word zeropage(2) num)
 memset: {
-    .label end = 6
-    .label dst = 8
-    .label num = 6
-    .label str = 8
+    .label end = 2
+    .label dst = 4
+    .label num = 2
+    .label str = 4
     lda.z num
     bne !+
     lda.z num+1
@@ -426,7 +418,33 @@ memset: {
     jmp b2
 }
 print_newline: {
+    .label newline = 6
+    lda #<current_screen_line+$28
+    sta.z newline
+    lda #>current_screen_line+$28
+    sta.z newline+1
+  b1:
+    lda.z newline+1
+    cmp #>$28
+    bne !+
+    lda.z newline
+    cmp #<$28
+  !:
+    bcc b2
+    beq b2
+    jmp b3
+  b4:
+    ldx #0
+  b3:
+    cpx #0
+    bne b4
     rts
+  b2:
+    inc.z newline
+    bne !+
+    inc.z newline+1
+  !:
+    jmp b1
 }
 .segment Syscall
 SYSCALLS:
