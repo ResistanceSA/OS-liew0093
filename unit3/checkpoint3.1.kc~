@@ -22,8 +22,8 @@ void print_to_screen(byte* at, byte* msg){
 	}
 }
 void print_newline(){
+current_screen_line = current_screen_line+40;
 current_screen_x = 0;
- current_screen_line = current_screen_line+40;
   // advance current_screen_line to next line
   // reset current_screen_x to 0
 }
@@ -45,9 +45,11 @@ void RESET(){
 	    *BGCOL=BLACK;
 	  }    
  */
-  print_to_screen(current_screen_x, "liew0093 operating system starting...");
+byte* msg1 = "liew0093 operating system starting...";
+byte* msg2 = "testing hardware";
+  print_to_screen(current_screen_x, msg1);
   print_newline();
-  print_to_screen(current_screen_x, "testing hardware");
+  print_to_screen(current_screen_x, msg2);
 
 }
 void main(){

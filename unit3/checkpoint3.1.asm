@@ -324,21 +324,6 @@ RESET: {
     jsr print_to_screen
     rts
   .segment Data
-    /*   *VIC_MEMORY = 0x14;
-	memset(SCREEN,' ',40*25);
-	memset(COLS,WHITE,40*25);
-	char* sc = SCREEN+40;
-	char* msg= message;
-	while(*msg){
-	  *sc++=*msg++;
-	}
-	while(true){
-	  if(*RASTER==54 || *RASTER==66){
-	    *BGCOL = WHITE;
-	  } else {
-	    *BGCOL=BLACK;
-	  }    
- */
     msg1: .text "liew0093 operating system starting..."
     .byte 0
     msg2: .text "testing hardware"
