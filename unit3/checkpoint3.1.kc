@@ -25,7 +25,7 @@ void print_to_screen(char* message){
 	}
 }
 void print_newline(){
-current_screen_line = current_screen_line+120;
+current_screen_line = current_screen_line+230;
 current_screen_x = 0;
 
 }

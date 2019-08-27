@@ -46,7 +46,7 @@ void RESET(){
 	}*/
   print_to_screen("liew0093 operating system starting...");
   print_newline();
-  print_to_screen("testing hardware");
+ // print_to_screen("testing hardware");
 
 exit_hypervisor();
 
