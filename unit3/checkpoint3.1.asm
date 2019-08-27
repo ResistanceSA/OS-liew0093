@@ -6,13 +6,8 @@
 .segmentdef Stack [min=$be00, max=$beff, fill]
 .segmentdef Zeropage [min=$bf00, max=$bfff, fill]
 
-  .label VIC_MEMORY = $d018
-  .label SCREEN = $400
-  .label COLS = $d800
-  .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 2
 .segment Code
 main: {
     jsr exit_hypervisor
@@ -309,133 +304,11 @@ SYSCALL00: {
     rts
 }
 RESET: {
-    lda #<message
-    sta.z print_to_screen.msg
-    lda #>message
-    sta.z print_to_screen.msg+1
-    ldx #0
-    lda #<$400
-    sta.z current_screen_line
-    lda #>$400
-    sta.z current_screen_line+1
-    jsr print_to_screen
-    lda #<message1
-    sta.z print_to_screen.msg
-    lda #>message1
-    sta.z print_to_screen.msg+1
-    jsr print_to_screen
+    jsr print_newline
     jsr exit_hypervisor
     rts
-  .segment Data
-    message: .text "liew0093 operating system starting..."
-    .byte 0
-    message1: .text "testing hardware"
-    .byte 0
-}
-.segment Code
-print_to_screen: {
-    .label sc = 6
-    .label msg = 4
-    jsr print_newline
-    lda #$14
-    sta VIC_MEMORY
-    ldx #' '
-    lda #<SCREEN
-    sta.z memset.str
-    lda #>SCREEN
-    sta.z memset.str+1
-    lda #<$28*$19
-    sta.z memset.num
-    lda #>$28*$19
-    sta.z memset.num+1
-    jsr memset
-    ldx #WHITE
-    lda #<COLS
-    sta.z memset.str
-    lda #>COLS
-    sta.z memset.str+1
-    lda #<$28*$19
-    sta.z memset.num
-    lda #>$28*$19
-    sta.z memset.num+1
-    jsr memset
-    lda.z current_screen_line
-    sta.z sc
-    lda.z current_screen_line+1
-    sta.z sc+1
-    ldx #0
-  b1:
-    txa
-    tay
-    lda (msg),y
-    cmp #0
-    bne b2
-    rts
-  b2:
-    txa
-    tay
-    lda (msg),y
-    ldy #0
-    sta (sc),y
-    inc.z sc
-    bne !+
-    inc.z sc+1
-  !:
-    inx
-    jmp b1
-}
-// Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(8) str, byte register(X) c, word zeropage(6) num)
-memset: {
-    .label end = 6
-    .label dst = 8
-    .label num = 6
-    .label str = 8
-    lda.z num
-    bne !+
-    lda.z num+1
-    beq breturn
-  !:
-    lda.z end
-    clc
-    adc.z str
-    sta.z end
-    lda.z end+1
-    adc.z str+1
-    sta.z end+1
-  b2:
-    lda.z dst+1
-    cmp.z end+1
-    bne b3
-    lda.z dst
-    cmp.z end
-    bne b3
-  breturn:
-    rts
-  b3:
-    txa
-    ldy #0
-    sta (dst),y
-    inc.z dst
-    bne !+
-    inc.z dst+1
-  !:
-    jmp b2
 }
 print_newline: {
-    lda #$50
-    clc
-    adc.z current_screen_line
-    sta.z current_screen_line
-    bcc !+
-    inc.z current_screen_line+1
-  !:
-    jmp b1
-  b2:
-    ldx #0
-  b1:
-    cpx #0
-    bne b2
     rts
 }
 .segment Syscall
