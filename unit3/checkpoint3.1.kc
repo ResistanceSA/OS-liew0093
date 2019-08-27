@@ -30,6 +30,11 @@ current_screen_x = 0;
 
 
 void RESET(){
+byte* msg1 = "liew0093 operating system starting...";
+byte* msg2 = "testing hardware";
+  print_to_screen(current_screen_x, msg1);
+  print_newline();
+  print_to_screen(current_screen_x, msg2);
   /*   *VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
@@ -45,11 +50,6 @@ void RESET(){
 	    *BGCOL=BLACK;
 	  }    
  */
-byte* msg1 = "liew0093 operating system starting...";
-byte* msg2 = "testing hardware";
-  print_to_screen(current_screen_x, msg1);
-  print_newline();
-  print_to_screen(current_screen_x, msg2);
 
 }
 void main(){
