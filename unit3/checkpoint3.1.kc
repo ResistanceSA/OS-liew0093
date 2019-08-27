@@ -21,12 +21,14 @@ void print_to_screen(char* message){
 	char[] msg= message;
 	while(*msg){
 		*sc ++ = msg[current_screen_x];
+exit_hypervisor();
 	}
 }
 void print_newline(){
 current_screen_line = current_screen_line+120;
 current_screen_x = 0;
 print_to_screen("testing hardware");
+exit_hypervisor();
 }
 
 void exit_hypervisor()

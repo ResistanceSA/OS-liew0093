@@ -335,6 +335,7 @@ print_newline: {
     lda #>$400+$78
     sta.z current_screen_line+1
     jsr print_to_screen
+    jsr exit_hypervisor
     rts
   .segment Data
     message: .text "testing hardware"
@@ -384,6 +385,7 @@ print_to_screen: {
     bne !+
     inc.z sc+1
   !:
+    jsr exit_hypervisor
     jmp b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.

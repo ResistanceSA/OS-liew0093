@@ -19,14 +19,12 @@ void print_to_screen(char* message){
 	memset(COLS,WHITE,40*25);
 	char* sc = current_screen_line;
 	char[] msg= message;
-	for(current_screen_x:0..255){
-		if(msg[current_screen_x]==0) break;
-		if(msg[current_screen_x]==' ') continue;
+	while(*msg){
 		*sc ++ = msg[current_screen_x];
 	}
 }
 void print_newline(){
-current_screen_line = current_screen_line+40;
+current_screen_line = current_screen_line+120;
 current_screen_x = 0;
 print_to_screen("testing hardware");
 }
