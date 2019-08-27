@@ -20,8 +20,8 @@ void print_to_screen(char* message){
 	memset(COLS,WHITE,40*25);
 	char* sc = current_screen_line;
 	char* msg= message;
-	while(*msg){
-	*sc ++ = *msg++;
+	for(current_screen_x=0;*msg;current_screen_x++){
+		*sc++=*msg++;
 	}
 }
 void print_newline(){
@@ -46,7 +46,7 @@ void RESET(){
 	}*/
   print_to_screen("liew0093 operating system starting...");
   print_newline();
- print_to_screen("testing hardware");
+  print_to_screen("testing hardware");
 
 exit_hypervisor();
 

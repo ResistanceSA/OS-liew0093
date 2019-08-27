@@ -310,9 +310,9 @@ SYSCALL00: {
 }
 RESET: {
     lda #<message
-    sta.z print_to_screen.message
+    sta.z print_to_screen.msg
     lda #>message
-    sta.z print_to_screen.message+1
+    sta.z print_to_screen.msg+1
     lda #<$400
     sta.z current_screen_line
     lda #>$400
@@ -320,12 +320,12 @@ RESET: {
     jsr print_to_screen
     jsr print_newline
     lda #<message1
-    sta.z print_to_screen.message
+    sta.z print_to_screen.msg
     lda #>message1
-    sta.z print_to_screen.message+1
-    lda #<$400+$e6
+    sta.z print_to_screen.msg+1
+    lda #<$400+$28
     sta.z current_screen_line
-    lda #>$400+$e6
+    lda #>$400+$28
     sta.z current_screen_line+1
     jsr print_to_screen
     jsr exit_hypervisor
@@ -337,11 +337,9 @@ RESET: {
     .byte 0
 }
 .segment Code
-// print_to_screen(byte* zeropage(4) message)
 print_to_screen: {
     .label sc = 6
     .label msg = 4
-    .label message = 4
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -368,24 +366,25 @@ print_to_screen: {
     sta.z sc
     lda.z current_screen_line+1
     sta.z sc+1
+    ldx #0
   b1:
-    ldy #0
+    txa
+    tay
     lda (msg),y
     cmp #0
     bne b2
     rts
   b2:
-    ldy #0
+    txa
+    tay
     lda (msg),y
+    ldy #0
     sta (sc),y
     inc.z sc
     bne !+
     inc.z sc+1
   !:
-    inc.z msg
-    bne !+
-    inc.z msg+1
-  !:
+    inx
     jmp b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
