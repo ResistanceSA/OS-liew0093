@@ -28,6 +28,11 @@ current_screen_x = 0;
   // reset current_screen_x to 0
 }
 
+void exit_hypervisor()
+{
+	//Trigger exit from Hypervisor mode
+	*(unsigned char *)$D67F = $01;
+}
 
 void RESET(){
 byte* msg1 = "liew0093 operating system starting...";
@@ -50,17 +55,13 @@ byte* msg2 = "testing hardware";
 	    *BGCOL=BLACK;
 	  }    
  */
-
+exit_hypervisor();
 }
 void main(){
 }
 
 
-void exit_hypervisor()
-{
-	//Trigger exit from Hypervisor mode
-	*(unsigned char *)$D67F = $01;
-}
+
 
 void SYSCALL00(){exit_hypervisor();}
 void SYSCALL01(){exit_hypervisor();}

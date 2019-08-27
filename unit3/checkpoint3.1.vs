@@ -10,9 +10,9 @@ al C:824f .SYSCALL34
 al C:824b .SYSCALL35
 al C:8200 .main
 al C:8323 .RESET
-al C:8352 .b1
+al C:8355 .b1
 al C:8233 .SYSCALL3B
-al C:835b .b2
+al C:835e .b2
 al C:822f .SYSCALL3C
 al C:8237 .SYSCALL3A
 al C:8223 .SYSCALL3F
@@ -29,7 +29,7 @@ al C:8293 .SYSCALL23
 al C:828f .SYSCALL24
 al C:82db .SECURENTR
 al C:82a3 .SYSCALL1F
-al C:834d .print_to_screen
+al C:8350 .print_to_screen
 al C:821b .RESTORKEY
 al C:8277 .SYSCALL2A
 al C:8273 .SYSCALL2B
@@ -62,10 +62,10 @@ al C:82bf .SYSCALL18
 al C:82bb .SYSCALL19
 al C:82c7 .SYSCALL16
 al C:82c3 .SYSCALL17
-al C:8369 .print_newline
+al C:836c .print_newline
 al C:831f .SYSCALL00
-al C:8390 .msg2
-al C:836a .msg1
+al C:8393 .msg2
+al C:836d .msg1
 al C:8313 .SYSCALL03
 al C:830f .SYSCALL04
 al C:831b .SYSCALL01

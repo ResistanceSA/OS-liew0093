@@ -322,6 +322,7 @@ RESET: {
     lda #>msg2
     sta.z print_to_screen.msg+1
     jsr print_to_screen
+    jsr exit_hypervisor
     rts
   .segment Data
     msg1: .text "liew0093 operating system starting..."
