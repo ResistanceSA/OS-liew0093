@@ -15,8 +15,8 @@ unsigned char current_screen_x = 0;
 
 void print_to_screen(byte* at, byte* msg){
 	byte j=0;
-	for(byte i =0; msg1[i];i++){
-	  at[j]= msg1[i];
+	for(byte i =0; msg[i];i++){
+	  at[j]= msg[i];
 	  j += 1;
 	  
 	}

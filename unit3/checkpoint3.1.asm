@@ -693,8 +693,5 @@ TRAPS:
   .word undefined_trap
   .byte NOP
   .byte JMP
-  .word undefined_trap
-  .byte NOP
-  .byte JMP
   .word CPUKIL
   .byte NOP
