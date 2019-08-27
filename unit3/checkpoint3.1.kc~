@@ -35,16 +35,11 @@ void exit_hypervisor()
 }
 
 void RESET(){
-byte* msg1 = "liew0093 operating system starting...";
-byte* msg2 = "testing hardware";
-  print_to_screen(current_screen_x, msg1);
-  print_newline();
-  print_to_screen(current_screen_x, msg2);
-  /*   *VIC_MEMORY = 0x14;
+	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	char* sc = SCREEN+40;
-	char* msg= message;
+	char* msg= MESSAGE;
 	while(*msg){
 	  *sc++=*msg++;
 	}
@@ -53,9 +48,15 @@ byte* msg2 = "testing hardware";
 	    *BGCOL = WHITE;
 	  } else {
 	    *BGCOL=BLACK;
-	  }    
- */
+	  }
+	}    
+byte* msg1 = "liew0093 operating system starting...";
+byte* msg2 = "testing hardware";
+  print_to_screen(current_screen_x, msg1);
+  print_newline();
+  print_to_screen(current_screen_x, msg2);
 exit_hypervisor();
+
 }
 void main(){
 }

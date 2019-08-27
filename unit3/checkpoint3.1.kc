@@ -13,9 +13,9 @@ unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
 
-void print_to_screen(byte* at, byte* msg){
-	byte j=0;
-	for(byte i =0; msg[i];i++){
+void print_to_screen(char* at, char* msg){
+	char j=0;
+	for(char i =0; msg[i];i++){
 	  at[j]= msg[i];
 	  j += 1;
 	  
@@ -50,8 +50,8 @@ void RESET(){
 	    *BGCOL=BLACK;
 	  }
 	}    
-byte* msg1 = "liew0093 operating system starting...";
-byte* msg2 = "testing hardware";
+char* msg1 = "liew0093 operating system starting...";
+char* msg2 = "testing hardware";
   print_to_screen(current_screen_x, msg1);
   print_newline();
   print_to_screen(current_screen_x, msg2);
