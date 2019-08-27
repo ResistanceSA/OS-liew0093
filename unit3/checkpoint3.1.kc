@@ -13,17 +13,15 @@ unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
 
-void print_to_screen(char *message){
-	*VIC_MEMORY = 0x14;
-	memset(current_screen_line,' ',40*25);
-	memset(COLS,WHITE,40*25);
-	char* sc = current_screen_line+40;
-	char* msg= message;
-	while(*msg){
-	  *sc++=*msg++;
+void print_to_screen(byte* at, byte* msg){
+	byte j=0;
+	for(byte i =0; msg[i];i++){
+	  at[j]= msg[i];
+	  j += 1;
+	  
 	}
 }
-  void print_newline(){
+void print_newline(){
 current_screen_x = 0;
  current_screen_line = current_screen_line+40;
   // advance current_screen_line to next line
@@ -47,9 +45,9 @@ void RESET(){
 	    *BGCOL=BLACK;
 	  }    
  */
-  print_to_screen("liew0093 operating system starting...");
+  print_to_screen(current_screen_x, "liew0093 operating system starting...");
   print_newline();
-  print_to_screen("testing hardware");
+  print_to_screen(current_screen_x, "testing hardware");
 
 }
 void main(){
@@ -64,7 +62,9 @@ void exit_hypervisor()
 
 void SYSCALL00(){exit_hypervisor();}
 void SYSCALL01(){exit_hypervisor();}
-void SYSCALL02(){exit_hypervisor();}
+void SYSCALL02(){
+exit_hypervisor();
+}
 void SYSCALL03(){exit_hypervisor();}
 void SYSCALL04(){exit_hypervisor();}
 void SYSCALL05(){exit_hypervisor();}
