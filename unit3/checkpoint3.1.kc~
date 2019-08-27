@@ -20,15 +20,13 @@ void print_to_screen(char* message){
 	char* sc = current_screen_line;
 	char[] msg= message;
 	while(*msg){
-		*sc ++ = msg[current_screen_x];
-exit_hypervisor();
+	*sc ++ = msg[current_screen_x];
 	}
 }
 void print_newline(){
 current_screen_line = current_screen_line+120;
 current_screen_x = 0;
-print_to_screen("testing hardware");
-exit_hypervisor();
+
 }
 
 void exit_hypervisor()
@@ -47,6 +45,7 @@ void RESET(){
 	}*/
   print_to_screen("liew0093 operating system starting...");
   print_newline();
+  print_to_screen("testing hardware");
 
 exit_hypervisor();
 

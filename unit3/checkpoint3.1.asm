@@ -420,6 +420,7 @@ memset: {
     jmp b2
 }
 print_newline: {
+    jsr exit_hypervisor
     rts
 }
 .segment Syscall

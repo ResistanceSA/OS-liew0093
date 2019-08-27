@@ -26,6 +26,7 @@ void print_to_screen(char* message){
 void print_newline(){
 current_screen_line = current_screen_line+120;
 current_screen_x = 0;
+exit_hypervisor();
 
 }
 
@@ -58,9 +59,7 @@ void main(){
 
 void SYSCALL00(){exit_hypervisor();}
 void SYSCALL01(){exit_hypervisor();}
-void SYSCALL02(){
-exit_hypervisor();
-}
+void SYSCALL02(){exit_hypervisor();}
 void SYSCALL03(){exit_hypervisor();}
 void SYSCALL04(){exit_hypervisor();}
 void SYSCALL05(){exit_hypervisor();}

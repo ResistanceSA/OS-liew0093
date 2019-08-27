@@ -80,7 +80,7 @@ al C:830f .SYSCALL04
 al C:831b .SYSCALL01
 al C:8317 .SYSCALL02
 al C:d800 .COLS
-al C:83d0 .message
+al C:83d3 .message
 al C:82ef .SYSCALL0C
 al C:82eb .SYSCALL0D
 al C:820b .undefined_trap
@@ -93,4 +93,4 @@ al C:8307 .SYSCALL06
 al C:820f .VF011WR
 al C:82d7 .SECUREXIT
 al C:82fb .SYSCALL09
-al C:83f6 .message1
+al C:83f9 .message1
