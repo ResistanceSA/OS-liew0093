@@ -31,7 +31,6 @@ void test_memory(){
 		mem_end = $7FFF;
 		}
 	}
-}
 print_to_screen("memory found at $");
 print_hex(mem_start);
 print_to_screen(" - $");

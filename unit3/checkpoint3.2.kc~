@@ -17,19 +17,21 @@ void test_memory(){
 	unsigned short value = 0;
 	volatile unsigned short *p = $0800;
 		while(p <=$7FFF){
-			*p = value;
-		if(*p != value){
-		print_to_screen("memory error at $");
-		print_hex((unsigned short)p);
-		print_newline();
-		mem_end = (unsigned short)p-1;
+		*p = value;
+			if(*p != value){
+			print_to_screen("memory error at $");
+			print_hex((unsigned short)p);
+			print_newline();
+			mem_end = (unsigned short)p-1;
 			}
+		
+		value++;
+		if(value !=0){
+		p++;
+		mem_end = $7FFF;
 		}
-	value++;
-	if(value !=0){
-	p++;
-	mem_end = $7FFF;
 	}
+}
 print_to_screen("memory found at $");
 print_hex(mem_start);
 print_to_screen(" - $");
