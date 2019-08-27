@@ -15,7 +15,7 @@ void test_memory(){
 	unsigned short mem_start = $0800;
 	unsigned short mem_end = $0800;
 	unsigned short value = 0;
-	volatile unsigned char *p =$0800;
+	volatile unsigned short *p = $0800;
 		while(p <=$7FFF){
 			*p = value;
 		if(*p != value){
