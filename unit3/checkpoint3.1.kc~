@@ -55,7 +55,7 @@ byte* msg2 = "testing hardware";
 	    *BGCOL=BLACK;
 	  }    
  */
-exit_hypervisor()
+exit_hypervisor();
 }
 void main(){
 }
