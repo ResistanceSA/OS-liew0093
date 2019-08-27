@@ -43,13 +43,13 @@ void RESET(){
 	while(*msg){
 	  *sc++=*msg++;
 	}
-	while(true){
+	/* while(true){
 	  if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
 	  } else {
 	    *BGCOL=BLACK;
 	  }
-	}    
+	}*/
 char* msg1 = "liew0093 operating system starting...";
 char* msg2 = "testing hardware";
   print_to_screen(current_screen_x, msg1);

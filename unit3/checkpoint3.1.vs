@@ -56,6 +56,7 @@ al C:3 .msg__1
 al C:3 .num
 al C:8200 .main
 al C:8323 .RESET
+al C:400 .current_screen_line
 al C:82db .SECURENTR
 al C:83c9 .memset
 al C:821f .PAGFAULT

@@ -9,6 +9,7 @@
   .label SCREEN = $400
   .label COLS = $d800
   .const WHITE = 1
+  .label current_screen_line = $400
   .const current_screen_x = 0
   .const JMP = $4c
   .const NOP = $ea
@@ -331,9 +332,9 @@ RESET: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<SCREEN+$28
+    lda #<current_screen_line+$28
     sta.z sc
-    lda #>SCREEN+$28
+    lda #>current_screen_line+$28
     sta.z sc+1
     lda #<MESSAGE
     sta.z msg
