@@ -49,11 +49,12 @@ void RESET(){
 	    *BGCOL=BLACK;
 	  }
 	}*/
+if(current_screen_x = 0){
   print_to_screen("liew0093 operating system starting...");
   print_newline();
   print_to_screen("testing hardware");
-	print_newline();
-print_to_screen("NOTHING STAYS");
+}
+
 
 exit_hypervisor();
 
