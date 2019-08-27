@@ -26,8 +26,7 @@ void print_to_screen(char* message){
 void print_newline(){
 current_screen_line = current_screen_line+40;
 current_screen_x = 0;
-  // advance current_screen_line to next line
-  // reset current_screen_x to 0
+print_to_screen("testing hardware");
 }
 
 void exit_hypervisor()
@@ -46,7 +45,7 @@ void RESET(){
 	}*/
   print_to_screen("liew0093 operating system starting...");
   print_newline();
-  print_to_screen("testing hardware");
+
 exit_hypervisor();
 
 }
