@@ -317,21 +317,26 @@ RESET: {
     sta.z current_screen_line+1
     jsr print_to_screen
     jsr print_newline
-    lda #<message1
+    jsr exit_hypervisor
+    rts
+  .segment Data
+    message: .text "liew0093 operating system starting..."
+    .byte 0
+}
+.segment Code
+print_newline: {
+    lda #<message
     sta.z print_to_screen.message
-    lda #>message1
+    lda #>message
     sta.z print_to_screen.message+1
     lda #<$400+$28
     sta.z current_screen_line
     lda #>$400+$28
     sta.z current_screen_line+1
     jsr print_to_screen
-    jsr exit_hypervisor
     rts
   .segment Data
-    message: .text "liew0093 operating system starting..."
-    .byte 0
-    message1: .text "testing hardware"
+    message: .text "testing hardware"
     .byte 0
 }
 .segment Code
@@ -422,9 +427,6 @@ memset: {
     inc.z dst+1
   !:
     jmp b2
-}
-print_newline: {
-    rts
 }
 .segment Syscall
 SYSCALLS:
