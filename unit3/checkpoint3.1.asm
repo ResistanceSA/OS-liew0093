@@ -331,15 +331,14 @@ RESET: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    ldx #0
     lda #<$400
     sta.z current_screen_line
     lda #>$400
     sta.z current_screen_line+1
     lda #<message
-    sta.z print_to_screen.msg
+    sta.z print_to_screen.message
     lda #>message
-    sta.z print_to_screen.msg+1
+    sta.z print_to_screen.message+1
     jsr print_to_screen
     jsr print_newline
     lda #<$400+$28
@@ -347,9 +346,9 @@ RESET: {
     lda #>$400+$28
     sta.z current_screen_line+1
     lda #<message1
-    sta.z print_to_screen.msg
+    sta.z print_to_screen.message
     lda #>message1
-    sta.z print_to_screen.msg+1
+    sta.z print_to_screen.message+1
     jsr print_to_screen
     jsr exit_hypervisor
     rts
@@ -360,34 +359,30 @@ RESET: {
     .byte 0
 }
 .segment Code
+// print_to_screen(byte* zeropage(4) message)
 print_to_screen: {
-    .label msg = 4
+    .label message = 4
+    ldx #0
   b1:
     ldy #0
-    lda (msg),y
+    lda (message),y
     cmp #0
     bne b2
     rts
   b2:
     stx.z $ff
     ldy #0
-    lda (msg),y
+    lda (message),y
     ldy.z $ff
     sta (current_screen_line),y
-    inc.z msg
+    inc.z message
     bne !+
-    inc.z msg+1
+    inc.z message+1
   !:
     inx
     jmp b1
 }
 print_newline: {
-    jmp b1
-  b2:
-    ldx #0
-  b1:
-    cpx #0
-    bne b2
     rts
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.

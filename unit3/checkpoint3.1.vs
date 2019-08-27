@@ -1,5 +1,4 @@
 al C:825a .SYSCALL32
-al C:4 .msg
 al C:8256 .SYSCALL33
 al C:8262 .SYSCALL30
 al C:825e .SYSCALL31
@@ -11,14 +10,12 @@ al C:824e .SYSCALL35
 al C:4 .num
 al C:8200 .main
 al C:8326 .RESET
-al C:8384 .b1__0
-al C:83a6 .b1__1
+al C:8384 .b1
 al C:8236 .SYSCALL3B
 al C:838d .b2__0
-al C:83a4 .b2__1
-al C:83c0 .b2__2
+al C:83b7 .b2__1
 al C:8232 .SYSCALL3C
-al C:83cd .b3
+al C:83c4 .b3
 al C:823a .SYSCALL3A
 al C:400 .SCREEN
 al C:8226 .SYSCALL3F
@@ -36,8 +33,8 @@ al C:8296 .SYSCALL23
 al C:8292 .SYSCALL24
 al C:82de .SECURENTR
 al C:82a6 .SYSCALL1F
-al C:8384 .print_to_screen
-al C:83ab .memset
+al C:8382 .print_to_screen
+al C:83a2 .memset
 al C:821e .RESTORKEY
 al C:827a .SYSCALL2A
 al C:6 .str
@@ -75,13 +72,14 @@ al C:4 .end
 al C:82c6 .SYSCALL17
 al C:83a1 .print_newline
 al C:8322 .SYSCALL00
-al C:83cc .breturn
+al C:83c3 .breturn
 al C:8316 .SYSCALL03
 al C:8312 .SYSCALL04
 al C:831e .SYSCALL01
 al C:831a .SYSCALL02
 al C:d800 .COLS
-al C:83db .message
+al C:4 .message__0
+al C:83d2 .message__1
 al C:82f2 .SYSCALL0C
 al C:82ee .SYSCALL0D
 al C:820e .undefined_trap
@@ -94,4 +92,4 @@ al C:830a .SYSCALL06
 al C:8212 .VF011WR
 al C:82da .SECUREXIT
 al C:82fe .SYSCALL09
-al C:8401 .message1
+al C:83f8 .message1

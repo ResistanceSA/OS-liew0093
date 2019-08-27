@@ -14,19 +14,16 @@ unsigned char current_screen_x = 0;
 
 
 void print_to_screen(char* message){
-	char* msg = message;
 	char* sc = current_screen_line;
-	while(*msg){
-	current_screen_line[current_screen_x]= *msg;
-	msg++;
+	while(*message){
+	current_screen_line[current_screen_x]= *message;
+	message++;
 	current_screen_x++;
 	}
 }
 void print_newline(){
 	current_screen_line+=40;	
-	while(current_screen_x !=0){
-		current_screen_x = 0;
-	}
+	current_screen_x = 0;
 }
 
 void exit_hypervisor()
