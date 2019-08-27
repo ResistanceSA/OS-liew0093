@@ -6,7 +6,6 @@
 .segmentdef Stack [min=$be00, max=$beff, fill]
 .segmentdef Zeropage [min=$bf00, max=$bfff, fill]
 
-  .const SIZEOF_WORD = 2
   .label VIC_MEMORY = $d018
   .label SCREEN = $400
   .label COLS = $d800
@@ -14,13 +13,15 @@
   .const JMP = $4c
   .const NOP = $ea
   .label current_screen_x = 6
-  .label current_screen_line = 2
-  .label current_screen_line_24 = 4
-  .label current_screen_line_45 = 4
-  .label current_screen_line_46 = 4
-  .label current_screen_line_47 = 4
-  .label current_screen_line_48 = 4
-  .label current_screen_line_49 = 4
+  .label current_screen_line = 9
+  .label current_screen_line_26 = 4
+  .label current_screen_line_50 = 4
+  .label current_screen_line_51 = 4
+  .label current_screen_line_52 = 4
+  .label current_screen_line_53 = 4
+  .label current_screen_line_54 = 4
+  .label current_screen_line_55 = 4
+  .label current_screen_line_56 = 4
 .segment Code
 main: {
     jsr exit_hypervisor
@@ -342,9 +343,9 @@ RESET: {
     lda #0
     sta.z current_screen_x
     lda #<$400
-    sta.z current_screen_line_24
+    sta.z current_screen_line_26
     lda #>$400
-    sta.z current_screen_line_24+1
+    sta.z current_screen_line_26+1
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -356,9 +357,9 @@ RESET: {
     sta.z current_screen_line+1
     jsr print_newline
     lda.z current_screen_line
-    sta.z current_screen_line_45
+    sta.z current_screen_line_50
     lda.z current_screen_line+1
-    sta.z current_screen_line_45+1
+    sta.z current_screen_line_50+1
     lda #0
     sta.z current_screen_x
     lda #<message1
@@ -378,36 +379,28 @@ RESET: {
 .segment Code
 test_memory: {
     .const mem_start = $800
-    .const value = 0
-    .const mem_end = $7fff
-    .label p = 9
+    .label p = 2
+    .label mem_end = $b
     lda #<$800
     sta.z p
     lda #>$800
     sta.z p+1
-  b2:
+  b1:
     lda.z p+1
-    cmp #>$7fff
+    cmp #>$8000
+    bcc b2
     bne !+
     lda.z p
-    cmp #<$7fff
-  !:
-    bcc b3
-    beq b3
-    lda #SIZEOF_WORD
-    clc
-    adc.z p
-    sta.z p
-    bcc !+
-    inc.z p+1
+    cmp #<$8000
+    bcc b2
   !:
     lda.z current_screen_line
-    sta.z current_screen_line_47
+    sta.z current_screen_line_55
     lda.z current_screen_line+1
-    sta.z current_screen_line_47+1
-    lda #<message1
+    sta.z current_screen_line_55+1
+    lda #<message
     sta.z print_to_screen.message
-    lda #>message1
+    lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
     lda #<mem_start
@@ -416,43 +409,34 @@ test_memory: {
     sta.z print_hex.value+1
     jsr print_hex
     lda.z current_screen_line
-    sta.z current_screen_line_48
+    sta.z current_screen_line_52
     lda.z current_screen_line+1
-    sta.z current_screen_line_48+1
-    lda #<message2
+    sta.z current_screen_line_52+1
+    lda #<message1
     sta.z print_to_screen.message
-    lda #>message2
+    lda #>message1
     sta.z print_to_screen.message+1
     jsr print_to_screen
-    lda #<mem_end
+    lda #<$7fff
     sta.z print_hex.value
-    lda #>mem_end
+    lda #>$7fff
     sta.z print_hex.value+1
     jsr print_hex
     rts
+  b2:
+    lda #0
   b3:
     ldy #0
-    lda #<value
     sta (p),y
-    iny
-    lda #>value
-    sta (p),y
-    ldy #0
-    lda (p),y
-    cmp #<value
-    bne !+
-    iny
-    lda (p),y
-    cmp #>value
-    beq b2
-  !:
+    cmp (p),y
+    beq b4
     lda.z current_screen_line
-    sta.z current_screen_line_49
+    sta.z current_screen_line_56
     lda.z current_screen_line+1
-    sta.z current_screen_line_49+1
-    lda #<message
+    sta.z current_screen_line_56+1
+    lda #<message2
     sta.z print_to_screen.message
-    lda #>message
+    lda #>message2
     sta.z print_to_screen.message+1
     jsr print_to_screen
     lda.z p
@@ -461,32 +445,67 @@ test_memory: {
     sta.z print_hex.value+1
     jsr print_hex
     jsr print_newline
+    lda.z p
+    sec
+    sbc #1
+    sta.z mem_end
+    lda.z p+1
+    sbc #0
+    sta.z mem_end+1
+    lda.z current_screen_line
+    sta.z current_screen_line_53
+    lda.z current_screen_line+1
+    sta.z current_screen_line_53+1
     lda #0
     sta.z current_screen_x
-    jmp b2
+    lda #<message
+    sta.z print_to_screen.message
+    lda #>message
+    sta.z print_to_screen.message+1
+    jsr print_to_screen
+    lda #<mem_start
+    sta.z print_hex.value
+    lda #>mem_start
+    sta.z print_hex.value+1
+    jsr print_hex
+    lda.z current_screen_line
+    sta.z current_screen_line_54
+    lda.z current_screen_line+1
+    sta.z current_screen_line_54+1
+    lda #<message1
+    sta.z print_to_screen.message
+    lda #>message1
+    sta.z print_to_screen.message+1
+    jsr print_to_screen
+    lda.z mem_end
+    sta.z print_hex.value
+    lda.z mem_end+1
+    sta.z print_hex.value+1
+    jsr print_hex
+    rts
+  b4:
+    clc
+    adc #1
+    cmp #0
+    bne b3
+    inc.z p
+    bne !+
+    inc.z p+1
+  !:
+    jmp b1
   .segment Data
-    message: .text "memory error at $"
+    message: .text "memory found at $"
     .byte 0
-    message1: .text "memory found at $"
+    message1: .text " - $"
     .byte 0
-    message2: .text " - $"
+    message2: .text "memory error at $"
     .byte 0
 }
 .segment Code
-print_newline: {
-    lda #$28
-    clc
-    adc.z current_screen_line
-    sta.z current_screen_line
-    bcc !+
-    inc.z current_screen_line+1
-  !:
-    rts
-}
 // print_hex(word zeropage(7) value)
 print_hex: {
-    .label _3 = $b
-    .label _6 = $d
+    .label _3 = $d
+    .label _6 = $f
     .label value = 7
     ldx #0
   b1:
@@ -495,9 +514,9 @@ print_hex: {
     lda #0
     sta hex+4
     lda.z current_screen_line
-    sta.z current_screen_line_46
+    sta.z current_screen_line_51
     lda.z current_screen_line+1
-    sta.z current_screen_line_46+1
+    sta.z current_screen_line_51+1
     lda #<hex
     sta.z print_to_screen.message
     lda #>hex
@@ -577,13 +596,23 @@ print_to_screen: {
     ldy #0
     lda (message),y
     ldy.z current_screen_x
-    sta (current_screen_line_24),y
+    sta (current_screen_line_26),y
     inc.z message
     bne !+
     inc.z message+1
   !:
     inc.z current_screen_x
     jmp b1
+}
+print_newline: {
+    lda #$28
+    clc
+    adc.z current_screen_line
+    sta.z current_screen_line
+    bcc !+
+    inc.z current_screen_line+1
+  !:
+    rts
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
 // memset(void* zeropage($d) str, byte register(X) c, word zeropage($b) num)

@@ -14,28 +14,33 @@ unsigned char current_screen_x = 0;
 void test_memory(){
 	unsigned short mem_start = $0800;
 	unsigned short mem_end = $0800;
-	unsigned short value = 0;
-	volatile unsigned short *p = $0800;
-		while(p <=$7FFF){
-		*p = value;
+	unsigned short value;
+	volatile unsigned char *p = $0800;
+		while(p <$8000){
+			value = 0;
+		do{
+			*p = value;
 			if(*p != value){
-			print_to_screen("memory error at $");
-			print_hex((unsigned short)p);
-			print_newline();
-			mem_end = (unsigned short)p-1;
-			}
-		
+				print_to_screen("memory error at $");
+				print_hex((unsigned short)p);
+				print_newline();
+				mem_end = (unsigned short)p-1;
+
+		print_to_screen("memory found at $");
+		print_hex(mem_start);
+		print_to_screen(" - $");
+		print_hex(mem_end);
+			return;
+			}	
 		value++;
-		if(value !=0){
+		}while(value !=0);
 		p++;
-		mem_end = $7FFF;
 		}
-	}
-}
-print_to_screen("memory found at $");
-print_hex(mem_start);
-print_to_screen(" - $");
-print_hex(mem_end);
+		mem_end = $7FFF;
+	print_to_screen("memory found at $");
+	print_hex(mem_start);
+	print_to_screen(" - $");
+	print_hex(mem_end);
 }
 void print_hex(unsigned short value)
 {
