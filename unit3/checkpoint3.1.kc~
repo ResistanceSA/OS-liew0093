@@ -18,9 +18,11 @@ void print_to_screen(char* message){
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	char* sc = current_screen_line;
-	char* msg= message;
-	while(*message){
-	  *sc++=*message++;  
+	char[] msg= message;
+	for(current_screen_x:0..255){
+		if(msg[current_screen_x]==0) break;
+		if(msg[current_screen_x]==' ') continue;
+		*sc ++ = msg[current_screen_x];
 	}
 }
 void print_newline(){

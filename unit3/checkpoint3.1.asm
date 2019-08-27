@@ -330,9 +330,9 @@ print_newline: {
     sta.z print_to_screen.msg
     lda #>message
     sta.z print_to_screen.msg+1
-    lda #<$400+$28
+    lda #<$400+$78
     sta.z current_screen_line
-    lda #>$400+$28
+    lda #>$400+$78
     sta.z current_screen_line+1
     jsr print_to_screen
     rts
@@ -370,34 +370,20 @@ print_to_screen: {
     sta.z sc
     lda.z current_screen_line+1
     sta.z sc+1
-    ldx #0
   b1:
-    txa
-    tay
+    ldy #0
     lda (msg),y
     cmp #0
     bne b2
-  breturn:
     rts
   b2:
-    txa
-    tay
-    lda (msg),y
-    cmp #' '
-    beq b4
-    txa
-    tay
-    lda (msg),y
     ldy #0
+    lda (msg),y
     sta (sc),y
     inc.z sc
     bne !+
     inc.z sc+1
   !:
-  b4:
-    inx
-    cpx #0
-    beq breturn
     jmp b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
