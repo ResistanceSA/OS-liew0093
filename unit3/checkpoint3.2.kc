@@ -15,11 +15,10 @@ void test_memory(){
 	unsigned short mem_start = $0800;
 	unsigned short mem_end = $0800;
 	unsigned short value = 0;
-	volatile unsigned char *p =$0800;
-
-	for(*p <=$7FFF){
-	*p = value;
-		if(*p!=value){
+	volatile unsigned short *p = $0800;
+		while(p <=$7FFF){
+			*p = value;
+		if(*p != value){
 		print_to_screen("memory error at $");
 		print_hex((unsigned short)p);
 		print_newline();
@@ -32,7 +31,7 @@ void test_memory(){
 	mem_end = $7FFF;
 	}
 print_to_screen("memory found at $");
-print_hex(mem_start)
+print_hex(mem_start);
 print_to_screen(" - $");
 print_hex(mem_end);
 }

@@ -11,8 +11,42 @@ char[] MESSAGE = "liew0093 checkpoint3.1";
 unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
-
-
+void test_memory(){
+	unsigned short mem_start = $0800;
+	unsigned short mem_end = $0800;
+	unsigned short value = 0;
+	volatile unsigned char *p =$0800;
+		while(p <=$7FFF){
+			*p = value;
+		if(*p != value){
+		print_to_screen("memory error at $");
+		print_hex((unsigned short)p);
+		print_newline();
+		mem_end = (unsigned short)p-1;
+			}
+		}
+	value++;
+	if(value !=0){
+	p++;
+	mem_end = $7FFF;
+	}
+print_to_screen("memory found at $");
+print_hex(mem_start);
+print_to_screen(" - $");
+print_hex(mem_end);
+}
+void print_hex(unsigned short value)
+{
+	char[5] hex;
+	unsigned char i;
+	for(i=0;i<4;i++){
+		if(value<0xa000) hex[i]='0'+(char)(value>>12);
+		else hex[i]=(char)(value>>12)-9;
+		value<<=4;
+		}
+	hex[4]=0;
+	print_to_screen(hex);
+	}
 void print_to_screen(char* message){
 	char* sc = current_screen_line;
 	while(*message){
@@ -48,7 +82,7 @@ print_to_screen("liew0093 operating system starting...");
 print_newline();
 print_to_screen("testing hardware");
 
-
+test_memory();
 
 exit_hypervisor();
 
