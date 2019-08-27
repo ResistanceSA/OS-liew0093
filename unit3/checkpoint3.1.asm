@@ -15,9 +15,6 @@
   .label current_screen_line = 2
 .segment Code
 main: {
-    rts
-}
-CPUKIL: {
     jsr exit_hypervisor
     rts
 }
@@ -25,6 +22,10 @@ exit_hypervisor: {
     //Trigger exit from Hypervisor mode
     lda #1
     sta $d67f
+    rts
+}
+CPUKIL: {
+    jsr exit_hypervisor
     rts
 }
 undefined_trap: {
@@ -309,9 +310,9 @@ SYSCALL00: {
 }
 RESET: {
     lda #<message
-    sta.z print_to_screen.msg
+    sta.z print_to_screen.message
     lda #>message
-    sta.z print_to_screen.msg+1
+    sta.z print_to_screen.message+1
     lda #<$400
     sta.z current_screen_line
     lda #>$400
@@ -319,9 +320,9 @@ RESET: {
     jsr print_to_screen
     jsr print_newline
     lda #<message1
-    sta.z print_to_screen.msg
+    sta.z print_to_screen.message
     lda #>message1
-    sta.z print_to_screen.msg+1
+    sta.z print_to_screen.message+1
     lda #<$400+$78
     sta.z current_screen_line
     lda #>$400+$78
@@ -336,9 +337,11 @@ RESET: {
     .byte 0
 }
 .segment Code
+// print_to_screen(byte* zeropage(4) message)
 print_to_screen: {
     .label sc = 6
     .label msg = 4
+    .label message = 4
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -378,6 +381,10 @@ print_to_screen: {
     inc.z sc
     bne !+
     inc.z sc+1
+  !:
+    inc.z msg
+    bne !+
+    inc.z msg+1
   !:
     jmp b1
 }
@@ -420,7 +427,6 @@ memset: {
     jmp b2
 }
 print_newline: {
-    jsr exit_hypervisor
     rts
 }
 .segment Syscall
