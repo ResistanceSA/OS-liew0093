@@ -261,6 +261,6 @@ export align(0x100) struct Syscall[] TRAPS= {
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
  {JMP, &undefined_trap, NOP},
-// {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
  {JMP, &CPUKIL, NOP}
 };
