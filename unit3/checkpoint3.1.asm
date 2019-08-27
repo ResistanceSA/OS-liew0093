@@ -10,10 +10,9 @@
   .label SCREEN = $400
   .label COLS = $d800
   .const WHITE = 1
+  .label current_screen_line = $400
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 4
-  .label current_screen_line_11 = 2
 .segment Code
 main: {
     jsr exit_hypervisor
@@ -310,48 +309,46 @@ SYSCALL00: {
     rts
 }
 RESET: {
-    lda #<$400
-    sta.z current_screen_line_11
-    lda #>$400
-    sta.z current_screen_line_11+1
-  /* while(true){
-	  if(*RASTER==54 || *RASTER==66){
-	    *BGCOL = WHITE;
-	  } else {
-	    *BGCOL=BLACK;
-	  }
-	}*/
-  b2:
-    lda.z current_screen_line_11
-    sta.z current_screen_line
-    lda.z current_screen_line_11+1
-    sta.z current_screen_line+1
-    lda #<message
-    sta.z print_to_screen.msg
-    lda #>message
-    sta.z print_to_screen.msg+1
     jsr print_to_screen
     jsr print_newline
-    lda.z print_newline.newline
-    sta.z current_screen_line
-    lda.z print_newline.newline+1
-    sta.z current_screen_line+1
-    lda #<message1
-    sta.z print_to_screen.msg
-    lda #>message1
-    sta.z print_to_screen.msg+1
-    jsr print_to_screen
-    jmp b2
+    jsr exit_hypervisor
+    rts
   .segment Data
     message: .text "liew0093 operating system starting..."
     .byte 0
-    message1: .text "testing hardware"
-    .byte 0
 }
 .segment Code
+print_newline: {
+    .label newline = 2
+    lda #<current_screen_line+$50
+    sta.z newline
+    lda #>current_screen_line+$50
+    sta.z newline+1
+  b1:
+    lda.z newline+1
+    cmp #>$50
+    bne !+
+    lda.z newline
+    cmp #<$50
+  !:
+    bcc b2
+    beq b2
+    jmp b3
+  b4:
+    ldx #0
+  b3:
+    cpx #0
+    bne b4
+    rts
+  b2:
+    inc.z newline
+    bne !+
+    inc.z newline+1
+  !:
+    jmp b1
+}
 print_to_screen: {
-    .label sc = 8
-    .label msg = 6
+    .label sc = 2
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -374,22 +371,20 @@ print_to_screen: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda.z current_screen_line
+    lda #<current_screen_line
     sta.z sc
-    lda.z current_screen_line+1
+    lda #>current_screen_line
     sta.z sc+1
     ldx #0
   b1:
     txa
     tay
-    lda (msg),y
-    cmp #0
+    lda #0
+    cmp RESET.message,y
     bne b2
     rts
   b2:
-    txa
-    tay
-    lda (msg),y
+    lda RESET.message,x
     ldy #0
     sta (sc),y
     inc.z sc
@@ -400,12 +395,12 @@ print_to_screen: {
     jmp b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($a) str, byte register(X) c, word zeropage(8) num)
+// memset(void* zeropage(4) str, byte register(X) c, word zeropage(2) num)
 memset: {
-    .label end = 8
-    .label dst = $a
-    .label num = 8
-    .label str = $a
+    .label end = 2
+    .label dst = 4
+    .label num = 2
+    .label str = 4
     lda.z num
     bne !+
     lda.z num+1
@@ -436,38 +431,6 @@ memset: {
     inc.z dst+1
   !:
     jmp b2
-}
-print_newline: {
-    .label newline = 2
-    lda #$50
-    clc
-    adc.z newline
-    sta.z newline
-    bcc !+
-    inc.z newline+1
-  !:
-  b1:
-    lda.z newline+1
-    cmp #>$50
-    bne !+
-    lda.z newline
-    cmp #<$50
-  !:
-    bcc b2
-    beq b2
-    jmp b3
-  b4:
-    ldx #0
-  b3:
-    cpx #0
-    bne b4
-    rts
-  b2:
-    inc.z newline
-    bne !+
-    inc.z newline+1
-  !:
-    jmp b1
 }
 .segment Syscall
 SYSCALLS:

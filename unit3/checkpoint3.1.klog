@@ -1,7 +1,6 @@
 parsing
 flex pass 1
 flex pass 2
-flex pass 3
 Output pass
 Writing prg file: checkpoint3.1.bin
 
@@ -13,10 +12,10 @@ Syscall-segment:
   $8000-$81bf Syscall
 
 Code-segment:
-  $8200-$8409 Code
+  $8200-$83dc Code
 
 Data-segment:
-  $840a-$8440 Data
+  $83dd-$8402 Data
 
 Stack-segment:
 
