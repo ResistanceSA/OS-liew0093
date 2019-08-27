@@ -8,25 +8,25 @@ const char* COLS = 0xd800;
 const char BLACK = 0;
 const char WHITE = 1;
 char[] MESSAGE = "liew0093 checkpoint3.1";
-
 unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
 
+
 void print_to_screen(char* message){
+
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	char* sc = current_screen_line;
-	char[] msg= message;
+	char* msg= message;
 	while(*msg){
-	*sc ++ = msg[current_screen_x];
+	*sc ++ = *msg++;
 	}
 }
 void print_newline(){
 current_screen_line = current_screen_line+120;
 current_screen_x = 0;
-exit_hypervisor();
 
 }
 
@@ -51,7 +51,7 @@ void RESET(){
 exit_hypervisor();
 
 }
-void main(){
+void main(){exit_hypervisor();
 }
 
 
