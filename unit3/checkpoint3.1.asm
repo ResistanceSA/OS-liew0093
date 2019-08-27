@@ -5,13 +5,11 @@
 .segmentdef Data [startAfter="Code", min=$8200, max=$bdff]
 .segmentdef Stack [min=$be00, max=$beff, fill]
 .segmentdef Zeropage [min=$bf00, max=$bfff, fill]
-  .label RASTER = $d012
   .label VIC_MEMORY = $d018
   .label SCREEN = $400
-  .label BGCOL = $d021
   .label COLS = $d800
-  .const BLACK = 0
   .const WHITE = 1
+  .const current_screen_x = 0
   .const JMP = $4c
   .const NOP = $ea
 .segment Code
@@ -309,8 +307,8 @@ SYSCALL00: {
     rts
 }
 RESET: {
-    .label sc = 4
-    .label msg = 2
+    .label sc = 5
+    .label msg = 3
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -346,20 +344,27 @@ RESET: {
     lda (msg),y
     cmp #0
     bne b2
-  b3:
-    lda #$36
-    cmp RASTER
-    beq b4
-    lda #$42
-    cmp RASTER
-    beq b4
-    lda #BLACK
-    sta BGCOL
-    jmp b3
-  b4:
-    lda #WHITE
-    sta BGCOL
-    jmp b3
+    lda #<current_screen_x
+    sta.z print_to_screen.at
+    lda #>current_screen_x
+    sta.z print_to_screen.at+1
+    lda #<msg1
+    sta.z print_to_screen.msg
+    lda #>msg1
+    sta.z print_to_screen.msg+1
+    jsr print_to_screen
+    jsr print_newline
+    lda #<current_screen_x
+    sta.z print_to_screen.at
+    lda #>current_screen_x
+    sta.z print_to_screen.at+1
+    lda #<msg2
+    sta.z print_to_screen.msg
+    lda #>msg2
+    sta.z print_to_screen.msg+1
+    jsr print_to_screen
+    jsr exit_hypervisor
+    rts
   b2:
     ldy #0
     lda (msg),y
@@ -373,14 +378,55 @@ RESET: {
     inc.z msg+1
   !:
     jmp b1
+  .segment Data
+    /* while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLACK;
+	  }
+	}*/
+    msg1: .text "liew0093 operating system starting..."
+    .byte 0
+    msg2: .text "testing hardware"
+    .byte 0
+}
+.segment Code
+// print_to_screen(byte* zeropage(5) at, byte* zeropage(3) msg)
+print_to_screen: {
+    .label j = 2
+    .label msg = 3
+    .label at = 5
+    lda #0
+    sta.z j
+    tax
+  b1:
+    txa
+    tay
+    lda (msg),y
+    cmp #0
+    bne b2
+    rts
+  b2:
+    txa
+    tay
+    lda (msg),y
+    ldy.z j
+    sta (at),y
+    inc.z j
+    inx
+    jmp b1
+}
+print_newline: {
+    rts
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(4) str, byte register(X) c, word zeropage(2) num)
+// memset(void* zeropage(5) str, byte register(X) c, word zeropage(3) num)
 memset: {
-    .label end = 2
-    .label dst = 4
-    .label num = 2
-    .label str = 4
+    .label end = 3
+    .label dst = 5
+    .label num = 3
+    .label str = 5
     lda.z num
     bne !+
     lda.z num+1
