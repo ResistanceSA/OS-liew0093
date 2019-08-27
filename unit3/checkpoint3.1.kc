@@ -14,7 +14,7 @@ unsigned char current_screen_x = 0;
 
 
 void print_to_screen(char* message){
-
+	print_newline();
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
@@ -23,7 +23,6 @@ void print_to_screen(char* message){
 	for(current_screen_x=0;msg[current_screen_x];current_screen_x++){
 		*sc++=msg[current_screen_x];
 	}
-exit_hypervisor();
 }
 void print_newline(){
 	current_screen_line = current_screen_line+80;	
@@ -47,7 +46,6 @@ void RESET(){
 	  }
 	}*/
  print_to_screen("liew0093 operating system starting...");
- print_newline();
  print_to_screen("testing hardware");
 
 
