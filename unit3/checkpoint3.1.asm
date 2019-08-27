@@ -12,7 +12,10 @@
   .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 2
+  .label current_screen_line = $a
+  .label current_screen_line_12 = 2
+  .label current_screen_line_20 = 2
+  .label current_screen_line_21 = 2
 .segment Code
 main: {
     jsr exit_hypervisor
@@ -314,14 +317,32 @@ RESET: {
     lda #>message
     sta.z print_to_screen.msg+1
     lda #<$400
+    sta.z current_screen_line_12
+    lda #>$400
+    sta.z current_screen_line_12+1
+    jsr print_to_screen
+    lda #<$400
     sta.z current_screen_line
     lda #>$400
     sta.z current_screen_line+1
-    jsr print_to_screen
     jsr print_newline
+    lda.z print_newline.newline
+    sta.z current_screen_line_20
+    lda.z print_newline.newline+1
+    sta.z current_screen_line_20+1
     lda #<message1
     sta.z print_to_screen.msg
     lda #>message1
+    sta.z print_to_screen.msg+1
+    jsr print_to_screen
+    jsr print_newline
+    lda.z print_newline.newline
+    sta.z current_screen_line_21
+    lda.z print_newline.newline+1
+    sta.z current_screen_line_21+1
+    lda #<message2
+    sta.z print_to_screen.msg
+    lda #>message2
     sta.z print_to_screen.msg+1
     jsr print_to_screen
     jsr exit_hypervisor
@@ -330,6 +351,8 @@ RESET: {
     message: .text "liew0093 operating system starting..."
     .byte 0
     message1: .text "testing hardware"
+    .byte 0
+    message2: .text "NOTHING STAYS"
     .byte 0
 }
 .segment Code
@@ -358,9 +381,9 @@ print_to_screen: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda.z current_screen_line
+    lda.z current_screen_line_12
     sta.z sc
-    lda.z current_screen_line+1
+    lda.z current_screen_line_12+1
     sta.z sc+1
     ldx #0
   b1:
@@ -422,17 +445,20 @@ memset: {
     jmp b2
 }
 print_newline: {
-    .label newline = 2
-    lda #<$400+$28
+    .label newline = $a
+    lda #$50
+    clc
+    adc.z newline
     sta.z newline
-    lda #>$400+$28
-    sta.z newline+1
+    bcc !+
+    inc.z newline+1
+  !:
   b1:
     lda.z newline+1
-    cmp #>$28
+    cmp #>$50
     bne !+
     lda.z newline
-    cmp #<$28
+    cmp #<$50
   !:
     bcc b2
     beq b2
