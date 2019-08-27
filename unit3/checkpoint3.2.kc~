@@ -14,7 +14,7 @@ unsigned char current_screen_x = 0;
 void test_memory(){
 	unsigned short mem_start = $0800;
 	unsigned short mem_end = $0800;
-	unsigned short value;
+	unsigned char  value;
 	volatile unsigned char *p = $0800;
 		while(p <$8000){
 			value = 0;
