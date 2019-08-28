@@ -12,19 +12,19 @@
   .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_x = 4
-  .label current_screen_line = 7
-  .label current_screen_line_28 = 2
-  .label current_screen_line_69 = 2
-  .label current_screen_line_70 = 2
-  .label current_screen_line_71 = 2
-  .label current_screen_line_72 = 2
-  .label current_screen_line_73 = 2
-  .label current_screen_line_74 = 2
-  .label current_screen_line_75 = 2
-  .label current_screen_line_76 = 2
-  .label current_screen_line_77 = 2
-  .label current_screen_line_78 = 2
+  .label current_screen_x = 6
+  .label current_screen_line = 9
+  .label current_screen_line_28 = 4
+  .label current_screen_line_68 = 4
+  .label current_screen_line_69 = 4
+  .label current_screen_line_70 = 4
+  .label current_screen_line_71 = 4
+  .label current_screen_line_72 = 4
+  .label current_screen_line_73 = 4
+  .label current_screen_line_74 = 4
+  .label current_screen_line_75 = 4
+  .label current_screen_line_76 = 4
+  .label current_screen_line_77 = 4
 .segment Code
 main: {
     jsr exit_hypervisor
@@ -360,9 +360,9 @@ RESET: {
     sta.z current_screen_line+1
     jsr print_newline
     lda.z current_screen_line
-    sta.z current_screen_line_69
+    sta.z current_screen_line_68
     lda.z current_screen_line+1
-    sta.z current_screen_line_69+1
+    sta.z current_screen_line_68+1
     lda #0
     sta.z current_screen_x
     lda #<message1
@@ -383,12 +383,14 @@ RESET: {
 }
 .segment Code
 detect_devices: {
-    .const value = 0
-    .label p = $d
+    .label p = 2
     lda #<$d000
     sta.z p
     lda #>$d000
     sta.z p+1
+    ldx #0
+  b1:
+    lda.z p+1
     cmp #>$dff0
     bcc b2
     bne !+
@@ -397,9 +399,9 @@ detect_devices: {
     bcc b2
   !:
     lda.z current_screen_line
-    sta.z current_screen_line_71
+    sta.z current_screen_line_70
     lda.z current_screen_line+1
-    sta.z current_screen_line_71+1
+    sta.z current_screen_line_70+1
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -411,9 +413,9 @@ detect_devices: {
     sta.z print_hex.value+1
     jsr print_hex
     lda.z current_screen_line
-    sta.z current_screen_line_70
+    sta.z current_screen_line_69
     lda.z current_screen_line+1
-    sta.z current_screen_line_70+1
+    sta.z current_screen_line_69+1
     lda #<message1
     sta.z print_to_screen.message
     lda #>message1
@@ -421,16 +423,28 @@ detect_devices: {
     jsr print_to_screen
     rts
   b2:
-    lda #value
+    txa
     ldy #0
     sta (p),y
   b4:
-    lda #value
+    txa
     ldy #0
     cmp (p),y
-    beq b4
+    beq b5
     jsr detect_vicii
-    jmp b4
+    rts
+  b5:
+    inx
+    cpx #0
+    bne b4
+    lda #$a
+    clc
+    adc.z p
+    sta.z p
+    bcc !+
+    inc.z p+1
+  !:
+    jmp b1
   .segment Data
     message: .text "vic-ii detected at $"
     .byte 0
@@ -439,9 +453,9 @@ detect_devices: {
 }
 .segment Code
 detect_vicii: {
-    .label p = $b
+    .label p = $d
     .label v2 = $f
-    .label i = 9
+    .label i = $b
     // POinter where VIC-II is suspected to be
     lda #<0
     sta.z p
@@ -470,9 +484,9 @@ detect_vicii: {
     cpx.z v2
     bcs breturn
     lda.z current_screen_line
-    sta.z current_screen_line_72
+    sta.z current_screen_line_71
     lda.z current_screen_line+1
-    sta.z current_screen_line_72+1
+    sta.z current_screen_line_71+1
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -491,9 +505,9 @@ detect_vicii: {
     .byte 0
 }
 .segment Code
-// print_to_screen(byte* zeropage(9) message)
+// print_to_screen(byte* zeropage($b) message)
 print_to_screen: {
-    .label message = 9
+    .label message = $b
   b1:
     ldy #0
     lda (message),y
@@ -512,11 +526,11 @@ print_to_screen: {
     inc.z current_screen_x
     jmp b1
 }
-// print_hex(word zeropage(9) value)
+// print_hex(word zeropage($b) value)
 print_hex: {
     .label _3 = $10
     .label _6 = $12
-    .label value = 9
+    .label value = $b
     ldx #0
   b1:
     cpx #4
@@ -524,9 +538,9 @@ print_hex: {
     lda #0
     sta hex+4
     lda.z current_screen_line
-    sta.z current_screen_line_73
+    sta.z current_screen_line_72
     lda.z current_screen_line+1
-    sta.z current_screen_line_73+1
+    sta.z current_screen_line_72+1
     lda #<hex
     sta.z print_to_screen.message
     lda #>hex
@@ -595,7 +609,7 @@ print_hex: {
 .segment Code
 test_memory: {
     .const mem_start = $800
-    .label p = 5
+    .label p = 7
     .label mem_end = $14
     lda #<$800
     sta.z p
@@ -611,9 +625,9 @@ test_memory: {
     bcc b2
   !:
     lda.z current_screen_line
-    sta.z current_screen_line_77
+    sta.z current_screen_line_76
     lda.z current_screen_line+1
-    sta.z current_screen_line_77+1
+    sta.z current_screen_line_76+1
     lda #0
     sta.z current_screen_x
     lda #<message
@@ -627,9 +641,9 @@ test_memory: {
     sta.z print_hex.value+1
     jsr print_hex
     lda.z current_screen_line
-    sta.z current_screen_line_74
+    sta.z current_screen_line_73
     lda.z current_screen_line+1
-    sta.z current_screen_line_74+1
+    sta.z current_screen_line_73+1
     lda #<message1
     sta.z print_to_screen.message
     lda #>message1
@@ -649,9 +663,9 @@ test_memory: {
     cmp (p),y
     beq b4
     lda.z current_screen_line
-    sta.z current_screen_line_78
+    sta.z current_screen_line_77
     lda.z current_screen_line+1
-    sta.z current_screen_line_78+1
+    sta.z current_screen_line_77+1
     tya
     sta.z current_screen_x
     lda #<message2
@@ -673,9 +687,9 @@ test_memory: {
     sbc #0
     sta.z mem_end+1
     lda.z current_screen_line
-    sta.z current_screen_line_75
+    sta.z current_screen_line_74
     lda.z current_screen_line+1
-    sta.z current_screen_line_75+1
+    sta.z current_screen_line_74+1
     lda #0
     sta.z current_screen_x
     lda #<message
@@ -689,9 +703,9 @@ test_memory: {
     sta.z print_hex.value+1
     jsr print_hex
     lda.z current_screen_line
-    sta.z current_screen_line_76
+    sta.z current_screen_line_75
     lda.z current_screen_line+1
-    sta.z current_screen_line_76+1
+    sta.z current_screen_line_75+1
     lda #<message1
     sta.z print_to_screen.message
     lda #>message1
@@ -735,11 +749,11 @@ print_newline: {
     rts
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($10) str, byte register(X) c, word zeropage(9) num)
+// memset(void* zeropage($10) str, byte register(X) c, word zeropage($b) num)
 memset: {
-    .label end = 9
+    .label end = $b
     .label dst = $10
-    .label num = 9
+    .label num = $b
     .label str = $10
     lda.z num
     bne !+
