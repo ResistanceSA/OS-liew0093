@@ -335,19 +335,6 @@ RESET: {
     sta.z current_screen_line
     lda #>$400
     sta.z current_screen_line+1
-<<<<<<< HEAD
-    jsr print_to_screen
-    jsr print_newline
-    jsr exit_hypervisor
-    rts
-  .segment Data
-    message: .text "liew0093 operating system starting..."
-    .byte 0
-}
-.segment Code
-print_newline: {
-=======
->>>>>>> 199ab83f90747b1155c7cfa565bee73530f7ffb7
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -363,9 +350,12 @@ print_newline: {
     lda #>message1
     sta.z print_to_screen.message+1
     jsr print_to_screen
+    jsr exit_hypervisor
     rts
   .segment Data
-    message: .text "testing hardware"
+    message: .text "liew0093 operating system starting..."
+    .byte 0
+    message1: .text "testing hardware"
     .byte 0
 }
 .segment Code
