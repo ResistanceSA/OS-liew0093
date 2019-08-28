@@ -24,7 +24,7 @@ void detect_vicii(){
 	v1=p[$12]; //Read start address + $12
 	//wait 64 microseconds
 	for(i=1;i<1000;i++) continue;
-	v2=p[$p12];//Read again
+	v2=p[$12];//Read again
 	if (v2>v1){
 		print_to_screen("Seems to be a VIC-II here");
 	}
