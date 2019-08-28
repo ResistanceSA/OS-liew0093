@@ -14,10 +14,10 @@ unsigned char current_screen_x = 0;
 
 void detect_DEVICENAME(unsigned short address){}
 
-void detect_vicii(){
+void detect_vicii(unsigned short address){
 	
 	// POinter where VIC-II is suspected to be
-	volatile unsigned char *p;
+	volatile unsigned char *p = address;
 	unsigned char v1, v2;
 	
 	unsigned short i;
@@ -43,6 +43,7 @@ void detect_devices(){
 		print_to_screen("vic-ii detected at $");
 		print_hex((unsigned short)p);
 		print_newline();
+		print_to_screen("finished probing devices");
 		return;
 		}value++;
 		}while(value!=0);
@@ -134,6 +135,7 @@ print_to_screen("testing hardware");
 print_newline();
 
 test_memory();
+print_newline();
 
 detect_devices();
 

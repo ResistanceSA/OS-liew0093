@@ -581,12 +581,14 @@ print_hex: {
 }
 .segment Code
 detect_vicii: {
+    .const address = $d800
     .label p = $d
     .label v2 = $13
     .label i = $b
     // POinter where VIC-II is suspected to be
-    lda #<0
+    lda #<address
     sta.z p
+    lda #>address
     sta.z p+1
     ldy #$12
     lda (p),y
