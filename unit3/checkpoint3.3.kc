@@ -40,16 +40,14 @@ void detect_devices(){
 		do{
 		if(*p != value){
 		detect_vicii();
-		}}while(value!=1);
+		return;
+		}value++;
+		}while(value!=0);
 		p +=10;
 		}
 	print_to_screen("vic-ii detected at $");
 	print_hex((unsigned short)p);
 	print_to_screen("finished probing devices");
-
-			
-		
-
 
 		
 }
