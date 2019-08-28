@@ -35,7 +35,7 @@ void detect_devices(){
 	unsigned short mem_end = $DFF0;
 	volatile unsigned char *p = $D000;
 	unsigned char value;
-	while(*p < $DFF0){
+	while(p < $DFF0){
 		*p=value;
 		do{
 		if(*p != value){
