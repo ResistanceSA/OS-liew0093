@@ -12,8 +12,6 @@ unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
 
-void detect_DEVICENAME(unsigned short address){}
-
 void detect_vicii(unsigned short address){
 	
 	// POinter where VIC-II is suspected to be

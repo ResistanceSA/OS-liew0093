@@ -39,7 +39,7 @@ void detect_devices(){
 		*p=value;
 		do{
 		if(*p != value){
-		detect_vicii();
+		detect_vicii($D800);
 		print_to_screen("vic-ii detected at $");
 		print_hex((unsigned short)p);
 		print_newline();
