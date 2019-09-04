@@ -315,7 +315,7 @@ SYSCALL01: {
     jsr exit_hypervisor
     rts
   .segment Data
-    message: .text "SYSCALL01 entered"
+    message: .text "syscall01 entered"
     .byte 0
 }
 .segment Code
@@ -349,7 +349,7 @@ SYSCALL00: {
     jsr exit_hypervisor
     rts
   .segment Data
-    message: .text "SYSCALL00 entered"
+    message: .text "syscall00 entered"
     .byte 0
 }
 .segment Code
