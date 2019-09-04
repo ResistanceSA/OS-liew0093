@@ -5,13 +5,13 @@ void enable_syscalls(){
 
 void call_syscall00(){
 	enable_syscalls();
-	*(unsigned char *)$D640 = $00;
+	*(unsigned char *)$D640 = $00
 	asm {nop}
 }
 
 void call_syscall01(){
 	enable_syscalls();
-	*(unsigned char *)$D641 = $00;
+	*(unsigned char *)$D641 = $00
 	asm {nop}
 }
 
