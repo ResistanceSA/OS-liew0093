@@ -7,9 +7,42 @@ const char* BGCOL = 0xd021;
 const char* COLS = 0xd800;
 const char BLACK = 0;
 const char WHITE = 1;
-cont char BLUE = 6;
+const char BLUE = 6;
 
 char[] MESSAGE = "checkpoint 2.5 liew0093";
+
+void RESET(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	char* sc = SCREEN+40;
+	char* msg= MESSAGE;
+	unsigned char i = 1;
+	while(*msg){
+	  *sc++=*msg++;
+	}
+	do{
+	if((i/2 <10) || (i/2 > 30)){
+	  	if(*RASTER==54 || *RASTER==66){
+	    		*BGCOL =BLUE ;
+	  		} else if(*RASTER==56 || *RASTER==64){
+	   		 *BGCOL=WHITE;
+	  		}else{
+			*BGCOL = BLACK;
+		}i+2;
+	}
+	if((i/2 >= 10) && (i/2 =< 30)){
+		if(*RASTER==54 || *RASTER==66){
+	    		*BGCOL =BLACK ;
+	  		} else if(*RASTER==56 || *RASTER==64){
+	   		 *BGCOL=BLUE;
+	  		}else{
+			*BGCOL = WHITE;
+			}i+2;
+		}
+	}while(i!=0);
+exit_hypervisor();
+}
 
 void main(){
 }
@@ -87,30 +120,7 @@ void SYSCALL3E(){exit_hypervisor();}
 void SYSCALL3F(){exit_hypervisor();}
 
 
-void RESET(){
-	*VIC_MEMORY = 0x14;
-	memset(SCREEN,' ',40*25);
-	memset(COLS,WHITE,40*25);
-	char* sc = SCREEN+40;
-	char* msg= MESSAGE;
-	char i = 1;
-	while(*msg){
-	  *sc++=*msg++;
-	}
-	while(i>0){
-		do{
-		if(i%2 ==0){
-	  if(*RASTER==54 || *RASTER==66){
-	    *BGCOL = WHITE;
-	  } else {
-	    *BGCOL=BLUE;
-	  }
-	}
-}while(i!=0);
-}
 
-exit_hypervisor();
-}
 void PAGFAULT(){exit_hypervisor();}
 void RESTORKEY(){exit_hypervisor();}
 void ALTTABKEY(){exit_hypervisor();}
