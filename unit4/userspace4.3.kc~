@@ -1,9 +1,8 @@
 import "myabi"
 
 void main(){
-	do{
 	call_syscall00();
 	call_syscall01();
-	}while(true) continue;
+	while(true) continue;
 
 }

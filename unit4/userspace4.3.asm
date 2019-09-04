@@ -2,9 +2,9 @@
 :BasicUpstart(main)
 .pc = $80d "Program"
 main: {
+  b1:
     jsr call_syscall00
     jsr call_syscall01
-  b1:
     jmp b1
 }
 call_syscall01: {
