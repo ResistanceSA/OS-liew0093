@@ -46,7 +46,7 @@ void RESET(){
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
-	char* sc = SCREEN+40;
+	char* sc = SCREEN;
 	char* msg= MESSAGE;
 	while(*msg){
 	  *sc++=*msg++;
@@ -85,14 +85,14 @@ void exit_hypervisor()
 }
 
 void SYSCALL00(){
-current_screen_line = SCREEN+80;
+current_screen_line = SCREEN+40;
 current_screen_x = 0;
 print_to_screen("syscall00 entered");
 print_newline();
 exit_hypervisor();
 }
 void SYSCALL01(){
-current_screen_line = SCREEN + 120;
+current_screen_line = SCREEN + 80;
 current_screen_x = 0; 
 print_to_screen("syscall01 entered");
 print_newline();

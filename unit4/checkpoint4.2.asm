@@ -307,9 +307,9 @@ SYSCALL02: {
     rts
 }
 SYSCALL01: {
-    lda #<SCREEN+$78
+    lda #<SCREEN+$50
     sta.z current_screen_line
-    lda #>SCREEN+$78
+    lda #>SCREEN+$50
     sta.z current_screen_line+1
     lda #0
     sta.z current_screen_x
@@ -360,9 +360,9 @@ print_to_screen: {
     jmp b1
 }
 SYSCALL00: {
-    lda #<SCREEN+$50
+    lda #<SCREEN+$28
     sta.z current_screen_line
-    lda #>SCREEN+$50
+    lda #>SCREEN+$28
     sta.z current_screen_line+1
     lda #0
     sta.z current_screen_x
@@ -410,9 +410,9 @@ RESET: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<SCREEN+$28
+    lda #<SCREEN
     sta.z sc
-    lda #>SCREEN+$28
+    lda #>SCREEN
     sta.z sc+1
     lda #<MESSAGE
     sta.z msg
