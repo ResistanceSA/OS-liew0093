@@ -2,12 +2,12 @@
 :BasicUpstart(main)
 .pc = $80d "Program"
 main: {
-    jsr call_SYSCALL00
-    jsr call_SYSCALL01
+    jsr call_syscall00
+    jsr call_syscall01
   b1:
     jmp b1
 }
-call_SYSCALL01: {
+call_syscall01: {
     jsr enable_syscalls
     lda #0
     sta $d641
@@ -21,7 +21,7 @@ enable_syscalls: {
     sta $d62f
     rts
 }
-call_SYSCALL00: {
+call_syscall00: {
     jsr enable_syscalls
     lda #0
     sta $d640
