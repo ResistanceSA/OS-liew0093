@@ -312,6 +312,7 @@ SYSCALL01: {
     lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
+    jsr print_newline
     jsr exit_hypervisor
     rts
   .segment Data
@@ -319,6 +320,18 @@ SYSCALL01: {
     .byte 0
 }
 .segment Code
+print_newline: {
+    lda #$28
+    clc
+    adc.z current_screen_line
+    sta.z current_screen_line
+    bcc !+
+    inc.z current_screen_line+1
+  !:
+    lda #0
+    sta.z current_screen_x
+    rts
+}
 // print_to_screen(byte* zeropage(2) message)
 print_to_screen: {
     .label message = 2
@@ -346,6 +359,7 @@ SYSCALL00: {
     lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
+    jsr print_newline
     jsr exit_hypervisor
     rts
   .segment Data
@@ -362,6 +376,7 @@ RESET: {
     sta.z current_screen_line+1
     lda #0
     sta.z current_screen_x
+    jsr start_simple_program
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -397,7 +412,6 @@ RESET: {
     lda (msg),y
     cmp #0
     bne b2
-    jsr start_simple_program
     rts
   b2:
     ldy #0
@@ -412,6 +426,44 @@ RESET: {
     inc.z msg+1
   !:
     jmp b1
+}
+// Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
+// memset(void* zeropage(7) str, byte register(X) c, word zeropage(5) num)
+memset: {
+    .label end = 5
+    .label dst = 7
+    .label num = 5
+    .label str = 7
+    lda.z num
+    bne !+
+    lda.z num+1
+    beq breturn
+  !:
+    lda.z end
+    clc
+    adc.z str
+    sta.z end
+    lda.z end+1
+    adc.z str+1
+    sta.z end+1
+  b2:
+    lda.z dst+1
+    cmp.z end+1
+    bne b3
+    lda.z dst
+    cmp.z end
+    bne b3
+  breturn:
+    rts
+  b3:
+    txa
+    ldy #0
+    sta (dst),y
+    inc.z dst
+    bne !+
+    inc.z dst+1
+  !:
+    jmp b2
 }
 start_simple_program: {
     lda #<$80d
@@ -454,44 +506,6 @@ start_simple_program: {
     sta $d705
     jsr exit_hypervisor
     rts
-}
-// Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(7) str, byte register(X) c, word zeropage(5) num)
-memset: {
-    .label end = 5
-    .label dst = 7
-    .label num = 5
-    .label str = 7
-    lda.z num
-    bne !+
-    lda.z num+1
-    beq breturn
-  !:
-    lda.z end
-    clc
-    adc.z str
-    sta.z end
-    lda.z end+1
-    adc.z str+1
-    sta.z end+1
-  b2:
-    lda.z dst+1
-    cmp.z end+1
-    bne b3
-    lda.z dst
-    cmp.z end
-    bne b3
-  breturn:
-    rts
-  b3:
-    txa
-    ldy #0
-    sta (dst),y
-    inc.z dst
-    bne !+
-    inc.z dst+1
-  !:
-    jmp b2
 }
 .segment Data
   MESSAGE: .text "checkpoint 4.1  liew0093"
