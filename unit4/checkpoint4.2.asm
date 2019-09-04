@@ -307,9 +307,9 @@ SYSCALL02: {
     rts
 }
 SYSCALL01: {
-    lda #<$400+$28
+    lda #<SCREEN+$78
     sta.z current_screen_line
-    lda #>$400+$28
+    lda #>SCREEN+$78
     sta.z current_screen_line+1
     lda #0
     sta.z current_screen_x
@@ -360,9 +360,9 @@ print_to_screen: {
     jmp b1
 }
 SYSCALL00: {
-    lda #<$400
+    lda #<SCREEN+$50
     sta.z current_screen_line
-    lda #>$400
+    lda #>SCREEN+$50
     sta.z current_screen_line+1
     lda #0
     sta.z current_screen_x

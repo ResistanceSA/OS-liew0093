@@ -86,14 +86,14 @@ void exit_hypervisor()
 
 void SYSCALL00(){
 current_screen_line = $0400;
-current_line_x = 0;
+current_screen_x = 0;
 print_to_screen("syscall00 entered");
 print_newline();
 exit_hypervisor();
 }
 void SYSCALL01(){
 current_screen_line = $0400+40;
-current_line_x = 0; 
+current_screen_x = 0; 
 print_to_screen("syscall01 entered");
 print_newline();
 exit_hypervisor();
