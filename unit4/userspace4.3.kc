@@ -3,6 +3,6 @@ import "myabi"
 void main()
 {
 	call_SYSCALL00();
-	call_SYSCALLl01();
+	call_SYSCALL01();
 	while(true) continue;
 }

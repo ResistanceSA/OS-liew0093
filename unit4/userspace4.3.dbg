@@ -38,9 +38,9 @@
    <Labels values="SEGMENT,ADDRESS,NAME">
       Default,$080d,main
       Default,$0813,b1
-      Default,$0816,call_syscall01
+      Default,$0816,call_SYSCALL01
       Default,$0820,enable_syscalls
-      Default,$082b,call_syscall00
+      Default,$082b,call_SYSCALL00
       Default,$080b,upstartEnd
    </Labels>
 
