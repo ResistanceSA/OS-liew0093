@@ -12,8 +12,8 @@
   .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 8
-  .label current_screen_x = $a
+  .label current_screen_line = 9
+  .label current_screen_x = 4
   lda #<0
   sta.z current_screen_line
   sta.z current_screen_line+1
@@ -307,12 +307,6 @@ SYSCALL02: {
     rts
 }
 SYSCALL01: {
-    lda #<SCREEN+$50
-    sta.z current_screen_line
-    lda #>SCREEN+$50
-    sta.z current_screen_line+1
-    lda #0
-    sta.z current_screen_x
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -360,12 +354,6 @@ print_to_screen: {
     jmp b1
 }
 SYSCALL00: {
-    lda #<SCREEN+$28
-    sta.z current_screen_line
-    lda #>SCREEN+$28
-    sta.z current_screen_line+1
-    lda #0
-    sta.z current_screen_x
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -380,8 +368,8 @@ SYSCALL00: {
 }
 .segment Code
 RESET: {
-    .label sc = 6
-    .label msg = 4
+    .label sc = 7
+    .label msg = 5
     lda #<$400
     sta.z current_screen_line
     lda #>$400
@@ -482,12 +470,12 @@ start_simple_program: {
     rts
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(6) str, byte register(X) c, word zeropage(4) num)
+// memset(void* zeropage(7) str, byte register(X) c, word zeropage(5) num)
 memset: {
-    .label end = 4
-    .label dst = 6
-    .label num = 4
-    .label str = 6
+    .label end = 5
+    .label dst = 7
+    .label num = 5
+    .label str = 7
     lda.z num
     bne !+
     lda.z num+1

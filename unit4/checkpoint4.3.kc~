@@ -10,7 +10,7 @@ const char WHITE = 1;
 volatile unsigned char *current_screen_line;
 volatile unsigned char current_screen_x;
 
-char[] MESSAGE = "checkpoint 4.2  liew0093";
+char[] MESSAGE = "checkpoint 4.3  liew0093";
 
 void start_simple_program(){
 	*(unsigned short *)$D648 = $080D;	
