@@ -8,13 +8,13 @@ al C:8243 .SYSCALL37
 al C:824f .SYSCALL34
 al C:824b .SYSCALL35
 al C:833d .b1__0
-al C:83b9 .b1__1
+al C:83b6 .b1__1
 al C:8233 .SYSCALL3B
 al C:8346 .b2__0
 al C:83c2 .b2__1
-al C:83ec .b2__2
+al C:8452 .b2__2
 al C:822f .SYSCALL3C
-al C:83f9 .b3
+al C:845f .b3
 al C:8237 .SYSCALL3A
 al C:400 .SCREEN
 al C:8223 .SYSCALL3F
@@ -48,7 +48,7 @@ al C:8491 .MESSAGE
 al C:8213 .VF011RD
 al C:8000 .SYSCALLS
 al C:832d .print_newline
-al C:83f8 .breturn
+al C:845e .breturn
 al C:82d7 .SECUREXIT
 al C:5 .msg
 al C:5 .num
@@ -56,7 +56,7 @@ al C:8200 .main
 al C:836b .RESET
 al C:9 .current_screen_line
 al C:82db .SECURENTR
-al C:83d7 .memset
+al C:843d .memset
 al C:821f .PAGFAULT
 al C:8205 .exit_hypervisor
 al C:8217 .ALTTABKEY
@@ -93,7 +93,7 @@ al C:82eb .SYSCALL0D
 al C:820b .undefined_trap
 al C:82f7 .SYSCALL0A
 al C:82f3 .SYSCALL0B
-al C:8407 .start_simple_program
+al C:83d7 .start_simple_program
 al C:8303 .SYSCALL07
 al C:82ff .SYSCALL08
 al C:830b .SYSCALL05

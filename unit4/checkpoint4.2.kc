@@ -43,7 +43,6 @@ exit_hypervisor();
 void RESET(){
 	current_screen_line = $0400;
 	current_screen_x = 0;
-start_simple_program();
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
@@ -59,7 +58,7 @@ start_simple_program();
 	    *BGCOL=BLACK;
 	  }
 	}*/
-
+start_simple_program();
 }
 
 void print_to_screen(char* message){
