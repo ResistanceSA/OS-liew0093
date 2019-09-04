@@ -3,13 +3,13 @@ void enable_syscalls(){
 	*(unsigned char *)$D62F = $53;
 }
 
-void call_syscall00(){
+void call_SYSCALL00(){
 	enable_syscalls();
 	*(unsigned char *)$D640 = $00;
 	asm {nop}
 }
 
-void call_syscall01(){
+void call_SYSCALL01(){
 	enable_syscalls();
 	*(unsigned char *)$D641 = $00;
 	asm {nop}

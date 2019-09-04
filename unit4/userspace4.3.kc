@@ -1,7 +1,8 @@
 import "myabi"
 
-void main(){
-	call_syscall00();
-	call_syscall01();
+void main()
+{
+	call_SYSCALL00();
+	call_SYSCALLl01();
 	while(true) continue;
 }
