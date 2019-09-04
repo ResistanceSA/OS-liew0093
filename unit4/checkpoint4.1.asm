@@ -1,13 +1,17 @@
-  .file [name="checkpoint2.4.bin", type="bin", segments="XMega65Bin"]
+  .file [name="checkpoint4.1.bin", type="bin", segments="XMega65Bin"]
 .segmentdef XMega65Bin [segments="Syscall, Code, Data, Stack, Zeropage"]
 .segmentdef Syscall [start=$8000, max=$81ff]
 .segmentdef Code [start=$8200, min=$8200, max=$bdff]
 .segmentdef Data [startAfter="Code", min=$8200, max=$bdff]
 .segmentdef Stack [min=$be00, max=$beff, fill]
 .segmentdef Zeropage [min=$bf00, max=$bfff, fill]
+
+  .label RASTER = $d012
   .label VIC_MEMORY = $d018
   .label SCREEN = $400
+  .label BGCOL = $d021
   .label COLS = $d800
+  .const BLACK = 0
   .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
@@ -52,6 +56,7 @@ PAGFAULT: {
 RESET: {
     .label sc = 4
     .label msg = 2
+    jsr start_simple_program
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -88,6 +93,18 @@ RESET: {
     cmp #0
     bne b2
   b3:
+    lda #$36
+    cmp RASTER
+    beq b4
+    lda #$42
+    cmp RASTER
+    beq b4
+    lda #BLACK
+    sta BGCOL
+    jmp b3
+  b4:
+    lda #WHITE
+    sta BGCOL
     jmp b3
   b2:
     ldy #0
@@ -140,6 +157,48 @@ memset: {
     inc.z dst+1
   !:
     jmp b2
+}
+start_simple_program: {
+    lda #<$80d
+    sta $d648
+    lda #>$80d
+    sta $d648+1
+    lda #$80
+    sta $300
+    lda #0
+    sta $301
+    lda #$81
+    sta $302
+    lda #0
+    sta $303
+    sta $304
+    sta $305
+    sta $306
+    lda #$60
+    sta $307
+    lda #2
+    sta $308
+    lda #0
+    sta $309
+    lda #2
+    sta $30a
+    lda #1
+    sta $30b
+    lda #8
+    sta $30c
+    lda #0
+    sta $30d
+    sta $30e
+    sta $30f
+    lda #$60
+    sta $310
+    lda #3
+    sta $d701
+    lda #0
+    sta $d702
+    sta $d705
+    jsr exit_hypervisor
+    rts
 }
 SYSCALL3F: {
     jsr exit_hypervisor
@@ -398,7 +457,7 @@ SYSCALL00: {
     rts
 }
 .segment Data
-  MESSAGE: .text "checkpoint 2.5 liew0093"
+  MESSAGE: .text "checkpoint 4.1  liew0093"
   .byte 0
 .segment Syscall
 SYSCALLS:

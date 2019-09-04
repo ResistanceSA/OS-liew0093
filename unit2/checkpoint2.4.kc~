@@ -7,8 +7,9 @@ const char* BGCOL = 0xd021;
 const char* COLS = 0xd800;
 const char BLACK = 0;
 const char WHITE = 1;
+cont char BLUE = 6;
 
-char[] MESSAGE = "checkpoint 2.3 liew0093";
+char[] MESSAGE = "checkpoint 2.5 liew0093";
 
 void main(){
 }
@@ -92,16 +93,22 @@ void RESET(){
 	memset(COLS,WHITE,40*25);
 	char* sc = SCREEN+40;
 	char* msg= MESSAGE;
+	char i = 1;
 	while(*msg){
 	  *sc++=*msg++;
 	}
-	while(true){
+	while(i>0){
+		do{
+		if(i%2 ==0){
 	  if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
 	  } else {
-	    *BGCOL=BLACK;
+	    *BGCOL=BLUE;
 	  }
 	}
+}while(i!=0);
+}
+
 exit_hypervisor();
 }
 void PAGFAULT(){exit_hypervisor();}
