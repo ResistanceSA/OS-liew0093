@@ -10,7 +10,7 @@ const char WHITE = 1;
 volatile unsigned char *current_screen_line;
 volatile unsigned char current_screen_x;
 
-char[] MESSAGE = "checkpoint 4.1  liew0093";
+char[] MESSAGE = "checkpoint 4.2  liew0093";
 
 void start_simple_program(){
 	*(unsigned short *)$D648 = $080D;	
@@ -85,12 +85,17 @@ void exit_hypervisor()
 }
 
 void SYSCALL00(){
+current_screen_line = $0400;
+current_line_x = 0;
 print_to_screen("syscall00 entered");
 print_newline();
 exit_hypervisor();
 }
 void SYSCALL01(){
+current_screen_line = $0400+40;
+current_line_x = 0; 
 print_to_screen("syscall01 entered");
+print_newline();
 exit_hypervisor();
 }
 void SYSCALL02(){exit_hypervisor();}
