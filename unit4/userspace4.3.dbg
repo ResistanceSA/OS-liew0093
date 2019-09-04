@@ -14,8 +14,8 @@
          $080b,$080c,0,44,5,44,9
       </Block>
       <Block name="Program">
-         $080d,$080f,1,5,5,5,7
-         $0810,$0812,1,6,5,6,7
+         $080d,$080f,1,6,5,6,7
+         $0810,$0812,1,7,5,7,7
          $0813,$0815,1,8,5,8,7
          $0816,$0818,1,11,5,11,7
          $0819,$081a,1,12,5,12,7
@@ -37,7 +37,7 @@
 
    <Labels values="SEGMENT,ADDRESS,NAME">
       Default,$080d,main
-      Default,$0813,b1
+      Default,$080d,b1
       Default,$0816,call_syscall01
       Default,$0820,enable_syscalls
       Default,$082b,call_syscall00
