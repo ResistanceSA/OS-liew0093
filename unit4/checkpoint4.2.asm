@@ -312,7 +312,6 @@ SYSCALL01: {
     lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
-    jsr print_newline
     jsr exit_hypervisor
     rts
   .segment Data
@@ -320,18 +319,6 @@ SYSCALL01: {
     .byte 0
 }
 .segment Code
-print_newline: {
-    lda #$28
-    clc
-    adc.z current_screen_line
-    sta.z current_screen_line
-    bcc !+
-    inc.z current_screen_line+1
-  !:
-    lda #0
-    sta.z current_screen_x
-    rts
-}
 // print_to_screen(byte* zeropage(2) message)
 print_to_screen: {
     .label message = 2
@@ -359,7 +346,6 @@ SYSCALL00: {
     lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
-    jsr print_newline
     jsr exit_hypervisor
     rts
   .segment Data
