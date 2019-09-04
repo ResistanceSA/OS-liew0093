@@ -38,6 +38,24 @@ exit_hypervisor();
 }
 
 
+void RESET(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	char* sc = SCREEN+40;
+	char* msg= MESSAGE;
+	while(*msg){
+	  *sc++=*msg++;
+	}
+	/*while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLACK;
+	  }
+	}*/
+start_simple_program();
+}
 
 
 void main(){
@@ -116,24 +134,7 @@ void SYSCALL3E(){exit_hypervisor();}
 void SYSCALL3F(){exit_hypervisor();}
 
 
-void RESET(){
-start_simple_program();
-	*VIC_MEMORY = 0x14;
-	memset(SCREEN,' ',40*25);
-	memset(COLS,WHITE,40*25);
-	char* sc = SCREEN+40;
-	char* msg= MESSAGE;
-	while(*msg){
-	  *sc++=*msg++;
-	}
-	while(true){
-	  if(*RASTER==54 || *RASTER==66){
-	    *BGCOL = WHITE;
-	  } else {
-	    *BGCOL=BLACK;
-	  }
-	}
-}
+
 void PAGFAULT(){exit_hypervisor();}
 void RESTORKEY(){exit_hypervisor();}
 void ALTTABKEY(){exit_hypervisor();}

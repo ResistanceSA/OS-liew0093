@@ -8,7 +8,37 @@ const char* COLS = 0xd800;
 const char BLACK = 0;
 const char WHITE = 1;
 
-char[] MESSAGE = "checkpoint 2.3 liew0093";
+char[] MESSAGE = "checkpoint 4.1  liew0093";
+
+void start_simple_program(){
+	*(unsigned short *)$D648 = $080D;	
+	*(unsigned char *)$0300 = $80;
+	*(unsigned char *)$0301 = $00;
+	*(unsigned char *)$0302 = $81;
+	*(unsigned char *)$0303 = $00;
+	*(unsigned char *)$0304 = $00;
+	*(unsigned char *)$0305 = $00;
+	*(unsigned char *)$0306 = $00;
+	*(unsigned char *)$0307 = $60;
+	*(unsigned char *)$0308 = $02;
+	*(unsigned char *)$0309 = $00;
+	*(unsigned char *)$030A = $02;
+	*(unsigned char *)$030B = $01;
+	*(unsigned char *)$030C = $08;
+	*(unsigned char *)$030D = $00;
+	*(unsigned char *)$030E = $00;
+	*(unsigned char *)$030F = $00;
+	*(unsigned char *)$0310 = $60;
+	*(unsigned char *)$D701 = $03;
+	*(unsigned char *)$D702 = $00;
+	*(unsigned char *)$D705 = $00;
+	
+exit_hypervisor();	
+	
+}
+
+
+
 
 void main(){
 }
@@ -87,6 +117,7 @@ void SYSCALL3F(){exit_hypervisor();}
 
 
 void RESET(){
+start_simple_program();
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
