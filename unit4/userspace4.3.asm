@@ -16,9 +16,9 @@ call_syscall01: {
 }
 enable_syscalls: {
     lda #$47
-    sta $d62f
+    sta $d02f
     lda #$53
-    sta $d62f
+    sta $d02f
     rts
 }
 call_syscall00: {
