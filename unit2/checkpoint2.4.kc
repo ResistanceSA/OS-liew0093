@@ -134,12 +134,12 @@ print_to_screen("testing hardware");
 print_newline();
 
 while(true){
-if(*RASTER == 2){
-	memset(COLS,BLUE,40*25);
+//	memset(COLS,BLUE,40*25);
 
+if(*RASTER == 54 || *RASTER == 66){
 print_to_screen(" virus present ");
 
-	*BGCOL = BLACK;
+	*BGCOL = BLUE;
 //delay();
 	}
 }
