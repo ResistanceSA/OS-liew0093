@@ -10,21 +10,16 @@
   .label SCREEN = $400
   .label BGCOL = $d021
   .label COLS = $d800
+  .const BLACK = 0
   .const WHITE = 1
   .const BLUE = 6
   .const JMP = $4c
   .const NOP = $ea
   .label current_screen_x = 4
   .label current_screen_line = 9
+  .label current_screen_line_16 = 2
+  .label current_screen_line_27 = 2
   .label current_screen_line_28 = 2
-  .label current_screen_line_57 = 2
-  .label current_screen_line_58 = 2
-  .label current_screen_line_59 = 2
-  .label current_screen_line_60 = 2
-  .label current_screen_line_61 = 2
-  .label current_screen_line_62 = 2
-  .label current_screen_line_63 = 2
-  .label current_screen_line_64 = 2
 .segment Code
 main: {
     jsr exit_hypervisor
@@ -346,9 +341,9 @@ RESET: {
     lda #0
     sta.z current_screen_x
     lda #<$400
-    sta.z current_screen_line_28
+    sta.z current_screen_line_16
     lda #>$400
-    sta.z current_screen_line_28+1
+    sta.z current_screen_line_16+1
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -360,9 +355,9 @@ RESET: {
     sta.z current_screen_line+1
     jsr print_newline
     lda.z current_screen_line
-    sta.z current_screen_line_57
+    sta.z current_screen_line_27
     lda.z current_screen_line+1
-    sta.z current_screen_line_57+1
+    sta.z current_screen_line_27+1
     lda #0
     sta.z current_screen_x
     lda #<message1
@@ -371,40 +366,46 @@ RESET: {
     sta.z print_to_screen.message+1
     jsr print_to_screen
     jsr print_newline
-    jsr test_memory
-  b1:
-    lda #$36
-    cmp RASTER
-    beq b2
-    lda #$42
-    cmp RASTER
-    beq b2
-    jmp b1
+    lda #0
+    sta.z current_screen_x
   b2:
+    lda #2
+    cmp RASTER
+    bne b2
+    ldx #BLUE
+    lda #<COLS
+    sta.z memset.str
+    lda #>COLS
+    sta.z memset.str+1
+    lda #<$28*$19
+    sta.z memset.num
+    lda #>$28*$19
+    sta.z memset.num+1
+    jsr memset
     lda.z current_screen_line
-    sta.z current_screen_line_58
+    sta.z current_screen_line_28
     lda.z current_screen_line+1
-    sta.z current_screen_line_58+1
+    sta.z current_screen_line_28+1
     lda #<message2
     sta.z print_to_screen.message
     lda #>message2
     sta.z print_to_screen.message+1
     jsr print_to_screen
-    lda #BLUE
+    lda #BLACK
     sta BGCOL
-    jmp b1
+    jmp b2
   .segment Data
     message: .text "liew0093 operating system starting..."
     .byte 0
     message1: .text "testing hardware"
     .byte 0
-    message2: .text "here i am"
+    message2: .text " virus present "
     .byte 0
 }
 .segment Code
-// print_to_screen(byte* zeropage(7) message)
+// print_to_screen(byte* zeropage(5) message)
 print_to_screen: {
-    .label message = 7
+    .label message = 5
   b1:
     ldy #0
     lda (message),y
@@ -415,7 +416,7 @@ print_to_screen: {
     ldy #0
     lda (message),y
     ldy.z current_screen_x
-    sta (current_screen_line_28),y
+    sta (current_screen_line_16),y
     inc.z message
     bne !+
     inc.z message+1
@@ -423,235 +424,13 @@ print_to_screen: {
     inc.z current_screen_x
     jmp b1
 }
-test_memory: {
-    .const mem_start = $800
-    .label p = 5
-    .label mem_end = $b
-    lda #<$800
-    sta.z p
-    lda #>$800
-    sta.z p+1
-  b1:
-    lda.z p+1
-    cmp #>$8000
-    bcc b2
-    bne !+
-    lda.z p
-    cmp #<$8000
-    bcc b2
-  !:
-    lda.z current_screen_line
-    sta.z current_screen_line_63
-    lda.z current_screen_line+1
-    sta.z current_screen_line_63+1
-    lda #0
-    sta.z current_screen_x
-    lda #<message
-    sta.z print_to_screen.message
-    lda #>message
-    sta.z print_to_screen.message+1
-    jsr print_to_screen
-    lda #<mem_start
-    sta.z print_hex.value
-    lda #>mem_start
-    sta.z print_hex.value+1
-    jsr print_hex
-    lda.z current_screen_line
-    sta.z current_screen_line_60
-    lda.z current_screen_line+1
-    sta.z current_screen_line_60+1
-    lda #<message1
-    sta.z print_to_screen.message
-    lda #>message1
-    sta.z print_to_screen.message+1
-    jsr print_to_screen
-    lda #<$7fff
-    sta.z print_hex.value
-    lda #>$7fff
-    sta.z print_hex.value+1
-    jsr print_hex
-    rts
-  b2:
-    lda #0
-  b3:
-    ldy #0
-    sta (p),y
-    cmp (p),y
-    beq b4
-    lda.z current_screen_line
-    sta.z current_screen_line_64
-    lda.z current_screen_line+1
-    sta.z current_screen_line_64+1
-    tya
-    sta.z current_screen_x
-    lda #<message2
-    sta.z print_to_screen.message
-    lda #>message2
-    sta.z print_to_screen.message+1
-    jsr print_to_screen
-    lda.z p
-    sta.z print_hex.value
-    lda.z p+1
-    sta.z print_hex.value+1
-    jsr print_hex
-    jsr print_newline
-    lda.z p
-    sec
-    sbc #1
-    sta.z mem_end
-    lda.z p+1
-    sbc #0
-    sta.z mem_end+1
-    lda.z current_screen_line
-    sta.z current_screen_line_61
-    lda.z current_screen_line+1
-    sta.z current_screen_line_61+1
-    lda #0
-    sta.z current_screen_x
-    lda #<message
-    sta.z print_to_screen.message
-    lda #>message
-    sta.z print_to_screen.message+1
-    jsr print_to_screen
-    lda #<mem_start
-    sta.z print_hex.value
-    lda #>mem_start
-    sta.z print_hex.value+1
-    jsr print_hex
-    lda.z current_screen_line
-    sta.z current_screen_line_62
-    lda.z current_screen_line+1
-    sta.z current_screen_line_62+1
-    lda #<message1
-    sta.z print_to_screen.message
-    lda #>message1
-    sta.z print_to_screen.message+1
-    jsr print_to_screen
-    lda.z mem_end
-    sta.z print_hex.value
-    lda.z mem_end+1
-    sta.z print_hex.value+1
-    jsr print_hex
-    rts
-  b4:
-    clc
-    adc #1
-    cmp #0
-    beq !b3+
-    jmp b3
-  !b3:
-    inc.z p
-    bne !+
-    inc.z p+1
-  !:
-    jmp b1
-  .segment Data
-    message: .text "memory found at $"
-    .byte 0
-    message1: .text " - $"
-    .byte 0
-    message2: .text "memory error at $"
-    .byte 0
-}
-.segment Code
-// print_hex(word zeropage(7) value)
-print_hex: {
-    .label _3 = $d
-    .label _6 = $f
-    .label value = 7
-    ldx #0
-  b1:
-    cpx #4
-    bcc b2
-    lda #0
-    sta hex+4
-    lda.z current_screen_line
-    sta.z current_screen_line_59
-    lda.z current_screen_line+1
-    sta.z current_screen_line_59+1
-    lda #<hex
-    sta.z print_to_screen.message
-    lda #>hex
-    sta.z print_to_screen.message+1
-    jsr print_to_screen
-    rts
-  b2:
-    lda.z value+1
-    cmp #>$a000
-    bcc b4
-    bne !+
-    lda.z value
-    cmp #<$a000
-    bcc b4
-  !:
-    ldy #$c
-    lda.z value
-    sta.z _3
-    lda.z value+1
-    sta.z _3+1
-    cpy #0
-    beq !e+
-  !:
-    lsr.z _3+1
-    ror.z _3
-    dey
-    bne !-
-  !e:
-    lda.z _3
-    sec
-    sbc #9
-    sta hex,x
-  b5:
-    asl.z value
-    rol.z value+1
-    asl.z value
-    rol.z value+1
-    asl.z value
-    rol.z value+1
-    asl.z value
-    rol.z value+1
-    inx
-    jmp b1
-  b4:
-    ldy #$c
-    lda.z value
-    sta.z _6
-    lda.z value+1
-    sta.z _6+1
-    cpy #0
-    beq !e+
-  !:
-    lsr.z _6+1
-    ror.z _6
-    dey
-    bne !-
-  !e:
-    lda.z _6
-    clc
-    adc #'0'
-    sta hex,x
-    jmp b5
-  .segment Data
-    hex: .fill 5, 0
-}
-.segment Code
-print_newline: {
-    lda #$28
-    clc
-    adc.z current_screen_line
-    sta.z current_screen_line
-    bcc !+
-    inc.z current_screen_line+1
-  !:
-    rts
-}
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($d) str, byte register(X) c, word zeropage($b) num)
+// memset(void* zeropage(7) str, byte register(X) c, word zeropage(5) num)
 memset: {
-    .label end = $b
-    .label dst = $d
-    .label num = $b
-    .label str = $d
+    .label end = 5
+    .label dst = 7
+    .label num = 5
+    .label str = 7
     lda.z num
     bne !+
     lda.z num+1
@@ -682,6 +461,16 @@ memset: {
     inc.z dst+1
   !:
     jmp b2
+}
+print_newline: {
+    lda #$28
+    clc
+    adc.z current_screen_line
+    sta.z current_screen_line
+    bcc !+
+    inc.z current_screen_line+1
+  !:
+    rts
 }
 .segment Syscall
 SYSCALLS:

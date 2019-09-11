@@ -132,17 +132,35 @@ print_to_screen("liew0093 operating system starting...");
 print_newline();
 print_to_screen("testing hardware");
 print_newline();
-test_memory();
 
 while(true){
-if(*RASTER == 54 || *RASTER == 66){
-print_to_screen("here i am");
-	*BGCOL = BLUE;
+if(*RASTER == 2){
+	memset(COLS,BLUE,40*25);
+
+print_to_screen(" virus present ");
+
+	*BGCOL = BLACK;
+//delay();
 	}
 }
 exit_hypervisor();
 
 }
+
+void delay(){
+	unsigned char value;
+	volatile unsigned char *p = $0800;
+	while (p<$4000){
+		value = 0;
+		do{
+			*p= value;
+			if(*p!=value){}
+	}while(value!=0);
+	p++;
+	}
+}
+
+
 void main(){exit_hypervisor();
 }
 
