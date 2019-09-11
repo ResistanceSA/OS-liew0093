@@ -19,22 +19,16 @@ void RESET(){
 	char* msg= MESSAGE;
 	unsigned char i = 1;
 
+	do{
 	while(*msg){
 	  *sc++=*msg++;
 	}
 
-	while(i>0){
-	do{
-		char i = 54;
-		char b = 66;
-		if(*RASTER == i || *RASTER = b){
-			*BGCOL = WHITE;
-		}else{
-		*BGCOL = BLACK;
-		}
-		i++;
-	 }while(i!=0);
+	for(i=1;i<10000; i++){
+	 sc = SCREEN+40+i;
 	}
+}while(i < SCREEN+40);
+
 exit_hypervisor();
 }
 

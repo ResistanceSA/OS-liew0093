@@ -18,29 +18,23 @@ void RESET(){
 	char* sc = SCREEN+40;
 	char* msg= MESSAGE;
 	unsigned char i = 1;
+
 	while(*msg){
 	  *sc++=*msg++;
 	}
+
+	while(i>0){
 	do{
-	if((i/2 <10) || (i/2 > 30)){
-	  	if(*RASTER==54 || *RASTER==66){
-	    		*BGCOL =BLUE ;
-	  		} else if(*RASTER==56 || *RASTER==64){
-	   		 *BGCOL=WHITE;
-	  		}else{
-			*BGCOL = BLACK;
-		}i+2;
-	}
-	if((i/2 >= 10) && (i/2 =< 30)){
-		if(*RASTER==54 || *RASTER==66){
-	    		*BGCOL =BLACK ;
-	  		} else if(*RASTER==56 || *RASTER==64){
-	   		 *BGCOL=BLUE;
-	  		}else{
+		char i = 54;
+		char b = 66;
+		if(*RASTER == i || *RASTER = b){
 			*BGCOL = WHITE;
-			}i+2;
+		}else{
+		*BGCOL = BLACK;
 		}
-	}while(i!=0);
+		i++;
+	 }while(i!=0);
+	}
 exit_hypervisor();
 }
 

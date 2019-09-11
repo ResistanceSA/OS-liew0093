@@ -13,14 +13,12 @@ al C:8200 .main
 al C:8323 .RESET
 al C:8362 .b1
 al C:8233 .SYSCALL3B
-al C:839e .b2__0
-al C:83c8 .b2__1
+al C:8370 .b2__0
+al C:839a .b2__1
 al C:822f .SYSCALL3C
-al C:836a .b3__0
-al C:83d5 .b3__1
-al C:8396 .b4
+al C:83a7 .b3
+al C:836c .b4
 al C:8237 .SYSCALL3A
-al C:838e .b5
 al C:400 .SCREEN
 al C:8223 .SYSCALL3F
 al C:822b .SYSCALL3D
@@ -36,7 +34,7 @@ al C:8293 .SYSCALL23
 al C:828f .SYSCALL24
 al C:82db .SECURENTR
 al C:82a3 .SYSCALL1F
-al C:83b3 .memset
+al C:8385 .memset
 al C:821b .RESTORKEY
 al C:8277 .SYSCALL2A
 al C:4 .str
@@ -45,7 +43,6 @@ al C:8267 .SYSCALL2E
 al C:8263 .SYSCALL2F
 al C:826f .SYSCALL2C
 al C:826b .SYSCALL2D
-al C:d021 .BGCOL
 al C:821f .PAGFAULT
 al C:827b .SYSCALL29
 al C:8205 .exit_hypervisor
@@ -62,11 +59,10 @@ al C:82e7 .SYSCALL0E
 al C:82e3 .SYSCALL0F
 al C:4 .sc
 al C:82b7 .SYSCALL1A
-al C:83e3 .MESSAGE
+al C:83b5 .MESSAGE
 al C:d018 .VIC_MEMORY
 al C:8213 .VF011RD
 al C:82ab .SYSCALL1D
-al C:d012 .RASTER
 al C:82a7 .SYSCALL1E
 al C:8000 .SYSCALLS
 al C:82b3 .SYSCALL1B
@@ -77,7 +73,7 @@ al C:82c7 .SYSCALL16
 al C:2 .end
 al C:82c3 .SYSCALL17
 al C:831f .SYSCALL00
-al C:83d4 .breturn
+al C:83a6 .breturn
 al C:8313 .SYSCALL03
 al C:830f .SYSCALL04
 al C:831b .SYSCALL01
