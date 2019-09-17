@@ -55,7 +55,7 @@ void detect_devices(){
 
 void test_memory(){
 	unsigned short mem_start = $0800;
-	unsigned short mem_end = $7FFF;
+	unsigned short mem_end = $0800;
 	unsigned char  value;
 	volatile unsigned char *p = $0800;
 		while(p <$8000){
