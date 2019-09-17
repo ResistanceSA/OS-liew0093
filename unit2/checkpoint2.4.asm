@@ -10,16 +10,16 @@
   .label SCREEN = $400
   .label BGCOL = $d021
   .label COLS = $d800
-  .const BLACK = 0
   .const WHITE = 1
   .const BLUE = 6
   .const JMP = $4c
   .const NOP = $ea
+  .label current_screen_line = 4
+  .label current_screen_line_16 = 2
+  .label current_screen_line_26 = 2
+  .label current_screen_line_27 = 2
 .segment Code
 main: {
-    rts
-}
-CPUKIL: {
     jsr exit_hypervisor
     rts
 }
@@ -27,6 +27,10 @@ exit_hypervisor: {
     //Trigger exit from Hypervisor mode
     lda #1
     sta $d67f
+    rts
+}
+CPUKIL: {
+    jsr exit_hypervisor
     rts
 }
 undefined_trap: {
@@ -310,8 +314,6 @@ SYSCALL00: {
     rts
 }
 RESET: {
-    .label sc = 4
-    .label msg = 2
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -334,64 +336,102 @@ RESET: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<SCREEN+$28
-    sta.z sc
-    lda #>SCREEN+$28
-    sta.z sc+1
-    lda #<MESSAGE
-    sta.z msg
-    lda #>MESSAGE
-    sta.z msg+1
-  b1:
-    ldy #0
-    lda (msg),y
-    cmp #0
-    bne b2
-  b3:
+    ldx #0
+    lda #<$400
+    sta.z current_screen_line_16
+    lda #>$400
+    sta.z current_screen_line_16+1
+    lda #<message
+    sta.z print_to_screen.message
+    lda #>message
+    sta.z print_to_screen.message+1
+    jsr print_to_screen
+    lda #<$400
+    sta.z current_screen_line
+    lda #>$400
+    sta.z current_screen_line+1
+    jsr print_newline
+    lda.z current_screen_line
+    sta.z current_screen_line_26
+    lda.z current_screen_line+1
+    sta.z current_screen_line_26+1
+    ldx #0
+    lda #<message1
+    sta.z print_to_screen.message
+    lda #>message1
+    sta.z print_to_screen.message+1
+    jsr print_to_screen
+    jsr print_newline
+    ldx #0
+  b2:
     lda #$36
     cmp RASTER
-    beq b4
+    beq b3
     lda #$42
     cmp RASTER
-    beq b4
-    lda #$38
-    cmp RASTER
-    beq b5
-    lda #$40
-    cmp RASTER
-    beq b5
-    lda #BLACK
-    sta BGCOL
-    jmp b3
-  b5:
-    lda #WHITE
-    sta BGCOL
-    jmp b3
-  b4:
+    beq b3
+    jmp b2
+  b3:
+    lda.z current_screen_line
+    sta.z current_screen_line_27
+    lda.z current_screen_line+1
+    sta.z current_screen_line_27+1
+    lda #<message2
+    sta.z print_to_screen.message
+    lda #>message2
+    sta.z print_to_screen.message+1
+    jsr print_to_screen
     lda #BLUE
     sta BGCOL
-    jmp b3
-  b2:
+    jmp b2
+  .segment Data
+    message: .text "liew0093 operating system starting..."
+    .byte 0
+    message1: .text "testing hardware"
+    .byte 0
+    message2: .text " virus present "
+    .byte 0
+}
+.segment Code
+// print_to_screen(byte* zeropage(6) message)
+print_to_screen: {
+    .label message = 6
+  b1:
     ldy #0
-    lda (msg),y
-    sta (sc),y
-    inc.z sc
+    lda (message),y
+    cmp #0
+    bne b2
+    rts
+  b2:
+    stx.z $ff
+    ldy #0
+    lda (message),y
+    ldy.z $ff
+    sta (current_screen_line_16),y
+    inc.z message
     bne !+
-    inc.z sc+1
+    inc.z message+1
   !:
-    inc.z msg
-    bne !+
-    inc.z msg+1
-  !:
+    inx
     jmp b1
 }
+print_newline: {
+    lda #$28
+    clc
+    adc.z current_screen_line
+    sta.z current_screen_line
+    bcc !+
+    inc.z current_screen_line+1
+  !:
+    rts
+}
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(4) str, byte register(X) c, word zeropage(2) num)
+// memset(void* zeropage(8) str, byte register(X) c, word zeropage(6) num)
 memset: {
-    .label end = 2
-    .label dst = 4
-    .label num = 2
-    .label str = 4
+    .label end = 6
+    .label dst = 8
+    .label num = 6
+    .label str = 8
     lda.z num
     bne !+
     lda.z num+1
@@ -423,9 +463,6 @@ memset: {
   !:
     jmp b2
 }
-.segment Data
-  MESSAGE: .text "checkpoint 2.5 liew0093"
-  .byte 0
 .segment Syscall
 SYSCALLS:
   .byte JMP

@@ -8,45 +8,164 @@ const char* COLS = 0xd800;
 const char BLACK = 0;
 const char WHITE = 1;
 const char BLUE = 6;
+char[] MESSAGE = "liew0093 checkpoint3.1";
+unsigned char *current_screen_line = $0400;
+unsigned char current_screen_x = 0;
 
-char[] MESSAGE = "checkpoint 2.5 liew0093";
 
-void RESET(){
-	*VIC_MEMORY = 0x14;
-	memset(SCREEN,' ',40*25);
-	memset(COLS,WHITE,40*25);
-	char* sc = SCREEN+40;
-	char* msg= MESSAGE;
-	unsigned char i = 1;
-
-	while(*msg){
-	  *sc++=*msg++;
+void detect_vicii(unsigned short address){
+	
+	// POinter where VIC-II is suspected to be
+	volatile unsigned char *p = address;
+	unsigned char v1, v2;
+	
+	unsigned short i;
+	v1=p[$12]; //Read start address + $12
+	//wait 64 microseconds
+	for(i=1;i<1000;i++) continue;
+	v2=p[$12];//Read again
+	if (v2>v1){
+		print_to_screen("Seems to be a VIC-II here");
 	}
+}
 
-	while(i>0){
-	do{
-		char i = 54;
-		char b = 66;
-		if(*RASTER == i || *RASTER = b){
-			*BGCOL = WHITE;
-		}else{
-		*BGCOL = BLACK;
+void detect_devices(){
+	unsigned short mem_start = $D000;
+	unsigned short mem_end = $DFF0;
+	volatile unsigned char *p = $D000;
+	unsigned char value;
+	while(p < $DFF0){
+		*p=value;
+		do{
+		if(*p != value){
+		detect_vicii($D800);
+		print_to_screen("vic-ii detected at $");
+		print_hex((unsigned short)p);
+		print_newline();
+		print_to_screen("finished probing devices");
+		return;
+		}value++;
+		}while(value!=0);
+		p +=10;
 		}
-		i++;
-	 }while(i!=0);
+	print_to_screen("finished probing devices");
+
+		
+}
+
+
+void test_memory(){
+	unsigned short mem_start = $0800;
+	unsigned short mem_end = $0800;
+	unsigned char  value;
+	volatile unsigned char *p = $0800;
+		while(p <$8000){
+			value = 0;
+		do{
+			*p = value;
+			if(*p != value){
+				print_to_screen("memory error at $");
+				print_hex((unsigned short)p);
+				print_newline();
+				mem_end = (unsigned short)p-1;
+
+		print_to_screen("memory found at $");
+		print_hex(mem_start);
+		print_to_screen(" - $");
+		print_hex(mem_end);
+			return;
+			}	
+		value++;
+		}while(value !=0);
+		p++;
+		}
+		mem_end = $7FFF;
+	print_to_screen("memory found at $");
+	print_hex(mem_start);
+	print_to_screen(" - $");
+	print_hex(mem_end);
+}
+void print_hex(unsigned short value)
+{
+	char[5] hex;
+	unsigned char i;
+	for(i=0;i<4;i++){
+		if(value<0xa000) hex[i]='0'+(char)(value>>12);
+		else hex[i]=(char)(value>>12)-9;
+		value<<=4;
+		}
+	hex[4]=0;
+	print_to_screen(hex);
 	}
-exit_hypervisor();
+void print_to_screen(char* message){
+	char* sc = current_screen_line;
+	while(*message){
+	current_screen_line[current_screen_x]= *message;
+	message++;
+	current_screen_x++;
+	}
 }
-
-void main(){
+void print_newline(){
+	current_screen_line+=40;	
+	current_screen_x = 0;
 }
-
 
 void exit_hypervisor()
 {
 	//Trigger exit from Hypervisor mode
 	*(unsigned char *)$D67F = $01;
 }
+
+void RESET(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	/* while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLACK;
+	  }
+	}*/
+
+print_to_screen("liew0093 operating system starting...");
+print_newline();
+print_to_screen("testing hardware");
+print_newline();
+
+while(true){
+//	memset(COLS,BLUE,40*25);
+
+if(*RASTER == 54 || *RASTER == 66){
+print_to_screen(" virus present ");
+
+	*BGCOL = BLUE;
+//delay();
+	}
+}
+exit_hypervisor();
+
+}
+
+void delay(){
+	unsigned char value;
+	volatile unsigned char *p = $0800;
+	while (p<$4000){
+		value = 0;
+		do{
+			*p= value;
+			if(*p!=value){}
+	}while(value!=0);
+	p++;
+	}
+}
+
+
+void main(){exit_hypervisor();
+}
+
+
+
 
 void SYSCALL00(){exit_hypervisor();}
 void SYSCALL01(){exit_hypervisor();}
@@ -112,8 +231,6 @@ void SYSCALL3C(){exit_hypervisor();}
 void SYSCALL3D(){exit_hypervisor();}
 void SYSCALL3E(){exit_hypervisor();}
 void SYSCALL3F(){exit_hypervisor();}
-
-
 
 void PAGFAULT(){exit_hypervisor();}
 void RESTORKEY(){exit_hypervisor();}
