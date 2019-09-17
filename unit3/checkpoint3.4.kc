@@ -62,7 +62,7 @@ void test_memory(){
 			value = 0;
 		do{
 			*p = value;
-			if(*p != value){
+			if(*p == value){
 				print_to_screen("memory error at $");
 				print_hex((unsigned short)p);
 				print_newline();

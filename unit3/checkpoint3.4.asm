@@ -689,17 +689,21 @@ test_memory: {
     jsr print_hex
     rts
   b2:
-    lda #0
+    ldx #0
   b3:
+    txa
     ldy #0
     sta (p),y
-    cmp (p),y
-    beq b4
+    lda (p),y
+    tay
+    stx.z $ff
+    cpy.z $ff
+    bne b4
     lda.z current_screen_line
     sta.z current_screen_line_88
     lda.z current_screen_line+1
     sta.z current_screen_line_88+1
-    tya
+    lda #0
     sta.z current_screen_x
     lda #<message2
     sta.z print_to_screen.message
@@ -751,9 +755,8 @@ test_memory: {
     jsr print_hex
     rts
   b4:
-    clc
-    adc #1
-    cmp #$ff
+    inx
+    cpx #$ff
     bcs !b3+
     jmp b3
   !b3:
