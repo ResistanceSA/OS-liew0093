@@ -1,0 +1,350 @@
+import "string"
+#pragma link("mega65hyper.ld")
+const char* RASTER = 0xd012;
+const char* VIC_MEMORY = 0xd018;
+const char* SCREEN = 0x0400;
+const char* BGCOL = 0xd021;
+const char* COLS = 0xd800;
+const char BLACK = 0;
+const char WHITE = 1;
+char[] MESSAGE = "liew0093 checkpoint3.1";
+unsigned char *current_screen_line = $0400;
+unsigned char current_screen_x = 0;
+
+
+void detect_vicii(unsigned short address){
+	
+	// POinter where VIC-II is suspected to be
+	volatile unsigned char *p = address;
+	unsigned char v1, v2;
+	
+	unsigned short i;
+	v1=p[$12]; //Read start address + $12
+	//wait 64 microseconds
+	for(i=1;i<1000;i++) continue;
+	v2=p[$12];//Read again
+	if (v2>v1){
+		print_to_screen("Seems to be a VIC-II here");
+	}
+}
+
+void detect_devices(){
+	unsigned short mem_start = $D000;
+	unsigned short mem_end = $DFF0;
+	volatile unsigned char *p = $D000;
+	unsigned char value;
+	while(p < $DFF0){
+		*p=value;
+		do{
+		if(*p != value){
+		detect_vicii($D800);
+		print_to_screen("vic-ii detected at $");
+		print_hex((unsigned short)p);
+		print_newline();
+		print_to_screen("finished probing devices");
+		return;
+		}value++;
+		}while(value!=0);
+		p +=10;
+		}
+	print_to_screen("finished probing devices");
+
+		
+}
+
+
+void test_memory(){
+	unsigned short mem_start = $0800;
+	unsigned short mem_end = $0800;
+	unsigned char  value;
+	volatile unsigned char *p = $0800;
+		while(p <$8000){
+			value = 0;
+		do{
+			*p = value;
+			if(*p != value){
+				print_to_screen("memory error at $");
+				print_hex((unsigned short)p);
+				print_newline();
+				mem_end = (unsigned short)p-1;
+
+		print_to_screen("memory found at $");
+		print_hex(mem_start);
+		print_to_screen(" - $");
+		print_hex(mem_end);
+			return;
+			}	
+		value++;
+		}while(value !=0);
+		p++;
+		}
+		mem_end = $7FFF;
+	print_to_screen("memory found at $");
+	print_hex(mem_start);
+	print_to_screen(" - $");
+	print_hex(mem_end);
+}
+void print_hex(unsigned short value)
+{
+	char[5] hex;
+	unsigned char i;
+	for(i=0;i<4;i++){
+		if(value<0xa000) hex[i]='0'+(char)(value>>12);
+		else hex[i]=(char)(value>>12)-9;
+		value<<=4;
+		}
+	hex[4]=0;
+	print_to_screen(hex);
+	}
+void print_to_screen(char* message){
+	char* sc = current_screen_line;
+	while(*message){
+	current_screen_line[current_screen_x]= *message;
+	message++;
+	current_screen_x++;
+	}
+}
+void print_newline(){
+	current_screen_line+=40;	
+	current_screen_x = 0;
+}
+
+void exit_hypervisor()
+{
+	//Trigger exit from Hypervisor mode
+	*(unsigned char *)$D67F = $01;
+}
+
+void RESET(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	/* while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLACK;
+	  }
+	}*/
+
+print_to_screen("liew0093 operating system starting...");
+print_newline();
+print_to_screen("testing hardware");
+print_newline();
+
+test_memory();
+print_newline();
+
+detect_devices();
+
+exit_hypervisor();
+
+}
+void main(){exit_hypervisor();
+}
+
+
+
+
+void SYSCALL00(){exit_hypervisor();}
+void SYSCALL01(){exit_hypervisor();}
+void SYSCALL02(){exit_hypervisor();}
+void SYSCALL03(){exit_hypervisor();}
+void SYSCALL04(){exit_hypervisor();}
+void SYSCALL05(){exit_hypervisor();}
+void SYSCALL06(){exit_hypervisor();}
+void SYSCALL07(){exit_hypervisor();}
+void SYSCALL08(){exit_hypervisor();}
+void SYSCALL09(){exit_hypervisor();}
+void SYSCALL0A(){exit_hypervisor();}
+void SYSCALL0B(){exit_hypervisor();}
+void SYSCALL0C(){exit_hypervisor();}
+void SYSCALL0D(){exit_hypervisor();}
+void SYSCALL0E(){exit_hypervisor();}
+void SYSCALL0F(){exit_hypervisor();}
+void SYSCALL10(){exit_hypervisor();}
+void SECURENTR(){exit_hypervisor();}
+void SECUREXIT(){exit_hypervisor();}
+void SYSCALL13(){exit_hypervisor();}
+void SYSCALL14(){exit_hypervisor();}
+void SYSCALL15(){exit_hypervisor();}
+void SYSCALL16(){exit_hypervisor();}
+void SYSCALL17(){exit_hypervisor();}
+void SYSCALL18(){exit_hypervisor();}
+void SYSCALL19(){exit_hypervisor();}
+void SYSCALL1A(){exit_hypervisor();}
+void SYSCALL1B(){exit_hypervisor();}
+void SYSCALL1C(){exit_hypervisor();}
+void SYSCALL1D(){exit_hypervisor();}
+void SYSCALL1E(){exit_hypervisor();}
+void SYSCALL1F(){exit_hypervisor();}
+void SYSCALL20(){exit_hypervisor();}
+void SYSCALL21(){exit_hypervisor();}
+void SYSCALL22(){exit_hypervisor();}
+void SYSCALL23(){exit_hypervisor();}
+void SYSCALL24(){exit_hypervisor();}
+void SYSCALL25(){exit_hypervisor();}
+void SYSCALL26(){exit_hypervisor();}
+void SYSCALL27(){exit_hypervisor();}
+void SYSCALL28(){exit_hypervisor();}
+void SYSCALL29(){exit_hypervisor();}
+void SYSCALL2A(){exit_hypervisor();}
+void SYSCALL2B(){exit_hypervisor();}
+void SYSCALL2C(){exit_hypervisor();}
+void SYSCALL2D(){exit_hypervisor();}
+void SYSCALL2E(){exit_hypervisor();}
+void SYSCALL2F(){exit_hypervisor();}
+void SYSCALL30(){exit_hypervisor();}
+void SYSCALL31(){exit_hypervisor();}
+void SYSCALL32(){exit_hypervisor();}
+void SYSCALL33(){exit_hypervisor();}
+void SYSCALL34(){exit_hypervisor();}
+void SYSCALL35(){exit_hypervisor();}
+void SYSCALL36(){exit_hypervisor();}
+void SYSCALL37(){exit_hypervisor();}
+void SYSCALL38(){exit_hypervisor();}
+void SYSCALL39(){exit_hypervisor();}
+void SYSCALL3A(){exit_hypervisor();}
+void SYSCALL3B(){exit_hypervisor();}
+void SYSCALL3C(){exit_hypervisor();}
+void SYSCALL3D(){exit_hypervisor();}
+void SYSCALL3E(){exit_hypervisor();}
+void SYSCALL3F(){exit_hypervisor();}
+
+void PAGFAULT(){exit_hypervisor();}
+void RESTORKEY(){exit_hypervisor();}
+void ALTTABKEY(){exit_hypervisor();}
+void VF011RD(){exit_hypervisor();}
+void VF011WR(){exit_hypervisor();}
+void undefined_trap(){exit_hypervisor();}
+void CPUKIL(){exit_hypervisor();}
+
+
+ 
+#pragma data_seg(Syscall)
+struct Syscall{
+  char xjmp;
+  void()*syscall;
+  char xnop;
+};
+const char JMP = 0x4c;
+const char NOP = 0xea;
+
+export struct Syscall[]SYSCALLS = {
+ {JMP, &SYSCALL00, NOP},
+ {JMP, &SYSCALL01, NOP},
+ {JMP, &SYSCALL02, NOP},
+ {JMP, &SYSCALL03, NOP},
+ {JMP, &SYSCALL04, NOP},
+ {JMP, &SYSCALL05, NOP},
+ {JMP, &SYSCALL06, NOP},
+ {JMP, &SYSCALL07, NOP},
+ {JMP, &SYSCALL08, NOP},
+ {JMP, &SYSCALL09, NOP},
+ {JMP, &SYSCALL0A, NOP},
+ {JMP, &SYSCALL0B, NOP},
+ {JMP, &SYSCALL0C, NOP},
+ {JMP, &SYSCALL0D, NOP},
+ {JMP, &SYSCALL0E, NOP},
+ {JMP, &SYSCALL0F, NOP},
+ {JMP, &SYSCALL10, NOP},
+ {JMP, &SECURENTR, NOP},
+ {JMP, &SECUREXIT, NOP},
+ {JMP, &SYSCALL13, NOP},
+ {JMP, &SYSCALL14, NOP},
+ {JMP, &SYSCALL15, NOP},
+ {JMP, &SYSCALL16, NOP},
+ {JMP, &SYSCALL17, NOP},
+ {JMP, &SYSCALL18, NOP},
+ {JMP, &SYSCALL19, NOP},
+ {JMP, &SYSCALL1A, NOP},
+ {JMP, &SYSCALL1B, NOP},
+ {JMP, &SYSCALL1C, NOP},
+ {JMP, &SYSCALL1D, NOP},
+ {JMP, &SYSCALL1E, NOP},
+ {JMP, &SYSCALL1F, NOP},
+ {JMP, &SYSCALL20, NOP},
+ {JMP, &SYSCALL21, NOP},
+ {JMP, &SYSCALL22, NOP},
+ {JMP, &SYSCALL23, NOP},
+ {JMP, &SYSCALL24, NOP},
+ {JMP, &SYSCALL25, NOP},
+ {JMP, &SYSCALL26, NOP},
+ {JMP, &SYSCALL27, NOP},
+ {JMP, &SYSCALL28, NOP}, 
+ {JMP, &SYSCALL29, NOP},
+ {JMP, &SYSCALL2A, NOP},
+ {JMP, &SYSCALL2B, NOP},
+ {JMP, &SYSCALL2C, NOP},
+ {JMP, &SYSCALL2D, NOP},
+ {JMP, &SYSCALL2E, NOP},
+ {JMP, &SYSCALL2F, NOP},
+ {JMP, &SYSCALL30, NOP},
+ {JMP, &SYSCALL31, NOP},
+ {JMP, &SYSCALL32, NOP},
+ {JMP, &SYSCALL33, NOP},
+ {JMP, &SYSCALL34, NOP},
+ {JMP, &SYSCALL35, NOP},
+ {JMP, &SYSCALL36, NOP},
+ {JMP, &SYSCALL37, NOP},
+ {JMP, &SYSCALL38, NOP},
+ {JMP, &SYSCALL39, NOP},
+ {JMP, &SYSCALL3A, NOP},
+ {JMP, &SYSCALL3B, NOP},
+ {JMP, &SYSCALL3C, NOP},
+ {JMP, &SYSCALL3D, NOP},
+ {JMP, &SYSCALL3E, NOP},
+ {JMP, &SYSCALL3F, NOP}
+
+};
+
+export align(0x100) struct Syscall[] TRAPS= {
+ {JMP, &RESET, NOP},
+ {JMP, &PAGFAULT, NOP},
+ {JMP, &RESTORKEY, NOP}, 
+ {JMP, &ALTTABKEY, NOP},
+ {JMP, &VF011RD, NOP},
+ {JMP, &VF011WR, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},//20
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP}, //40
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &CPUKIL, NOP}
+};
