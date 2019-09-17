@@ -67,11 +67,11 @@ void test_memory(){
 				print_hex((unsigned short)p);
 				print_newline();
 				mem_end = (unsigned short)p-1;
-		}else{
+	
 		print_to_screen("memory found at $");
 		print_hex(mem_start);
 		print_to_screen(" - $");
-		print_hex(p);
+		print_hex(mem_end);
 			return;
 			}	
 		value++;
