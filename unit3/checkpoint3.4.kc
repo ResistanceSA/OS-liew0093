@@ -71,7 +71,7 @@ void test_memory(){
 		print_to_screen("memory found at $");
 		print_hex(mem_start);
 		print_to_screen(" - $");
-		print_hex(mem_end);
+		print_hex(p);
 			return;
 			}	
 		value++;
