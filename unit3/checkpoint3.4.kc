@@ -135,7 +135,7 @@ print_to_screen("testing hardware");
 print_newline();
 
 //test_memory();
-print_newline();
+//print_newline();
 
 detect_devices();
 
