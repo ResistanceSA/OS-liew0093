@@ -67,7 +67,6 @@ void test_memory(){
 				print_hex((unsigned short)p);
 				print_newline();
 				mem_end = (unsigned short)p-1;
-	
 		print_to_screen("memory found at $");
 		print_hex(mem_start);
 		print_to_screen(" - $");
@@ -75,7 +74,7 @@ void test_memory(){
 			return;
 			}	
 		value++;
-		}while(value !=0);
+		}while(value < 255);
 		p++;
 		}
 		mem_end = $7FFF;
