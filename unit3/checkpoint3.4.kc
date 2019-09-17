@@ -7,7 +7,7 @@ const char* BGCOL = 0xd021;
 const char* COLS = 0xd800;
 const char BLACK = 0;
 const char WHITE = 1;
-char[] MESSAGE = "liew0093 checkpoint3.1";
+char[] MESSAGE = "liew0093 checkpoint3.4";
 unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
@@ -134,7 +134,7 @@ print_newline();
 print_to_screen("testing hardware");
 print_newline();
 
-test_memory();
+//test_memory();
 print_newline();
 
 detect_devices();
