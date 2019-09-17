@@ -753,8 +753,8 @@ test_memory: {
   b4:
     clc
     adc #1
-    cmp #0
-    beq !b3+
+    cmp #$ff
+    bcs !b3+
     jmp b3
   !b3:
     inc.z p
