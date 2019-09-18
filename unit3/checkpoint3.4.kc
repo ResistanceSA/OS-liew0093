@@ -17,8 +17,8 @@ void detect_vicii(unsigned short address){
 	// POinter where VIC-II is suspected to be
 	volatile unsigned char *p = address;
 	unsigned char v1, v2;
-	unsigned short x;
 
+	unsigned short x;
 	unsigned short i;
 	v1=p[$12]; //Read start address + $12
 	//wait 64 microseconds
@@ -27,6 +27,10 @@ void detect_vicii(unsigned short address){
 	if (v2>v1){
 		print_to_screen("Seems to be a VIC-II here");
 	}
+	x = mem_start + 80;
+	return x;
+
+
 }
 
 
@@ -36,6 +40,7 @@ void detect_devices(){
 	unsigned short mem_end = $DFF0;
 	volatile unsigned char *p = $D000;
 	unsigned char value;
+	volatile unsigned short x;
 	while(p < $DFF0){
 		*p=value;
 		do{

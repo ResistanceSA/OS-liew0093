@@ -7,7 +7,7 @@ const char* BGCOL = 0xd021;
 const char* COLS = 0xd800;
 const char BLACK = 0;
 const char WHITE = 1;
-char[] MESSAGE = "liew0093 checkpoint3.1";
+char[] MESSAGE = "liew0093 checkpoint3.4";
 unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
@@ -17,7 +17,8 @@ void detect_vicii(unsigned short address){
 	// POinter where VIC-II is suspected to be
 	volatile unsigned char *p = address;
 	unsigned char v1, v2;
-	
+	unsigned short x;
+
 	unsigned short i;
 	v1=p[$12]; //Read start address + $12
 	//wait 64 microseconds
@@ -28,6 +29,8 @@ void detect_vicii(unsigned short address){
 	}
 }
 
+
+
 void detect_devices(){
 	unsigned short mem_start = $D000;
 	unsigned short mem_end = $DFF0;
@@ -37,11 +40,11 @@ void detect_devices(){
 		*p=value;
 		do{
 		if(*p != value){
-		detect_vicii($D800);
-		print_to_screen("vic-ii detected at $");
+		  detect_vicii($D080);
+		print_to_screen("vic-ii detected at $");	     
+		print_hex(mem_start);
+		print_to_screen(" -- $");
 		print_hex((unsigned short)p);
-		print_newline();
-		print_to_screen("finished probing devices");
 		return;
 		}value++;
 		}while(value!=0);
@@ -67,7 +70,6 @@ void test_memory(){
 				print_hex((unsigned short)p);
 				print_newline();
 				mem_end = (unsigned short)p-1;
-
 		print_to_screen("memory found at $");
 		print_hex(mem_start);
 		print_to_screen(" - $");
@@ -75,7 +77,7 @@ void test_memory(){
 			return;
 			}	
 		value++;
-		}while(value !=0);
+		}while(value < 255);
 		p++;
 		}
 		mem_end = $7FFF;
@@ -132,8 +134,8 @@ print_newline();
 print_to_screen("testing hardware");
 print_newline();
 
-test_memory();
-print_newline();
+//test_memory();
+//print_newline();
 
 detect_devices();
 
