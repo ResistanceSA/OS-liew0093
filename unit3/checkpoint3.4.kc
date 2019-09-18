@@ -12,7 +12,7 @@ unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
 
-void detect_vicii(unsigned short address){
+short detect_vicii(unsigned short address){
 	
 	// POinter where VIC-II is suspected to be
 	volatile unsigned char *p = address;
