@@ -27,7 +27,7 @@ short detect_vicii(unsigned short address){
 	if (v2>v1){
 		print_to_screen("Seems to be a VIC-II here");
 	}
-	x = address + 80;
+	x = (unsigned short)*p + 80;
 	return x;
 
 
