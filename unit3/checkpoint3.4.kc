@@ -27,7 +27,7 @@ void detect_vicii(unsigned short address){
 	if (v2>v1){
 		print_to_screen("Seems to be a VIC-II here");
 	}
-	x = mem_start + 80;
+	x = address + 80;
 	return x;
 
 
