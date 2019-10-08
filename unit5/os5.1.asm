@@ -27,7 +27,7 @@
   .const JMP = $4c
   .const NOP = $ea
   .label current_screen_line = 2
-  .label current_screen_x = 4
+  .label current_screen_x = $a
   lda #<SCREEN
   sta.z current_screen_line
   lda #>SCREEN
@@ -365,11 +365,6 @@ RESET: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<MESSAGE
-    sta.z print_to_screen.c
-    lda #>MESSAGE
-    sta.z print_to_screen.c+1
-    jsr print_to_screen
     jsr print_newline
     jsr print_newline
     jsr print_newline
@@ -392,7 +387,7 @@ RESET: {
 describe_pdb: {
     .label p = stored_pdbs
     .label n = $d
-    .label ss = 5
+    .label ss = 4
     lda #<message
     sta.z print_to_screen.c
     lda #>message
@@ -532,11 +527,11 @@ print_newline: {
     sta.z current_screen_x
     rts
 }
-// print_hex(word zeropage(5) value)
+// print_hex(word zeropage(4) value)
 print_hex: {
     .label __3 = $b
     .label __6 = $d
-    .label value = 5
+    .label value = 4
     ldx #0
   __b1:
     cpx #8
@@ -610,7 +605,7 @@ print_hex: {
 }
 .segment Code
 print_to_screen: {
-    .label c = 5
+    .label c = 4
   __b1:
     ldy #0
     lda (c),y
@@ -629,10 +624,10 @@ print_to_screen: {
   !:
     jmp __b1
 }
-// print_dhex(dword zeropage(7) value)
+// print_dhex(dword zeropage(6) value)
 print_dhex: {
     .label __0 = $f
-    .label value = 7
+    .label value = 6
     lda #0
     sta.z __0+2
     sta.z __0+3
@@ -689,9 +684,6 @@ memset: {
   !:
     jmp __b2
 }
-.segment Data
-  MESSAGE: .text "checkpoint 5.1"
-  .byte 0
 .segment Syscall
   SYSCALLS: .byte JMP
   .word SYSCALL00
