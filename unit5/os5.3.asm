@@ -524,11 +524,11 @@ print_dhex: {
 resume_pdb: {
     .const pdb_number = 0
     .label p = stored_pdbs
-    .label __8 = $4f
+    .label __7 = $4f
     .label ss = $54
     .label i = $14
-    .label __18 = $56
-    .label __19 = $49
+    .label __17 = $56
+    .label __18 = $49
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS
     sta.z dma_copy.src
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+1
@@ -548,13 +548,13 @@ resume_pdb: {
     sta.z dma_copy.length+1
     jsr dma_copy
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS
-    sta.z __8
+    sta.z __7
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+1
-    sta.z __8+1
+    sta.z __7+1
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+2
-    sta.z __8+2
+    sta.z __7+2
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+3
-    sta.z __8+3
+    sta.z __7+3
     lda.z dma_copy.src
     clc
     adc #<$800
@@ -612,20 +612,20 @@ resume_pdb: {
     lda #<$d640
     clc
     adc.z i
-    sta.z __18
+    sta.z __17
     lda #>$d640
     adc.z i+1
-    sta.z __18+1
+    sta.z __17+1
     lda.z ss
     clc
     adc.z i
-    sta.z __19
+    sta.z __18
     lda.z ss+1
     adc.z i+1
-    sta.z __19+1
+    sta.z __18+1
     ldy #0
-    lda (__18),y
-    sta (__19),y
+    lda (__17),y
+    sta (__18),y
     inc.z i
     bne !+
     inc.z i+1
