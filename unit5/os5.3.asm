@@ -29,6 +29,7 @@
   .const STATE_BLOCKED = 5
   .const STATE_RUNNING = 6
   .const STATE_EXIT = 7
+  .const STATE_NOTRUNNING = 0
   // Process stored state will live at $C000-$C7FF, with 256 bytes
   // for each process reserved
   .label stored_pdbs = $c000
@@ -1120,11 +1121,22 @@ initialise_pdb: {
     .label ss = $56
     jsr next_free_pid
     lda.z next_free_pid.pid
+    // Setup process ID
+    // XXX - Call the function next_free_pid() to get a process ID for //the 
+    //  process in this PDB, and store it in p->process_id
     sta p
+    // Setup process name 
+    // (32 bytes space for each to fit 16 chars + nul)
+    // (we could just use 17 bytes, but kickc can't multiply by 17)
     lda #<process_names
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_PROCESS_NAME
     lda #>process_names
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_PROCESS_NAME+1
+    /*  XXX - copy the string in the array 'name' into the array 'p->process_name'
+  XXX - To make your life easier, do something like char *pn=p->process_name
+        Then you can just do something along the lines of pn[...]=name[...] 
+        in a loop to copy the name into place.
+        (The arrays are both 17 bytes long)*/
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_PROCESS_NAME
     sta.z pn
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_PROCESS_NAME+1
@@ -1133,7 +1145,15 @@ initialise_pdb: {
   __b1:
     cpy #$11+1
     bcc __b2
-    //   p->process_state = STATE_NOTRUNNING;
+    // Set process state as not running.
+    //  XXX - Put the value STATE_NOTRUNNING into p->process_state
+    lda #STATE_NOTRUNNING
+    sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_PROCESS_STATE
+    // Set stored memory area
+    // (for now, we just use fixed 8KB steps from $30000-$3FFFF
+    // corresponding to the PDB number
+    // XXX - Set p->storage_start_address to the correct start address
+    // for a process that is in this PDB.
     lda #<$30000
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS
     lda #>$30000
@@ -1142,6 +1162,9 @@ initialise_pdb: {
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+2
     lda #>$30000>>$10
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+3
+    //  XXX - Then do the same for the end address of the process
+    // This gets stored into p->process_end_address and the correct
+    // address is $31FFF + (((unsigned dword)pdb_number)*$2000);
     lda #<$31fff
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_END_ADDRESS
     lda #>$31fff
@@ -1150,6 +1173,7 @@ initialise_pdb: {
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_END_ADDRESS+2
     lda #>$31fff>>$10
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_END_ADDRESS+3
+    // 64 bytes context switching state for each process
     lda #<process_context_states
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORED_STATE
     lda #>process_context_states
@@ -1159,18 +1183,38 @@ initialise_pdb: {
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORED_STATE+1
     sta.z ss+1
     ldy #0
+  // XXX - Set all 64 bytes of the array 'ss' to zero, to clear the c//ontext
+  //switching state
   __b4:
     cpy #$3f
     bcc __b5
+    // Set tandard CPU flags (8-bit stack, interrupts disabled)
     lda #$24
     ldy #7
     sta (ss),y
+    /*  XXX - Set the stack pointer to $01FF
+  (This requires a bit of fiddly pointer arithmetic, so to save you 
+  the trouble working it out, you can use the following as the left 
+   side of the expression:   *(unsigned short *)&ss[x] = $01FF;
+  where x is the offset of the stack pointer low byte (SPL) in the
+  Hypervisor saved state registers in Appendix D of the MEGA65 User's
+  Guide. i.e., if it were at $D640, x would be replaced with 0, and
+  if it were at $D641, x would be replaced with 1, and so on.
+  XXX - Note that the MEGA65 User's Guide has been updated on FLO.
+  You will required the latest version, as otherwise SPL is not listed. */
     ldy #4
     lda #<$1ff
     sta (ss),y
     iny
     lda #>$1ff
     sta (ss),y
+    /*  XXX - Set the program counter to $080D
+  (This requires a bit of fiddly pointer arithmetic, so to save you 
+  the trouble working it out, you can use the following as the left 
+  side of the expression:   *(unsigned short *)&ss[x] = ...
+  where x is the offset of the program counter low byte (PCL) in the
+  Hypervisor saved state registers in Appendix D of the MEGA65 User's
+  Guide. */
     ldy #7
     lda #<$80d
     sta (ss),y
