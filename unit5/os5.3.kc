@@ -221,12 +221,14 @@ void resume_pdb(unsigned char pdb_number)
   // Copy from $0000-$03FF and $0800-$1FFF, so that we don't overwrite
   // the screen
   //  XXX - Copy $0400 bytes from p->storage_start_address to locatio// n $0000
-  dma_copy($0000, $03FF, $0400);
-   (unsigned dword)(p->storage_start_address);
+
+  dma_copy((unsigned dword)(p->storage_start_address)+$0000, $03FF, $0400);
+
 
     //  XXX - Copy $1800 bytes from p->storage_start_address+$0800 to location $0800
-   dma_copy($0800, $1FFF, $1800);
- (unsigned dword)(p->storage_start_address)+$0800;
+
+  dma_copy((unsigned dword)(p->storage_start_address)+$0800, $1FFF, $1800);
+
 
     //   (Use (unsigned dword)(p->storage_start_address)+offset to pass these
     //   addresses in calls to dma_copy() to cast them to the correct type.)
@@ -238,7 +240,7 @@ void resume_pdb(unsigned char pdb_number)
   //        complex reasons.)
   unsigned short i;
 for(i=0;i<63;i++){
-ss[i] = ((unsigned char*)$D640)[i];
+  ss[i] = ((unsigned char*)$D640)[i];
 }
 
   // Set state of process to running
