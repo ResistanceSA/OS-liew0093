@@ -151,7 +151,7 @@ p->stored_state=process_context_states+(((unsigned short)pdb_number)<<6);
 for(i=0;i<63;i++) ss[i] = $00;
   ss[7] = $24;
 *(unsigned short *)&ss[4] = $01FF;
-*(unsigned short *)&ss[4] = $01FF;
+*(unsigned short *)&ss[7] = $080D;
  return;
 }
 

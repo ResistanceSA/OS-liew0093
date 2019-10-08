@@ -1171,11 +1171,11 @@ initialise_pdb: {
     iny
     lda #>$1ff
     sta (ss),y
-    ldy #4
-    lda #<$1ff
+    ldy #7
+    lda #<$80d
     sta (ss),y
     iny
-    lda #>$1ff
+    lda #>$80d
     sta (ss),y
     rts
   __b5:
