@@ -29,7 +29,6 @@
   .const STATE_BLOCKED = 5
   .const STATE_RUNNING = 6
   .const STATE_EXIT = 7
-  .const STATE_NOTRUNNING = 0
   // Process stored state will live at $C000-$C7FF, with 256 bytes
   // for each process reserved
   .label stored_pdbs = $c000
@@ -65,8 +64,6 @@ main: {
     rts
 }
 RESET: {
-    .label sc = $39
-    .label msg = $14
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -93,53 +90,24 @@ RESET: {
     sta.z current_screen_line
     lda #>SCREEN
     sta.z current_screen_line+1
-    lda #<SCREEN+$28
-    sta.z sc
-    lda #>SCREEN+$28
-    sta.z sc+1
-    lda #<MESSAGE
-    sta.z msg
-    lda #>MESSAGE
-    sta.z msg+1
-  __b1:
-    ldy #0
-    lda (msg),y
-    cmp #0
-    bne __b2
-    jsr print_newline
-    jsr print_newline
-    jsr print_newline
     jsr initialise_pdb
     jsr load_program
     jsr resume_pdb
     ldx #0
     jsr describe_pdb
-  __b4:
+  __b1:
     lda #$36
     cmp RASTER
-    beq __b5
+    beq __b2
     lda #$42
     cmp RASTER
-    beq __b5
+    beq __b2
     lda #BLUE
     sta BGCOL
-    jmp __b4
-  __b5:
+    jmp __b1
+  __b2:
     lda #WHITE
     sta BGCOL
-    jmp __b4
-  __b2:
-    ldy #0
-    lda (msg),y
-    sta (sc),y
-    inc.z sc
-    bne !+
-    inc.z sc+1
-  !:
-    inc.z msg
-    bne !+
-    inc.z msg+1
-  !:
     jmp __b1
   .segment Data
     name: .text "program1.prg"
@@ -555,10 +523,10 @@ print_dhex: {
 resume_pdb: {
     .const pdb_number = 0
     .label p = stored_pdbs
-    .label ss = $39
+    .label ss = $54
     .label i = $14
-    .label __17 = $54
-    .label __18 = $56
+    .label __17 = $56
+    .label __18 = $49
     lda #0
     sta.z dma_copy.src
     sta.z dma_copy.src+1
@@ -655,14 +623,14 @@ exit_hypervisor: {
     sta $d67f
     rts
 }
-// dma_copy(dword zeropage($4f) src, dword zeropage($b) dest, word zeropage($39) length)
+// dma_copy(dword zeropage($4f) src, dword zeropage($b) dest, word zeropage($14) length)
 dma_copy: {
-    .label __0 = $3b
-    .label __2 = $3f
-    .label __4 = $54
-    .label __5 = $43
-    .label __7 = $47
-    .label __9 = $56
+    .label __0 = $39
+    .label __2 = $3d
+    .label __4 = $56
+    .label __5 = $41
+    .label __7 = $45
+    .label __9 = $49
     .label list_request_format0a = $16
     .label list_source_mb_option80 = $17
     .label list_source_mb = $18
@@ -678,7 +646,7 @@ dma_copy: {
     .label list_modulo00 = $25
     .label src = $4f
     .label dest = $b
-    .label length = $39
+    .label length = $14
     lda #0
     sta.z list_request_format0a
     sta.z list_source_mb_option80
@@ -1165,8 +1133,7 @@ initialise_pdb: {
   __b1:
     cpy #$11+1
     bcc __b2
-    lda #STATE_NOTRUNNING
-    sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_PROCESS_STATE
+    //   p->process_state = STATE_NOTRUNNING;
     lda #<$30000
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS
     lda #>$30000
@@ -1277,12 +1244,12 @@ next_free_pid: {
     jmp __b2
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($39) str, byte register(X) c, word zeropage($14) num)
+// memset(void* zeropage($54) str, byte register(X) c, word zeropage($14) num)
 memset: {
     .label end = $14
-    .label dst = $39
+    .label dst = $54
     .label num = $14
-    .label str = $39
+    .label str = $54
     lda.z num
     bne !+
     lda.z num+1
@@ -1602,9 +1569,6 @@ SYSCALL00: {
     jsr exit_hypervisor
     rts
 }
-.segment Data
-  MESSAGE: .text "checkpoint 5.3"
-  .byte 0
 .segment Syscall
   SYSCALLS: .byte JMP
   .word SYSCALL00

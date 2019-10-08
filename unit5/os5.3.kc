@@ -143,7 +143,7 @@ p->process_name=process_names+(((short)i)<<5);
  for(i=0;i<=17; i++){
    pn[i]=name[i];
  }
-   p->process_state = STATE_NOTRUNNING;
+ //   p->process_state = STATE_NOTRUNNING;
   p->storage_start_address = $30000 + (((unsigned dword)pdb_number)*$2000);
  p->storage_end_address = $31FFF + (((unsigned dword)pdb_number)*$2000);
 p->stored_state=process_context_states+(((unsigned short)pdb_number)<<6);
@@ -475,14 +475,14 @@ void RESET(){
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	current_screen_line = SCREEN;
-         char* sc = SCREEN+40;
+	/*         char* sc = SCREEN+40;
          char* msg = MESSAGE;
 	 while(*msg){
 	   *sc++ = *msg++;
 	 }
     print_newline();
     print_newline();
-    print_newline();
+    print_newline(); */
     initialise_pdb(0,"program1.prg");
     load_program(0);
     resume_pdb(0);
