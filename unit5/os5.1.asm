@@ -343,6 +343,8 @@ SYSCALL00: {
     rts
 }
 RESET: {
+    .label sc = $d
+    .label msg = 2
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -369,23 +371,49 @@ RESET: {
     sta.z current_screen_line
     lda #>SCREEN
     sta.z current_screen_line+1
+    lda #<SCREEN+$28
+    sta.z sc
+    lda #>SCREEN+$28
+    sta.z sc+1
+    lda #<MESSAGE
+    sta.z msg
+    lda #>MESSAGE
+    sta.z msg+1
+  __b1:
+    ldy #0
+    lda (msg),y
+    cmp #0
+    bne __b2
     jsr print_newline
     jsr print_newline
     jsr print_newline
     jsr describe_pdb
-  __b1:
+  __b4:
     lda #$36
     cmp RASTER
-    beq __b2
+    beq __b5
     lda #$42
     cmp RASTER
-    beq __b2
+    beq __b5
     lda #BLACK
     sta BGCOL
-    jmp __b1
-  __b2:
+    jmp __b4
+  __b5:
     lda #WHITE
     sta BGCOL
+    jmp __b4
+  __b2:
+    ldy #0
+    lda (msg),y
+    sta (sc),y
+    inc.z sc
+    bne !+
+    inc.z sc+1
+  !:
+    inc.z msg
+    bne !+
+    inc.z msg+1
+  !:
     jmp __b1
 }
 describe_pdb: {
@@ -609,7 +637,7 @@ print_hex: {
 }
 .segment Code
 print_to_screen: {
-    .label c = 2
+    .label c = $d
   __b1:
     ldy #0
     lda (c),y
@@ -688,6 +716,9 @@ memset: {
   !:
     jmp __b2
 }
+.segment Data
+  MESSAGE: .text "checkpoint 5.1"
+  .byte 0
 .segment Syscall
   SYSCALLS: .byte JMP
   .word SYSCALL00
