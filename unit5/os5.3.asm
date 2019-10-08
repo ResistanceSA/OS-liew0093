@@ -524,43 +524,27 @@ print_dhex: {
 resume_pdb: {
     .const pdb_number = 0
     .label p = stored_pdbs
-    .label __5 = $4f
     .label __8 = $4f
     .label ss = $54
     .label i = $14
     .label __18 = $56
     .label __19 = $49
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS
-    sta.z __5
-    lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+1
-    sta.z __5+1
-    lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+2
-    sta.z __5+2
-    lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+3
-    sta.z __5+3
-    lda.z dma_copy.src
-    clc
-    adc #<$400
     sta.z dma_copy.src
-    lda.z dma_copy.src+1
-    adc #>$400
+    lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+1
     sta.z dma_copy.src+1
-    lda.z dma_copy.src+2
-    adc #0
+    lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+2
     sta.z dma_copy.src+2
-    lda.z dma_copy.src+3
-    adc #0
+    lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+3
     sta.z dma_copy.src+3
-    lda #<$3ff
+    lda #0
     sta.z dma_copy.dest
-    lda #>$3ff
     sta.z dma_copy.dest+1
-    lda #<$3ff>>$10
     sta.z dma_copy.dest+2
-    lda #>$3ff>>$10
     sta.z dma_copy.dest+3
-    lda #<0
+    lda #<$400
     sta.z dma_copy.length
+    lda #>$400
     sta.z dma_copy.length+1
     jsr dma_copy
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS
@@ -573,10 +557,10 @@ resume_pdb: {
     sta.z __8+3
     lda.z dma_copy.src
     clc
-    adc #<$1800
+    adc #<$800
     sta.z dma_copy.src
     lda.z dma_copy.src+1
-    adc #>$1800
+    adc #>$800
     sta.z dma_copy.src+1
     lda.z dma_copy.src+2
     adc #0
@@ -584,17 +568,17 @@ resume_pdb: {
     lda.z dma_copy.src+3
     adc #0
     sta.z dma_copy.src+3
-    lda #<$1fff
-    sta.z dma_copy.dest
-    lda #>$1fff
-    sta.z dma_copy.dest+1
-    lda #<$1fff>>$10
-    sta.z dma_copy.dest+2
-    lda #>$1fff>>$10
-    sta.z dma_copy.dest+3
     lda #<$800
-    sta.z dma_copy.length
+    sta.z dma_copy.dest
     lda #>$800
+    sta.z dma_copy.dest+1
+    lda #<$800>>$10
+    sta.z dma_copy.dest+2
+    lda #>$800>>$10
+    sta.z dma_copy.dest+3
+    lda #<$1800
+    sta.z dma_copy.length
+    lda #>$1800
     sta.z dma_copy.length+1
     jsr dma_copy
     // Load stored CPU state into Hypervisor saved register area at $FFD3640
