@@ -194,14 +194,14 @@ void initialise_pdb(unsigned char pdb_number,char *name)
 
   // Initialise processor state for standard entry at $080D
   // Everything to zero, except for a few things we will set manually
-
+  for(i=0;i<63;i++) ss[i] = $00;
   // 64 bytes context switching state for each process
   p->stored_state=process_context_states+(((unsigned short)pdb_number)<<6);
   unsigned char *ss=p->stored_state;
 
   // XXX - Set all 64 bytes of the array 'ss' to zero, to clear the c//ontext
   //switching state
-  for(i=0;i<63;i++) ss[i] = $00;
+
 
   // Set tandard CPU flags (8-bit stack, interrupts disabled)
   ss[7] = $24;

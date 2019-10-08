@@ -49,8 +49,8 @@ main: {
     rts
 }
 RESET: {
-    .label sc = $11
-    .label msg = 7
+    .label sc = $d
+    .label msg = $13
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -129,8 +129,8 @@ RESET: {
 .segment Code
 describe_pdb: {
     .label p = stored_pdbs
-    .label n = $11
-    .label ss = 7
+    .label n = $13
+    .label ss = 2
     lda #<message
     sta.z print_to_screen.c
     lda #>message
@@ -270,11 +270,11 @@ print_newline: {
     sta.z current_screen_x
     rts
 }
-// print_hex(word zeropage(7) value)
+// print_hex(word zeropage(2) value)
 print_hex: {
-    .label __3 = $13
-    .label __6 = $11
-    .label value = 7
+    .label __3 = $d
+    .label __6 = $13
+    .label value = 2
     ldx #0
   __b1:
     cpx #8
@@ -348,7 +348,7 @@ print_hex: {
 }
 .segment Code
 print_to_screen: {
-    .label c = $11
+    .label c = $13
   __b1:
     ldy #0
     lda (c),y
@@ -367,10 +367,10 @@ print_to_screen: {
   !:
     jmp __b1
 }
-// print_dhex(dword zeropage(2) value)
+// print_dhex(dword zeropage(4) value)
 print_dhex: {
-    .label __0 = $d
-    .label value = 2
+    .label __0 = $f
+    .label value = 4
     lda #0
     sta.z __0+2
     sta.z __0+3
@@ -393,7 +393,8 @@ print_dhex: {
 initialise_pdb: {
     .label p = stored_pdbs
     .label pn = $13
-    .label ss = $11
+    .label ss = $15
+    .label ss_17 = 2
     jsr next_free_pid
     lda.z next_free_pid.pid
     // Setup process ID
@@ -448,6 +449,12 @@ initialise_pdb: {
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_END_ADDRESS+2
     lda #>$31fff>>$10
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_END_ADDRESS+3
+    ldy #0
+  // Initialise processor state for standard entry at $080D
+  // Everything to zero, except for a few things we will set manually
+  __b4:
+    cpy #$3f
+    bcc __b5
     // 64 bytes context switching state for each process
     lda #<process_context_states
     sta p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORED_STATE
@@ -457,12 +464,6 @@ initialise_pdb: {
     sta.z ss
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORED_STATE+1
     sta.z ss+1
-    ldy #0
-  // XXX - Set all 64 bytes of the array 'ss' to zero, to clear the c//ontext
-  //switching state
-  __b4:
-    cpy #$3f
-    bcc __b5
     // Set tandard CPU flags (8-bit stack, interrupts disabled)
     lda #$24
     ldy #7
@@ -499,7 +500,7 @@ initialise_pdb: {
     rts
   __b5:
     lda #0
-    sta (ss),y
+    sta (ss_17),y
     iny
     jmp __b4
   __b2:
@@ -509,10 +510,10 @@ initialise_pdb: {
     jmp __b1
 }
 next_free_pid: {
-    .label __2 = $13
-    .label pid = 6
-    .label p = $13
-    .label i = 7
+    .label __2 = $15
+    .label pid = 8
+    .label p = $15
+    .label i = $d
     inc.z pid_counter
     // start with the next process ID
     lda.z pid_counter
@@ -563,12 +564,12 @@ next_free_pid: {
     jmp __b2
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($11) str, byte register(X) c, word zeropage(7) num)
+// memset(void* zeropage($d) str, byte register(X) c, word zeropage($13) num)
 memset: {
-    .label end = 7
-    .label dst = $11
-    .label num = 7
-    .label str = $11
+    .label end = $13
+    .label dst = $d
+    .label num = $13
+    .label str = $d
     lda.z num
     bne !+
     lda.z num+1
