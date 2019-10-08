@@ -250,9 +250,9 @@ p->process_state = STATE_RUNNING;
   // Mark this PDB as the running process
 // XXX - Set running_pdb to the PDB number we are resuming
   running_pdb = pdb_number;
-  // Exit hypervisor and cause CPU register values (including PC) to be restored from
+  // Exit hypervisor and cause CPU register values (including PC) to  be restored from
   // those loaded from p->stored_state
-  exit_hypervisor();
+ exit_hypervisor();
 }
 
 struct dma_list {
