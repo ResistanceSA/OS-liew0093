@@ -19,7 +19,7 @@
   .label SCREEN = $400
   .label BGCOL = $d021
   .label COLS = $d800
-  .const BLACK = 0
+  .const BLUE = 6
   .const WHITE = 1
   // Process stored state will live at $C000-$C7FF, with 256 bytes
   // for each process reserved
@@ -395,7 +395,7 @@ RESET: {
     lda #$42
     cmp RASTER
     beq __b5
-    lda #BLACK
+    lda #BLUE
     sta BGCOL
     jmp __b4
   __b5:
@@ -717,7 +717,7 @@ memset: {
     jmp __b2
 }
 .segment Data
-  MESSAGE: .text "checkpoint 5.1"
+  MESSAGE: .text "checkpoint 5.1 liew0093"
   .byte 0
 .segment Syscall
   SYSCALLS: .byte JMP
