@@ -25,7 +25,13 @@ const unsigned char STATE_RUNNING = $01;
 
 // Process Descriptor Block definition
 struct process_descriptor_block {
- XXX - Copy in your content from os5.1.kc 
+  // XXX - Copy in your content from os5.1.kc 
+  unsigned char process_state;
+  char * process_name;
+   unsigned long storage_start_address;
+  unsigned long storage_end_address;
+  unsigned char * stored_state;
+
 };
 
 // Process stored state will live at $C000-$C7FF, with 256 bytes
@@ -203,20 +209,227 @@ void exit_hypervisor()
 	*(char *)$D67F = $01;
 }
 
-XXX - Add syscall handler functions here
 
-XXX - Add your RESET() function here
+void SYSCALL00(){exit_hypervisor();}
+void SYSCALL01(){exit_hypervisor();}
+void SYSCALL02(){exit_hypervisor();}
+void SYSCALL03(){exit_hypervisor();}
+void SYSCALL04(){exit_hypervisor();}
+void SYSCALL05(){exit_hypervisor();}
+void SYSCALL06(){exit_hypervisor();}
+void SYSCALL07(){exit_hypervisor();}
+void SYSCALL08(){exit_hypervisor();}
+void SYSCALL09(){exit_hypervisor();}
+void SYSCALL0A(){exit_hypervisor();}
+void SYSCALL0B(){exit_hypervisor();}
+void SYSCALL0C(){exit_hypervisor();}
+void SYSCALL0D(){exit_hypervisor();}
+void SYSCALL0E(){exit_hypervisor();}
+void SYSCALL0F(){exit_hypervisor();}
+void SYSCALL10(){exit_hypervisor();}
+void SECURENTR(){exit_hypervisor();}
+void SECUREXIT(){exit_hypervisor();}
+void SYSCALL13(){exit_hypervisor();}
+void SYSCALL14(){exit_hypervisor();}
+void SYSCALL15(){exit_hypervisor();}
+void SYSCALL16(){exit_hypervisor();}
+void SYSCALL17(){exit_hypervisor();}
+void SYSCALL18(){exit_hypervisor();}
+void SYSCALL19(){exit_hypervisor();}
+void SYSCALL1A(){exit_hypervisor();}
+void SYSCALL1B(){exit_hypervisor();}
+void SYSCALL1C(){exit_hypervisor();}
+void SYSCALL1D(){exit_hypervisor();}
+void SYSCALL1E(){exit_hypervisor();}
+void SYSCALL1F(){exit_hypervisor();}
+void SYSCALL20(){exit_hypervisor();}
+void SYSCALL21(){exit_hypervisor();}
+void SYSCALL22(){exit_hypervisor();}
+void SYSCALL23(){exit_hypervisor();}
+void SYSCALL24(){exit_hypervisor();}
+void SYSCALL25(){exit_hypervisor();}
+void SYSCALL26(){exit_hypervisor();}
+void SYSCALL27(){exit_hypervisor();}
+void SYSCALL28(){exit_hypervisor();}
+void SYSCALL29(){exit_hypervisor();}
+void SYSCALL2A(){exit_hypervisor();}
+void SYSCALL2B(){exit_hypervisor();}
+void SYSCALL2C(){exit_hypervisor();}
+void SYSCALL2D(){exit_hypervisor();}
+void SYSCALL2E(){exit_hypervisor();}
+void SYSCALL2F(){exit_hypervisor();}
+void SYSCALL30(){exit_hypervisor();}
+void SYSCALL31(){exit_hypervisor();}
+void SYSCALL32(){exit_hypervisor();}
+void SYSCALL33(){exit_hypervisor();}
+void SYSCALL34(){exit_hypervisor();}
+void SYSCALL35(){exit_hypervisor();}
+void SYSCALL36(){exit_hypervisor();}
+void SYSCALL37(){exit_hypervisor();}
+void SYSCALL38(){exit_hypervisor();}
+void SYSCALL39(){exit_hypervisor();}
+void SYSCALL3A(){exit_hypervisor();}
+void SYSCALL3B(){exit_hypervisor();}
+void SYSCALL3C(){exit_hypervisor();}
+void SYSCALL3D(){exit_hypervisor();}
+void SYSCALL3E(){exit_hypervisor();}
+void SYSCALL3F(){exit_hypervisor();}
 
+void PAGFAULT(){exit_hypervisor();}
+void RESTORKEY(){exit_hypervisor();}
+void ALTTABKEY(){exit_hypervisor();}
+void VF011RD(){exit_hypervisor();}
+void VF011WR(){exit_hypervisor();}
+void undefined_trap(){exit_hypervisor();}
+void CPUKIL(){exit_hypervisor();}
 
-XXX - Add the following line inside your RESET() function just
-      before the "//Loop forever with 2 bars" line
-    current_screen_line = SCREEN;
+void RESET(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	current_screen_line = SCREEN;
+         char* sc = SCREEN+40;
+         char* msg = MESSAGE;
+	 while(*msg){
+	   *sc++ = *msg++;
+	 }
     print_newline();
     print_newline();
     print_newline();
-
     initialise_pdb(0,"program1.prg");
     describe_pdb(0);
+	while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLUE;
+	  }
+	}
+ 
+#pragma data_seg(Syscall)
+struct Syscall{
+  char xjmp;
+  void()*syscall;
+  char xnop;
+};
+const char JMP = 0x4c;
+const char NOP = 0xea;
 
+export struct Syscall[]SYSCALLS = {
+ {JMP, &SYSCALL00, NOP},
+ {JMP, &SYSCALL01, NOP},
+ {JMP, &SYSCALL02, NOP},
+ {JMP, &SYSCALL03, NOP},
+ {JMP, &SYSCALL04, NOP},
+ {JMP, &SYSCALL05, NOP},
+ {JMP, &SYSCALL06, NOP},
+ {JMP, &SYSCALL07, NOP},
+ {JMP, &SYSCALL08, NOP},
+ {JMP, &SYSCALL09, NOP},
+ {JMP, &SYSCALL0A, NOP},
+ {JMP, &SYSCALL0B, NOP},
+ {JMP, &SYSCALL0C, NOP},
+ {JMP, &SYSCALL0D, NOP},
+ {JMP, &SYSCALL0E, NOP},
+ {JMP, &SYSCALL0F, NOP},
+ {JMP, &SYSCALL10, NOP},
+ {JMP, &SECURENTR, NOP},
+ {JMP, &SECUREXIT, NOP},
+ {JMP, &SYSCALL13, NOP},
+ {JMP, &SYSCALL14, NOP},
+ {JMP, &SYSCALL15, NOP},
+ {JMP, &SYSCALL16, NOP},
+ {JMP, &SYSCALL17, NOP},
+ {JMP, &SYSCALL18, NOP},
+ {JMP, &SYSCALL19, NOP},
+ {JMP, &SYSCALL1A, NOP},
+ {JMP, &SYSCALL1B, NOP},
+ {JMP, &SYSCALL1C, NOP},
+ {JMP, &SYSCALL1D, NOP},
+ {JMP, &SYSCALL1E, NOP},
+ {JMP, &SYSCALL1F, NOP},
+ {JMP, &SYSCALL20, NOP},
+ {JMP, &SYSCALL21, NOP},
+ {JMP, &SYSCALL22, NOP},
+ {JMP, &SYSCALL23, NOP},
+ {JMP, &SYSCALL24, NOP},
+ {JMP, &SYSCALL25, NOP},
+ {JMP, &SYSCALL26, NOP},
+ {JMP, &SYSCALL27, NOP},
+ {JMP, &SYSCALL28, NOP}, 
+ {JMP, &SYSCALL29, NOP},
+ {JMP, &SYSCALL2A, NOP},
+ {JMP, &SYSCALL2B, NOP},
+ {JMP, &SYSCALL2C, NOP},
+ {JMP, &SYSCALL2D, NOP},
+ {JMP, &SYSCALL2E, NOP},
+ {JMP, &SYSCALL2F, NOP},
+ {JMP, &SYSCALL30, NOP},
+ {JMP, &SYSCALL31, NOP},
+ {JMP, &SYSCALL32, NOP},
+ {JMP, &SYSCALL33, NOP},
+ {JMP, &SYSCALL34, NOP},
+ {JMP, &SYSCALL35, NOP},
+ {JMP, &SYSCALL36, NOP},
+ {JMP, &SYSCALL37, NOP},
+ {JMP, &SYSCALL38, NOP},
+ {JMP, &SYSCALL39, NOP},
+ {JMP, &SYSCALL3A, NOP},
+ {JMP, &SYSCALL3B, NOP},
+ {JMP, &SYSCALL3C, NOP},
+ {JMP, &SYSCALL3D, NOP},
+ {JMP, &SYSCALL3E, NOP},
+ {JMP, &SYSCALL3F, NOP}
 
-XXX - Add the missing system traps and entry point tables here
+};
+
+export align(0x100) struct Syscall[] TRAPS= {
+ {JMP, &RESET, NOP},
+ {JMP, &PAGFAULT, NOP},
+ {JMP, &RESTORKEY, NOP}, 
+ {JMP, &ALTTABKEY, NOP},
+ {JMP, &VF011RD, NOP},
+ {JMP, &VF011WR, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},//20
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP}, //40
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &CPUKIL, NOP}
+};
