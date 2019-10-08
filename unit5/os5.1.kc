@@ -165,9 +165,7 @@ void RESET(){
 	memset(COLS,WHITE,40*25);
     char* sc = SCREEN+40;
     char* msg = MESSAGE;
-    while(*msg){
-      *sc++=*msg++;
-    }
+    print_to_screen(MESSAGE);
 
     print_newline();
     print_newline();

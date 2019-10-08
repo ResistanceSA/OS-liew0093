@@ -27,7 +27,7 @@
   .const JMP = $4c
   .const NOP = $ea
   .label current_screen_line = 2
-  .label current_screen_x = $a
+  .label current_screen_x = 4
   lda #<SCREEN
   sta.z current_screen_line
   lda #>SCREEN
@@ -343,8 +343,6 @@ SYSCALL00: {
     rts
 }
 RESET: {
-    .label sc = $d
-    .label msg = 4
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -367,55 +365,34 @@ RESET: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<SCREEN+$28
-    sta.z sc
-    lda #>SCREEN+$28
-    sta.z sc+1
     lda #<MESSAGE
-    sta.z msg
+    sta.z print_to_screen.c
     lda #>MESSAGE
-    sta.z msg+1
-  __b1:
-    ldy #0
-    lda (msg),y
-    cmp #0
-    bne __b2
+    sta.z print_to_screen.c+1
+    jsr print_to_screen
     jsr print_newline
     jsr print_newline
     jsr print_newline
     jsr describe_pdb
-  __b4:
+  __b1:
     lda #$36
     cmp RASTER
-    beq __b5
+    beq __b2
     lda #$42
     cmp RASTER
-    beq __b5
+    beq __b2
     lda #BLACK
     sta BGCOL
-    jmp __b4
-  __b5:
+    jmp __b1
+  __b2:
     lda #WHITE
     sta BGCOL
-    jmp __b4
-  __b2:
-    ldy #0
-    lda (msg),y
-    sta (sc),y
-    inc.z sc
-    bne !+
-    inc.z sc+1
-  !:
-    inc.z msg
-    bne !+
-    inc.z msg+1
-  !:
     jmp __b1
 }
 describe_pdb: {
     .label p = stored_pdbs
     .label n = $d
-    .label ss = 4
+    .label ss = 5
     lda #<message
     sta.z print_to_screen.c
     lda #>message
@@ -555,11 +532,11 @@ print_newline: {
     sta.z current_screen_x
     rts
 }
-// print_hex(word zeropage(4) value)
+// print_hex(word zeropage(5) value)
 print_hex: {
     .label __3 = $b
     .label __6 = $d
-    .label value = 4
+    .label value = 5
     ldx #0
   __b1:
     cpx #8
@@ -633,7 +610,7 @@ print_hex: {
 }
 .segment Code
 print_to_screen: {
-    .label c = $d
+    .label c = 5
   __b1:
     ldy #0
     lda (c),y
@@ -652,10 +629,10 @@ print_to_screen: {
   !:
     jmp __b1
 }
-// print_dhex(dword zeropage(6) value)
+// print_dhex(dword zeropage(7) value)
 print_dhex: {
     .label __0 = $f
-    .label value = 6
+    .label value = 7
     lda #0
     sta.z __0+2
     sta.z __0+3
