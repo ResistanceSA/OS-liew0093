@@ -26,7 +26,7 @@
   .label stored_pdbs = $c000
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 8
+  .label current_screen_line = 2
   .label current_screen_x = $a
   lda #<SCREEN
   sta.z current_screen_line
@@ -343,6 +343,8 @@ SYSCALL00: {
     rts
 }
 RESET: {
+    .label sc = $d
+    .label msg = 4
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -365,33 +367,55 @@ RESET: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    lda #<SCREEN
-    sta.z current_screen_line
-    lda #>SCREEN
-    sta.z current_screen_line+1
+    lda #<SCREEN+$28
+    sta.z sc
+    lda #>SCREEN+$28
+    sta.z sc+1
+    lda #<MESSAGE
+    sta.z msg
+    lda #>MESSAGE
+    sta.z msg+1
+  __b1:
+    ldy #0
+    lda (msg),y
+    cmp #0
+    bne __b2
     jsr print_newline
     jsr print_newline
     jsr print_newline
     jsr describe_pdb
-  __b1:
+  __b4:
     lda #$36
     cmp RASTER
-    beq __b2
+    beq __b5
     lda #$42
     cmp RASTER
-    beq __b2
+    beq __b5
     lda #BLACK
     sta BGCOL
-    jmp __b1
-  __b2:
+    jmp __b4
+  __b5:
     lda #WHITE
     sta BGCOL
+    jmp __b4
+  __b2:
+    ldy #0
+    lda (msg),y
+    sta (sc),y
+    inc.z sc
+    bne !+
+    inc.z sc+1
+  !:
+    inc.z msg
+    bne !+
+    inc.z msg+1
+  !:
     jmp __b1
 }
 describe_pdb: {
     .label p = stored_pdbs
     .label n = $d
-    .label ss = 2
+    .label ss = 4
     lda #<message
     sta.z print_to_screen.c
     lda #>message
@@ -531,11 +555,11 @@ print_newline: {
     sta.z current_screen_x
     rts
 }
-// print_hex(word zeropage(2) value)
+// print_hex(word zeropage(4) value)
 print_hex: {
     .label __3 = $b
     .label __6 = $d
-    .label value = 2
+    .label value = 4
     ldx #0
   __b1:
     cpx #8
@@ -609,7 +633,7 @@ print_hex: {
 }
 .segment Code
 print_to_screen: {
-    .label c = 2
+    .label c = $d
   __b1:
     ldy #0
     lda (c),y
@@ -628,10 +652,10 @@ print_to_screen: {
   !:
     jmp __b1
 }
-// print_dhex(dword zeropage(4) value)
+// print_dhex(dword zeropage(6) value)
 print_dhex: {
     .label __0 = $f
-    .label value = 4
+    .label value = 6
     lda #0
     sta.z __0+2
     sta.z __0+3
@@ -688,6 +712,9 @@ memset: {
   !:
     jmp __b2
 }
+.segment Data
+  MESSAGE: .text "checkpoint 5.1"
+  .byte 0
 .segment Syscall
   SYSCALLS: .byte JMP
   .word SYSCALL00

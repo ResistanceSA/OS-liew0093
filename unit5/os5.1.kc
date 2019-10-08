@@ -163,7 +163,12 @@ void RESET(){
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
-    current_screen_line = SCREEN;
+    char* sc = SCREEN+40;
+    char* msg = MESSAGE;
+    while(*msg){
+      *sc++=*msg++;
+    }
+
     print_newline();
     print_newline();
     print_newline();
