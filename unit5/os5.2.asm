@@ -216,7 +216,7 @@ describe_pdb: {
     sta.z ss
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORED_STATE+1
     sta.z ss+1
-    ldy #7*SIZEOF_WORD
+    ldy #4*SIZEOF_WORD
     lda (print_hex.value),y
     pha
     iny
