@@ -144,7 +144,7 @@ void describe_pdb(unsigned char pdb_number)
 
   print_to_screen("  pc:           $");
   unsigned short *ss=p->stored_state;
-  print_hex(ss[4]);
+  print_hex(ss[7]);
   print_newline();
 
 
