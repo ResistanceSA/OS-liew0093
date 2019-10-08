@@ -27,10 +27,15 @@ const unsigned char STATE_BLOCKEDSUSPENDED = $04;
 const unsigned char STATE_BLOCKED = $05;
 const unsigned char STATE_RUNNING = $06;
 const unsigned char STATE_EXIT = $07;
-
+const unsigned char STATE_NOTRUNNING = $00;
 // Process Descriptor Block definition
 struct process_descriptor_block {
-  XXX - Copy from your os5.2.kc file 
+  unsigned char process_id;
+  unsigned char process_state;
+  char * process_name;
+  unsigned long storage_start_address;
+  unsigned long storage_end_address;
+  unsigned char * stored_state;
 };
 
 // Process stored state will live at $C000-$C7FF, with 256 bytes
@@ -127,7 +132,27 @@ void describe_pdb(unsigned char pdb_number)
 // Setup a new process descriptor block
 void initialise_pdb(unsigned char pdb_number,char *name)
 {
-   XXX - Copy from your os5.2.kc
+  //   XXX - Copy from your os5.2.kc
+unsigned char i;
+
+  struct process_descriptor_block *p
+    =(struct process_descriptor_block *)(((unsigned short)stored_pdbs)+(((unsigned short)pdb_number)<<8));
+p->process_id = next_free_pid();
+p->process_name=process_names+(((short)i)<<5);
+ char *pn=p->process_name;
+ for(i=0;i<=17; i++){
+   pn[i]=name[i];
+ }
+   p->process_state = STATE_NOTRUNNING;
+  p->storage_start_address = $30000 + (((unsigned dword)pdb_number)*$2000);
+ p->storage_end_address = $31FFF + (((unsigned dword)pdb_number)*$2000);
+p->stored_state=process_context_states+(((unsigned short)pdb_number)<<6);
+  unsigned char *ss=p->stored_state;
+for(i=0;i<63;i++) ss[i] = $00;
+  ss[7] = $24;
+*(unsigned short *)&ss[4] = $01FF;
+*(unsigned short *)&ss[4] = $01FF;
+ return;
 }
 
 void resume_pdb(unsigned char pdb_number)
@@ -138,23 +163,34 @@ void resume_pdb(unsigned char pdb_number)
   // Copy stored memory into place
   // Copy from $0000-$03FF and $0800-$1FFF, so that we don't overwrite
   // the screen
-  XXX - Copy $0400 bytes from p->storage_start_address to location $0000
-  XXX - Copy $1800 bytes from p->storage_start_address+$0800 to location $0800
-        (Use (unsigned dword)(p->storage_start_address)+offset to pass these
-         addresses in calls to dma_copy() to cast them to the correct type.)
+  //  XXX - Copy $0400 bytes from p->storage_start_address to locatio// n $0000
+  dma_copy($0000, $03FF, $0400);
+   (unsigned dword)(p->storage_start_address);
+
+    //  XXX - Copy $1800 bytes from p->storage_start_address+$0800 to location $0800
+   dma_copy($0800, $1FFF, $1800);
+ (unsigned dword)(p->storage_start_address)+$0800;
+
+    //   (Use (unsigned dword)(p->storage_start_address)+offset to pass these
+    //   addresses in calls to dma_copy() to cast them to the correct type.)
 
   // Load stored CPU state into Hypervisor saved register area at $FFD3640
   unsigned char *ss=p->stored_state;
-  XXX - Use a for() loop to copy 63 bytes from ss[0]--ss[62] to ((unsigned char *)$D640)[0]
-        -- ((unsigned char *)$D640)[62] (dma_copy doesn't work for this for some slightly
-        complex reasons.)
+  //  XXX - Use a for() loop to copy 63 bytes from ss[0]--ss[62] to ((unsigned char *)$D640)[0]
+  //    -- ((unsigned char *)$D640)[62] (dma_copy doesn't work for this for some slightly
+  //        complex reasons.)
+  unsigned short i;
+for(i=0;i<63;i++){
+ss[i] = ((unsigned char*)$D640)[i];
+}
 
   // Set state of process to running
-  XXX - Set p->process_state to STATE_RUNNING
+  //XXX - Set p->process_state to STATE_RUNNING
+p->process_state = STATE_RUNNING;
 
   // Mark this PDB as the running process
-  XXX - Set running_pdb to the PDB number we are resuming
-
+// XXX - Set running_pdb to the PDB number we are resuming
+  running_pdb = pdb_number;
   // Exit hypervisor and cause CPU register values (including PC) to be restored from
   // those loaded from p->stored_state
   exit_hypervisor();
@@ -353,10 +389,237 @@ void exit_hypervisor()
 	*(char *)$D67F = $01;
 }
 
-XXX -  Copy your syscall handler functions from os5.2.kc
-XXX - Don't forget to add describe_pdb(running_pdb); to your handler for SYSCALL $03
+//XXX -  Copy your syscall handler functions from os5.2.kc
+//XXX - Don't forget to add describe_pdb(running_pdb); to your handler for SYSCALL $03
 
-XXX - Copy your RESET() routine from os5.2.kc
-XXX - Don't forget to call resume_pdb(0) immediately after load_program(0)
 
-XXX - Copy your trap handler functions and entry point tables from os5.2.kc
+void SYSCALL00(){exit_hypervisor();}
+void SYSCALL01(){exit_hypervisor();}
+void SYSCALL02(){exit_hypervisor();}
+void SYSCALL03(){
+describe_pdb(running_pdb);
+exit_hypervisor();}
+void SYSCALL04(){exit_hypervisor();}
+void SYSCALL05(){exit_hypervisor();}
+void SYSCALL06(){exit_hypervisor();}
+void SYSCALL07(){exit_hypervisor();}
+void SYSCALL08(){exit_hypervisor();}
+void SYSCALL09(){exit_hypervisor();}
+void SYSCALL0A(){exit_hypervisor();}
+void SYSCALL0B(){exit_hypervisor();}
+void SYSCALL0C(){exit_hypervisor();}
+void SYSCALL0D(){exit_hypervisor();}
+void SYSCALL0E(){exit_hypervisor();}
+void SYSCALL0F(){exit_hypervisor();}
+void SYSCALL10(){exit_hypervisor();}
+void SECURENTR(){exit_hypervisor();}
+void SECUREXIT(){exit_hypervisor();}
+void SYSCALL13(){exit_hypervisor();}
+void SYSCALL14(){exit_hypervisor();}
+void SYSCALL15(){exit_hypervisor();}
+void SYSCALL16(){exit_hypervisor();}
+void SYSCALL17(){exit_hypervisor();}
+void SYSCALL18(){exit_hypervisor();}
+void SYSCALL19(){exit_hypervisor();}
+void SYSCALL1A(){exit_hypervisor();}
+void SYSCALL1B(){exit_hypervisor();}
+void SYSCALL1C(){exit_hypervisor();}
+void SYSCALL1D(){exit_hypervisor();}
+void SYSCALL1E(){exit_hypervisor();}
+void SYSCALL1F(){exit_hypervisor();}
+void SYSCALL20(){exit_hypervisor();}
+void SYSCALL21(){exit_hypervisor();}
+void SYSCALL22(){exit_hypervisor();}
+void SYSCALL23(){exit_hypervisor();}
+void SYSCALL24(){exit_hypervisor();}
+void SYSCALL25(){exit_hypervisor();}
+void SYSCALL26(){exit_hypervisor();}
+void SYSCALL27(){exit_hypervisor();}
+void SYSCALL28(){exit_hypervisor();}
+void SYSCALL29(){exit_hypervisor();}
+void SYSCALL2A(){exit_hypervisor();}
+void SYSCALL2B(){exit_hypervisor();}
+void SYSCALL2C(){exit_hypervisor();}
+void SYSCALL2D(){exit_hypervisor();}
+void SYSCALL2E(){exit_hypervisor();}
+void SYSCALL2F(){exit_hypervisor();}
+void SYSCALL30(){exit_hypervisor();}
+void SYSCALL31(){exit_hypervisor();}
+void SYSCALL32(){exit_hypervisor();}
+void SYSCALL33(){exit_hypervisor();}
+void SYSCALL34(){exit_hypervisor();}
+void SYSCALL35(){exit_hypervisor();}
+void SYSCALL36(){exit_hypervisor();}
+void SYSCALL37(){exit_hypervisor();}
+void SYSCALL38(){exit_hypervisor();}
+void SYSCALL39(){exit_hypervisor();}
+void SYSCALL3A(){exit_hypervisor();}
+void SYSCALL3B(){exit_hypervisor();}
+void SYSCALL3C(){exit_hypervisor();}
+void SYSCALL3D(){exit_hypervisor();}
+void SYSCALL3E(){exit_hypervisor();}
+void SYSCALL3F(){exit_hypervisor();}
+
+void PAGFAULT(){exit_hypervisor();}
+void RESTORKEY(){exit_hypervisor();}
+void ALTTABKEY(){exit_hypervisor();}
+void VF011RD(){exit_hypervisor();}
+void VF011WR(){exit_hypervisor();}
+void undefined_trap(){exit_hypervisor();}
+void CPUKIL(){exit_hypervisor();}
+
+
+
+void RESET(){
+	*VIC_MEMORY = 0x14;
+	memset(SCREEN,' ',40*25);
+	memset(COLS,WHITE,40*25);
+	current_screen_line = SCREEN;
+         char* sc = SCREEN+40;
+         char* msg = MESSAGE;
+	 while(*msg){
+	   *sc++ = *msg++;
+	 }
+    print_newline();
+    print_newline();
+    print_newline();
+    initialise_pdb(0,"program1.prg");
+    load_program(0);
+    resume_pdb(0);
+    describe_pdb(0);
+	while(true){
+	  if(*RASTER==54 || *RASTER==66){
+	    *BGCOL = WHITE;
+	  } else {
+	    *BGCOL=BLUE;
+	  }
+	}
+}
+
+#pragma data_seg(Syscall)
+struct Syscall{
+  char xjmp;
+  void()*syscall;
+  char xnop;
+};
+const char JMP = 0x4c;
+const char NOP = 0xea;
+
+export struct Syscall[]SYSCALLS = {
+ {JMP, &SYSCALL00, NOP},
+ {JMP, &SYSCALL01, NOP},
+ {JMP, &SYSCALL02, NOP},
+ {JMP, &SYSCALL03, NOP},
+ {JMP, &SYSCALL04, NOP},
+ {JMP, &SYSCALL05, NOP},
+ {JMP, &SYSCALL06, NOP},
+ {JMP, &SYSCALL07, NOP},
+ {JMP, &SYSCALL08, NOP},
+ {JMP, &SYSCALL09, NOP},
+ {JMP, &SYSCALL0A, NOP},
+ {JMP, &SYSCALL0B, NOP},
+ {JMP, &SYSCALL0C, NOP},
+ {JMP, &SYSCALL0D, NOP},
+ {JMP, &SYSCALL0E, NOP},
+ {JMP, &SYSCALL0F, NOP},
+ {JMP, &SYSCALL10, NOP},
+ {JMP, &SECURENTR, NOP},
+ {JMP, &SECUREXIT, NOP},
+ {JMP, &SYSCALL13, NOP},
+ {JMP, &SYSCALL14, NOP},
+ {JMP, &SYSCALL15, NOP},
+ {JMP, &SYSCALL16, NOP},
+ {JMP, &SYSCALL17, NOP},
+ {JMP, &SYSCALL18, NOP},
+ {JMP, &SYSCALL19, NOP},
+ {JMP, &SYSCALL1A, NOP},
+ {JMP, &SYSCALL1B, NOP},
+ {JMP, &SYSCALL1C, NOP},
+ {JMP, &SYSCALL1D, NOP},
+ {JMP, &SYSCALL1E, NOP},
+ {JMP, &SYSCALL1F, NOP},
+ {JMP, &SYSCALL20, NOP},
+ {JMP, &SYSCALL21, NOP},
+ {JMP, &SYSCALL22, NOP},
+ {JMP, &SYSCALL23, NOP},
+ {JMP, &SYSCALL24, NOP},
+ {JMP, &SYSCALL25, NOP},
+ {JMP, &SYSCALL26, NOP},
+ {JMP, &SYSCALL27, NOP},
+ {JMP, &SYSCALL28, NOP}, 
+ {JMP, &SYSCALL29, NOP},
+ {JMP, &SYSCALL2A, NOP},
+ {JMP, &SYSCALL2B, NOP},
+ {JMP, &SYSCALL2C, NOP},
+ {JMP, &SYSCALL2D, NOP},
+ {JMP, &SYSCALL2E, NOP},
+ {JMP, &SYSCALL2F, NOP},
+ {JMP, &SYSCALL30, NOP},
+ {JMP, &SYSCALL31, NOP},
+ {JMP, &SYSCALL32, NOP},
+ {JMP, &SYSCALL33, NOP},
+ {JMP, &SYSCALL34, NOP},
+ {JMP, &SYSCALL35, NOP},
+ {JMP, &SYSCALL36, NOP},
+ {JMP, &SYSCALL37, NOP},
+ {JMP, &SYSCALL38, NOP},
+ {JMP, &SYSCALL39, NOP},
+ {JMP, &SYSCALL3A, NOP},
+ {JMP, &SYSCALL3B, NOP},
+ {JMP, &SYSCALL3C, NOP},
+ {JMP, &SYSCALL3D, NOP},
+ {JMP, &SYSCALL3E, NOP},
+ {JMP, &SYSCALL3F, NOP}
+
+};
+
+export align(0x100) struct Syscall[] TRAPS= {
+ {JMP, &RESET, NOP},
+ {JMP, &PAGFAULT, NOP},
+ {JMP, &RESTORKEY, NOP}, 
+ {JMP, &ALTTABKEY, NOP},
+ {JMP, &VF011RD, NOP},
+ {JMP, &VF011WR, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},//20
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP}, //40
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &undefined_trap, NOP},
+ {JMP, &CPUKIL, NOP}
+};
