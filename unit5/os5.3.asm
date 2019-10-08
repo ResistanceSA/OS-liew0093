@@ -537,13 +537,10 @@ resume_pdb: {
     sta.z dma_copy.src+2
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+3
     sta.z dma_copy.src+3
-    lda #<$3ff
+    lda #0
     sta.z dma_copy.dest
-    lda #>$3ff
     sta.z dma_copy.dest+1
-    lda #<$3ff>>$10
     sta.z dma_copy.dest+2
-    lda #>$3ff>>$10
     sta.z dma_copy.dest+3
     lda #<$400
     sta.z dma_copy.length
@@ -571,13 +568,13 @@ resume_pdb: {
     lda.z dma_copy.src+3
     adc #0
     sta.z dma_copy.src+3
-    lda #<$1fff
+    lda #<$800
     sta.z dma_copy.dest
-    lda #>$1fff
+    lda #>$800
     sta.z dma_copy.dest+1
-    lda #<$1fff>>$10
+    lda #<$800>>$10
     sta.z dma_copy.dest+2
-    lda #>$1fff>>$10
+    lda #>$800>>$10
     sta.z dma_copy.dest+3
     lda #<$1800
     sta.z dma_copy.length
