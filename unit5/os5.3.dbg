@@ -2922,11 +2922,11 @@
       Code,$0007,value
       Code,$84ec,resume_pdb
       Code,$c000,p
-      Code,$004f,__7
+      Code,$004f,__8
       Code,$0054,ss
       Code,$0014,i
-      Code,$0056,__17
-      Code,$0049,__18
+      Code,$0056,__18
+      Code,$0049,__19
       Code,$856d,__b1
       Code,$8588,__b2
       Code,$85b1,exit_hypervisor

@@ -222,7 +222,7 @@ void resume_pdb(unsigned char pdb_number)
   // the screen
   //  XXX - Copy $0400 bytes from p->storage_start_address to locatio// n $0000
 
-  dma_copy((unsigned dword)(p->storage_start_address), $0000, $0400);
+  dma_copy((unsigned dword)(p->storage_start_address)+$0000, $0000, $0400);
 
 
     //  XXX - Copy $1800 bytes from p->storage_start_address+$0800 to location $0800
