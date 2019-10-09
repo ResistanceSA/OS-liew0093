@@ -4,8 +4,8 @@ void main(){
   //	call_syscall00();
   //	call_syscall01();
   char[256] os_version_return;
-  print_string("vinoos");
   print_string("os version: ");
+  get_os_version();
   print_string(os_version_return);
  while(true) continue;
 }
