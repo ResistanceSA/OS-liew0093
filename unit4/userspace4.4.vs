@@ -1,7 +1,11 @@
-al C:842 .enable_syscalls
-al C:810 .__b1
+al C:870 .enable_syscalls
+al C:4 .__3
+al C:810 .__b1__0
+al C:837 .__b1__1
 al C:813 .string
-al C:838 .call_syscall02
-al C:82e .print_string
+al C:866 .call_syscall02
+al C:831 .print_string
+al C:2 .i
 al C:80b .upstartEnd
 al C:80d .main
+al C:849 .__b2
