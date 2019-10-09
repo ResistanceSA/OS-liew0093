@@ -85,6 +85,7 @@ void exit_hypervisor()
 	*(unsigned char *)$D67F = $01;
 }
 
+
 void SYSCALL00(){
 print_newline();
 print_to_screen("syscall00 entered");
