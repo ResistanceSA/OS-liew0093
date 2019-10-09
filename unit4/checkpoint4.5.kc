@@ -103,7 +103,7 @@ void SYSCALL02(){
 
 exit_hypervisor();}
 void SYSCALL03(){
-  print_to_screen("bios 1001");
+  print_to_screen((char*)$0300);
 
 exit_hypervisor();}
 void SYSCALL04(){exit_hypervisor();}

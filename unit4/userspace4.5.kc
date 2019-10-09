@@ -4,10 +4,11 @@ void main(){
   //	call_syscall00();
   //	call_syscall01();
   char[256] os_version_return = "";
- char *string  = get_os_version();
-
   print_string("os version: ");
-  print_string(string);
+
+get_os_version();
+ char msg = os_version_return;
+  print_string("bios 1001");
 
  while(true) continue;
 }
