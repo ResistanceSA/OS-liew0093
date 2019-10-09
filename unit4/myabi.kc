@@ -15,9 +15,13 @@ void call_syscall01(){
 	asm {nop}
 }
 
-unsigned char* print_string(char *string){
+void call_syscall02(){
   enable_syscalls();
- *(unsigned char *)$D642 = $00;
+  *(unsigned char*)$D641 = $00;
+  asm {nop}
+}
+
+void  print_string(char *string){
  *(unsigned char *)$0301 = *string; 
- return (char*)$0301;
+ asm {nop}
 }

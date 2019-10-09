@@ -19,5 +19,5 @@ unsigned char* print_string(char *string){
   enable_syscalls();
  *(unsigned char *)$D642 = $00;
  *(unsigned char *)$0301 = *string; 
- return *(unsigned char*)$0301;
+ return (char*)$0301;
 }
