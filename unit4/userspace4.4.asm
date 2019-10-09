@@ -2,9 +2,9 @@
 :BasicUpstart(main)
 .pc = $80d "Program"
 main: {
-    jsr call_syscall02
     jsr print_string
-    rts
+  __b1:
+    jmp __b1
     string: .text "printed via print string api"
     .byte 0
 }
