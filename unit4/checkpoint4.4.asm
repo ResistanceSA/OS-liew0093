@@ -303,9 +303,9 @@ SYSCALL03: {
     rts
 }
 SYSCALL02: {
-    lda #<$301
+    lda #<$300
     sta.z print_to_screen.message
-    lda #>$301
+    lda #>$300
     sta.z print_to_screen.message+1
     jsr print_to_screen
     jsr print_newline
