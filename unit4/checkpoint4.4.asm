@@ -303,18 +303,14 @@ SYSCALL03: {
     rts
 }
 SYSCALL02: {
-    lda #<message
+    lda #<$301
     sta.z print_to_screen.message
-    lda #>message
+    lda #>$301
     sta.z print_to_screen.message+1
     jsr print_to_screen
     jsr exit_hypervisor
     rts
-  .segment Data
-    message: .text "hi"
-    .byte 0
 }
-.segment Code
 // print_to_screen(byte* zeropage(2) message)
 print_to_screen: {
     .label message = 2
