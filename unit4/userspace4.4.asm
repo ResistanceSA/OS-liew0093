@@ -9,9 +9,10 @@ main: {
     .byte 0
 }
 print_string: {
+    jsr enable_syscalls
     lda main.string
     sta $301
-    nop
+    jsr call_syscall02
     rts
 }
 call_syscall02: {

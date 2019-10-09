@@ -22,6 +22,7 @@ void call_syscall02(){
 }
 
 void  print_string(char *string){
+  enable_syscalls();
  *(unsigned char *)$0301 = *string; 
- asm {nop}
+ call_syscall02();
 }

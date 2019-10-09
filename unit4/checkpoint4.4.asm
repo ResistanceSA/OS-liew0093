@@ -302,9 +302,6 @@ SYSCALL03: {
     jsr exit_hypervisor
     rts
 }
-//print_to_screen("syscall01 entered");
-//exit_hypervisor();
-//}
 SYSCALL02: {
     lda #<$301
     sta.z print_to_screen.message
@@ -337,14 +334,18 @@ print_to_screen: {
 }
 SYSCALL01: {
     jsr print_newline
-    lda #<$301
+    lda #<message
     sta.z print_to_screen.message
-    lda #>$301
+    lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
     jsr exit_hypervisor
     rts
+  .segment Data
+    message: .text "syscall01 entered"
+    .byte 0
 }
+.segment Code
 print_newline: {
     lda #$28
     clc
