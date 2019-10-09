@@ -8,7 +8,7 @@ void main(){
 
 get_os_version();
  char msg = os_version_return;
-  print_string("bios 1001");
+  print_string(os_version_return);
 
  while(true) continue;
 }
