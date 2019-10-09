@@ -83,9 +83,6 @@ void exit_hypervisor()
 	//Trigger exit from Hypervisor mode
 	*(unsigned char *)$D67F = $01;
 }
-void print_string(char *string)(){
-  print_to_screen((char*)$0301);
-}
 
 void SYSCALL00(){
 print_newline();
@@ -100,7 +97,7 @@ print_to_screen("syscall01 entered");
 exit_hypervisor();
 }
 void SYSCALL02(){
-  print_string();
+  print_to_screen((char*)$0301);
 exit_hypervisor();}
 void SYSCALL03(){exit_hypervisor();}
 void SYSCALL04(){exit_hypervisor();}

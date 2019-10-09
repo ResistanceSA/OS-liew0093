@@ -12,8 +12,8 @@
   .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 2
-  .label current_screen_x = 6
+  .label current_screen_line = 5
+  .label current_screen_x = 4
   lda #<0
   sta.z current_screen_line
   sta.z current_screen_line+1
@@ -311,9 +311,9 @@ SYSCALL02: {
     jsr exit_hypervisor
     rts
 }
-// print_to_screen(byte* zeropage(4) message)
+// print_to_screen(byte* zeropage(2) message)
 print_to_screen: {
-    .label message = 4
+    .label message = 2
   __b1:
     ldy #0
     lda (message),y
@@ -416,6 +416,7 @@ RESET: {
     lda (msg),y
     cmp #0
     bne __b2
+    jsr print_newline
     jsr start_simple_program
     rts
   __b2:
@@ -513,7 +514,7 @@ memset: {
     jmp __b2
 }
 .segment Data
-  MESSAGE: .text "checkpoint 4.3  liew0093"
+  MESSAGE: .text "checkpoint 4.4  liew0093"
   .byte 0
 .segment Syscall
   SYSCALLS: .byte JMP
