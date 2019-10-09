@@ -334,20 +334,7 @@ SYSCALL02: {
     lda #>$300
     sta.z print_to_screen.message+1
     jsr print_to_screen
-    jsr print_newline
     jsr exit_hypervisor
-    rts
-}
-print_newline: {
-    lda #$28
-    clc
-    adc.z current_screen_line
-    sta.z current_screen_line
-    bcc !+
-    inc.z current_screen_line+1
-  !:
-    lda #0
-    sta.z current_screen_x
     rts
 }
 SYSCALL01: {
@@ -364,6 +351,18 @@ SYSCALL01: {
     .byte 0
 }
 .segment Code
+print_newline: {
+    lda #$28
+    clc
+    adc.z current_screen_line
+    sta.z current_screen_line
+    bcc !+
+    inc.z current_screen_line+1
+  !:
+    lda #0
+    sta.z current_screen_x
+    rts
+}
 SYSCALL00: {
     lda #<message
     sta.z print_to_screen.message

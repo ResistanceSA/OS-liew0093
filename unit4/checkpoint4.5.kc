@@ -100,7 +100,7 @@ exit_hypervisor();
 }
 void SYSCALL02(){
   print_to_screen((char*)$0300);
-print_newline();
+
 exit_hypervisor();}
 void SYSCALL03(){
   print_to_screen((char*)$0300);
