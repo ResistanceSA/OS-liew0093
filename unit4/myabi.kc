@@ -36,7 +36,7 @@ void  print_string(char *string){
 }
 unsigned char* get_os_version(){
   enable_syscalls();
-  char[256] os_version_return = "";
+  char[256] os_version_return = "vino_os0.1";
   for(unsigned short i=0;i<256;i++){
     *(unsigned char*)($0300+i) = os_version_return[i];
       }
