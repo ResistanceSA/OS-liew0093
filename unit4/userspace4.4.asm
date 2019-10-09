@@ -18,7 +18,7 @@ print_string: {
 call_syscall02: {
     jsr enable_syscalls
     lda #0
-    sta $d641
+    sta $d642
     nop
     rts
 }

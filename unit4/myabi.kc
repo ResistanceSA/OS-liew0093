@@ -17,7 +17,7 @@ void call_syscall01(){
 
 void call_syscall02(){
   enable_syscalls();
-  *(unsigned char*)$D641 = $00;
+  *(unsigned char*)$D642 = $00;
   asm {nop}
 }
 
