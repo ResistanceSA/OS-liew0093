@@ -1,6 +1,6 @@
 void enable_syscalls(){
-	*(unsigned char *)$D62F = $47;
-	*(unsigned char *)$D62F = $53;
+	*(unsigned char *)$D02F = $47;
+	*(unsigned char *)$D02F = $53;
 }
 
 void call_syscall00(){
@@ -15,3 +15,17 @@ void call_syscall01(){
 	asm {nop}
 }
 
+void call_syscall02(){
+  enable_syscalls();
+  *(unsigned char*)$D642 = $00;
+  asm {nop}
+}
+
+void  print_string(char *string){
+  // enable_syscalls();
+  char[] messa = string;
+  for(unsigned short i = 0; i<40; i++){
+    *(unsigned char*)($0300+i) = messa[i];
+  } 
+ call_syscall02();
+}
