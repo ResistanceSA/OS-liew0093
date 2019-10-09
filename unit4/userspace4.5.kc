@@ -4,9 +4,10 @@ void main(){
   //	call_syscall00();
   //	call_syscall01();
   char[256] os_version_return = "";
-  get_os_version();
+ char *string  = get_os_version();
+
   print_string("os version: is ");
-  print_string((char*)os_version_return);
+  print_string(string);
 
  while(true) continue;
 }
