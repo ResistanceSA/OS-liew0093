@@ -5,7 +5,7 @@ main: {
     jsr print_string
   __b1:
     jmp __b1
-    string: .text "p r int via print string api "
+    string: .text "print via print string api "
     .byte 0
 }
 print_string: {
