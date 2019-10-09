@@ -1,6 +1,6 @@
 void enable_syscalls(){
-	*(unsigned char *)$D62F = $47;
-	*(unsigned char *)$D62F = $53;
+	*(unsigned char *)$D02F = $47;
+	*(unsigned char *)$D02F = $53;
 }
 
 void call_syscall00(){
@@ -15,3 +15,7 @@ void call_syscall01(){
 	asm {nop}
 }
 
+unsigned char print_string(){
+  *(unsigned char)syscall02 = $00;
+ return *(unsigned char)$0301;  
+}
