@@ -18,5 +18,5 @@ void call_syscall01(){
 void print_string(char *string){
   enable_syscalls();
  *(unsigned char *)$D642 = $00;
- *(unsigned char *)$0301 = string;  
+ *(unsigned char *)$0301 = *string;  
 }
