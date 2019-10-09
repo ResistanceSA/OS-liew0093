@@ -5,12 +5,14 @@ main: {
     jsr print_string
   __b1:
     jmp __b1
-    string: .text "printed via print string api"
+    //	call_syscall00();
+    //	call_syscall01();
+    msg: .text "printed via print string api"
     .byte 0
 }
 print_string: {
     jsr enable_syscalls
-    lda main.string
+    lda main.msg
     sta $301
     jsr call_syscall02
     rts

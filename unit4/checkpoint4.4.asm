@@ -12,8 +12,8 @@
   .const WHITE = 1
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 5
-  .label current_screen_x = 4
+  .label current_screen_line = 2
+  .label current_screen_x = 6
   lda #<0
   sta.z current_screen_line
   sta.z current_screen_line+1
@@ -308,12 +308,25 @@ SYSCALL02: {
     lda #>$301
     sta.z print_to_screen.message+1
     jsr print_to_screen
+    jsr print_newline
     jsr exit_hypervisor
     rts
 }
-// print_to_screen(byte* zeropage(2) message)
+print_newline: {
+    lda #$28
+    clc
+    adc.z current_screen_line
+    sta.z current_screen_line
+    bcc !+
+    inc.z current_screen_line+1
+  !:
+    lda #0
+    sta.z current_screen_x
+    rts
+}
+// print_to_screen(byte* zeropage(4) message)
 print_to_screen: {
-    .label message = 2
+    .label message = 4
   __b1:
     ldy #0
     lda (message),y
@@ -333,12 +346,12 @@ print_to_screen: {
     jmp __b1
 }
 SYSCALL01: {
-    jsr print_newline
     lda #<message
     sta.z print_to_screen.message
     lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
+    jsr print_newline
     jsr exit_hypervisor
     rts
   .segment Data
@@ -346,25 +359,13 @@ SYSCALL01: {
     .byte 0
 }
 .segment Code
-print_newline: {
-    lda #$28
-    clc
-    adc.z current_screen_line
-    sta.z current_screen_line
-    bcc !+
-    inc.z current_screen_line+1
-  !:
-    lda #0
-    sta.z current_screen_x
-    rts
-}
 SYSCALL00: {
-    jsr print_newline
     lda #<message
     sta.z print_to_screen.message
     lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
+    jsr print_newline
     jsr exit_hypervisor
     rts
   .segment Data
