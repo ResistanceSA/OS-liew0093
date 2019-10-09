@@ -35,10 +35,8 @@ void  print_string(char *string){
  call_syscall02();
 }
 unsigned char* get_os_version(){
-  char[256] os_version_return;
-  for(unsigned short i = 0; i<256; i++){
-    *(unsigned char*)($0300+i) = os_version_return[i];
+  char[256] os_version_return = "bios 1001";
+
    
-  }
   return (char*)os_version_return;
 }
