@@ -17,11 +17,15 @@ void call_syscall01(){
 
 void call_syscall02(){
   enable_syscalls();
-  *(unsigned char*)$D641 = $00;
+  *(unsigned char*)$D642 = $00;
   asm {nop}
 }
 
 void  print_string(char *string){
- *(unsigned char *)$0301 = *string; 
- asm {nop}
+  // enable_syscalls();
+  char[] messa = string;
+  for(unsigned short i = 0; i<40; i++){
+    *(unsigned char*)($0300+i) = messa[i];
+  } 
+ call_syscall02();
 }
