@@ -38,7 +38,7 @@ al C:827b .SYSCALL29
 al C:8283 .SYSCALL27
 al C:827f .SYSCALL28
 al C:9 .sc
-al C:84aa .MESSAGE
+al C:84b4 .MESSAGE
 al C:8213 .VF011RD
 al C:8000 .SYSCALLS
 al C:8477 .__breturn
@@ -87,7 +87,8 @@ al C:833e .SYSCALL02
 al C:d800 .COLS
 al C:2 .message__0
 al C:8486 .message__1
-al C:8498 .message__2
+al C:8490 .message__2
+al C:84a2 .message__3
 al C:82ef .SYSCALL0C
 al C:82eb .SYSCALL0D
 al C:820b .undefined_trap

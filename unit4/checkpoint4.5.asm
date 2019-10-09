@@ -299,14 +299,18 @@ SYSCALL04: {
     rts
 }
 SYSCALL03: {
-    lda #<$300
+    lda #<message
     sta.z print_to_screen.message
-    lda #>$300
+    lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
     jsr exit_hypervisor
     rts
+  .segment Data
+    message: .text "bios 1001"
+    .byte 0
 }
+.segment Code
 // print_to_screen(byte* zeropage(2) message)
 print_to_screen: {
     .label message = 2

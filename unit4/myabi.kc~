@@ -29,7 +29,7 @@ void call_syscall03(){
 void  print_string(char *string){
   // enable_syscalls();
   char[] messa = string;
-  for(unsigned short i = 0; i<100; i++){
+  for(unsigned short i = 0; i<255; i++){
     *(unsigned char*)($0300+i) = messa[i];
   } 
  call_syscall02();
