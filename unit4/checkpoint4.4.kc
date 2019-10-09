@@ -99,7 +99,7 @@ print_to_screen("syscall01 entered");
 exit_hypervisor();
 }
 void SYSCALL02(){
- print_to_screen((char*)$0301);
+  print_to_screen("hi");
 exit_hypervisor();}
 void SYSCALL03(){exit_hypervisor();}
 void SYSCALL04(){exit_hypervisor();}
