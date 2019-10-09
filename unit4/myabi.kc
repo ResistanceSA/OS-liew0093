@@ -20,6 +20,11 @@ void call_syscall02(){
   *(unsigned char*)$D642 = $00;
   asm {nop}
 }
+void call_syscall03(){
+  enable_syscalls();
+  *(unsigned char*)$D643 = $00;
+  asm {nop}
+}
 
 void  print_string(char *string){
   // enable_syscalls();
@@ -30,6 +35,10 @@ void  print_string(char *string){
  call_syscall02();
 }
 unsigned char get_os_version(){
-  *(unsigned char*)$D643 =$00;
-      return *(unsigned char*)$0300;
+  char[256] os_version_return;
+  for(unsigned short i = 0; i<256; i++){
+    *(unsigned char*)($0300+i) = os_version_return[i];
+   
+  }
+  return (char*)os_version_return;
 }
