@@ -7,8 +7,7 @@ void main(){
   print_string("os version: ");
 
 get_os_version();
- char msg = os_version_return;
- print_string((char*)os_version_return);
+ print_string(os_version_return);
 
  while(true) continue;
 }
