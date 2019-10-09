@@ -17,11 +17,11 @@ print_string: {
     sta.z i+1
   __b1:
     lda.z i+1
-    cmp #>$64
+    cmp #>$ff
     bcc __b2
     bne !+
     lda.z i
-    cmp #<$64
+    cmp #<$ff
     bcc __b2
   !:
     jsr call_syscall02
