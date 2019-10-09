@@ -6,7 +6,7 @@ void main(){
   char[256] os_version_return = "";
  char *string  = get_os_version();
 
-  print_string("os version: is ");
+  print_string("os version: ");
   print_string(string);
 
  while(true) continue;
