@@ -22,8 +22,7 @@ void call_syscall02(){
 }
 
 void  print_string(char *string){
-  enable_syscalls();
-  unsigned char * address = $0301;
- address = *string; 
+  // enable_syscalls();
+  *(unsigned char*)$0301 = *string; 
  call_syscall02();
 }
