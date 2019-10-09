@@ -11,10 +11,10 @@ main: {
 print_string: {
     .label __3 = 4
     .label i = 2
+    .label __4 = 6
     lda #<0
     sta.z i
     sta.z i+1
-  // enable_syscalls();
   __b1:
     lda.z i+1
     cmp #>$28
@@ -34,8 +34,15 @@ print_string: {
     lda #>$300
     adc.z i+1
     sta.z __3+1
-    lda main.string
+    lda #<main.string
+    clc
+    adc.z i
+    sta.z __4
+    lda #>main.string
+    adc.z i+1
+    sta.z __4+1
     ldy #0
+    lda (__4),y
     sta (__3),y
     inc.z i
     bne !+
