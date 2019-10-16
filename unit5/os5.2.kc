@@ -227,7 +227,7 @@ void initialise_pdb(unsigned char pdb_number,char *name)
   Hypervisor saved state registers in Appendix D of the MEGA65 User's
   Guide. */
 
- *(unsigned short *)&ss[7] = $080D + (((unsigned short)pdb_number)*$2000);
+ *(unsigned short *)&ss[7] = $090D + (((unsigned short)pdb_number)*$2000);
 
 
   return;
