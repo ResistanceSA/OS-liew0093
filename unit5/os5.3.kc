@@ -454,9 +454,7 @@ void exit_hypervisor()
 
 void SYSCALL00(){exit_hypervisor();}
 void SYSCALL01(){exit_hypervisor();}
-void SYSCALL02(){
-describe_pdb(running_pdb);
-exit_hypervisor();}
+void SYSCALL02(){exit_hypervisor();}
 void SYSCALL03(){
 describe_pdb(running_pdb);
 exit_hypervisor();}
@@ -536,19 +534,19 @@ void RESET(){
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	current_screen_line = SCREEN;
-	/*         char* sc = SCREEN+40;
+	char* sc = SCREEN+40;
          char* msg = MESSAGE;
-	 while(*msg){
+	/* while(*msg){
 	   *sc++ = *msg++;
-	 }
+	 }*/
     print_newline();
     print_newline();
     print_newline(); */
     initialise_pdb(0,"program1.prg");
     load_program(0);
     resume_pdb(0);
-    /*    describe_pdb(0);
-	while(true){
+/* describe_pdb(0);
+   	while(true){
 	  if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
 	  } else {
