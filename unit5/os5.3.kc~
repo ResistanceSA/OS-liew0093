@@ -222,12 +222,12 @@ void resume_pdb(unsigned char pdb_number)
   // the screen
   //  XXX - Copy $0400 bytes from p->storage_start_address to locatio// n $0000
 
-  dma_copy((unsigned dword)(p->storage_start_address), $0000, $0400);
+  dma_copy((unsigned dword)(p->storage_start_address)+$0000, $0000, $0400);
 
 
     //  XXX - Copy $1800 bytes from p->storage_start_address+$0800 to location $0800
 
-  dma_copy((unsigned dword)(p->storage_start_address)+$0800, $0800, $1800);
+  dma_copy((unsigned dword)(p->storage_start_address)+$0800, $0800, $2000-$0800);
 
 
     //   (Use (unsigned dword)(p->storage_start_address)+offset to pass these
@@ -240,7 +240,7 @@ void resume_pdb(unsigned char pdb_number)
   //        complex reasons.)
   unsigned short i;
 for(i=0;i<63;i++){
-  ss[i] = ((unsigned char*)$D640)[i];
+((unsigned char*)$D640)[i] =   ss[i] ;
 }
 
   // Set state of process to running
@@ -545,7 +545,7 @@ void RESET(){
     initialise_pdb(0,"program1.prg");
     load_program(0);
     resume_pdb(0);
-//   describe_pdb(0);
+   describe_pdb(0);
     while(true){
 	 /* if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
