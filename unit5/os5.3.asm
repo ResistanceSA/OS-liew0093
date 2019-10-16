@@ -39,8 +39,8 @@
   .label running_pdb = $2c
   .label pid_counter = $2d
   .label lpeek_value = $2e
-  .label current_screen_line = $e
-  .label current_screen_x = $d
+  .label current_screen_line = $b
+  .label current_screen_x = $f
   // Which is the current running process?
   lda #$ff
   sta.z running_pdb
@@ -88,6 +88,9 @@ RESET: {
     sta.z current_screen_line
     lda #>SCREEN
     sta.z current_screen_line+1
+    jsr print_newline
+    jsr print_newline
+    jsr print_newline
     jsr initialise_pdb
     jsr load_program
     jsr resume_pdb
@@ -109,7 +112,7 @@ resume_pdb: {
     .label p = stored_pdbs
     .label __7 = $45
     .label ss = $4a
-    .label i = $b
+    .label i = $d
     .label __17 = $4c
     .label __18 = $3f
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS
@@ -215,7 +218,7 @@ resume_pdb: {
   !:
     jmp __b1
 }
-// dma_copy(dword zeropage($45) src, dword zeropage(2) dest, word zeropage($b) length)
+// dma_copy(dword zeropage($45) src, dword zeropage(2) dest, word zeropage($d) length)
 dma_copy: {
     .label __0 = $2f
     .label __2 = $33
@@ -238,7 +241,7 @@ dma_copy: {
     .label list_dest_bank = $24
     .label list_modulo00 = $25
     .label dest = 2
-    .label length = $b
+    .label length = $d
     lda #0
     sta.z list_request_format0a
     sta.z list_source_mb_option80
@@ -828,7 +831,7 @@ next_free_pid: {
     .label __2 = $4c
     .label pid = $a
     .label p = $4c
-    .label i = $b
+    .label i = $d
     inc.z pid_counter
     // Start with the next process ID
     lda.z pid_counter
@@ -878,12 +881,24 @@ next_free_pid: {
   !:
     jmp __b2
 }
+print_newline: {
+    lda #$28
+    clc
+    adc.z current_screen_line
+    sta.z current_screen_line
+    bcc !+
+    inc.z current_screen_line+1
+  !:
+    lda #0
+    sta.z current_screen_x
+    rts
+}
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($4a) str, byte register(X) c, word zeropage($b) num)
+// memset(void* zeropage($4a) str, byte register(X) c, word zeropage($d) num)
 memset: {
-    .label end = $b
+    .label end = $d
     .label dst = $4a
-    .label num = $b
+    .label num = $d
     .label str = $4a
     lda.z num
     bne !+
@@ -1485,18 +1500,6 @@ print_char: {
     inc.z current_screen_x
     rts
 }
-print_newline: {
-    lda #$28
-    clc
-    adc.z current_screen_line
-    sta.z current_screen_line
-    bcc !+
-    inc.z current_screen_line+1
-  !:
-    lda #0
-    sta.z current_screen_x
-    rts
-}
 // print_hex(word zeropage($10) value)
 print_hex: {
     .label __3 = $50
@@ -1597,8 +1600,6 @@ print_dhex: {
     rts
 }
 SYSCALL02: {
-    ldx.z running_pdb
-    jsr describe_pdb
     jsr exit_hypervisor
     rts
 }

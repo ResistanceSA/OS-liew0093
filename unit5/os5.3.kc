@@ -541,7 +541,7 @@ void RESET(){
 	 }*/
     print_newline();
     print_newline();
-    print_newline(); */
+    print_newline(); 
     initialise_pdb(0,"program1.prg");
     load_program(0);
     resume_pdb(0);
