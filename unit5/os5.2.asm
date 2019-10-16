@@ -92,6 +92,7 @@ RESET: {
     jsr print_newline
     jsr initialise_pdb
     jsr describe_pdb
+    jsr exit_hypervisor
     rts
   __b2:
     ldy #0
@@ -111,6 +112,12 @@ RESET: {
     .byte 0
 }
 .segment Code
+exit_hypervisor: {
+    // Exit hypervisor
+    lda #1
+    sta $d67f
+    rts
+}
 describe_pdb: {
     .label p = stored_pdbs
     .label n = $11
@@ -586,12 +593,6 @@ memset: {
 }
 CPUKIL: {
     jsr exit_hypervisor
-    rts
-}
-exit_hypervisor: {
-    // Exit hypervisor
-    lda #1
-    sta $d67f
     rts
 }
 undefined_trap: {
