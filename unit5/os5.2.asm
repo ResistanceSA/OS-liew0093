@@ -49,7 +49,7 @@ main: {
     rts
 }
 RESET: {
-    .label sc = $11
+    .label sc = $13
     .label msg = 7
     lda #$14
     sta VIC_MEMORY
@@ -129,8 +129,8 @@ RESET: {
 .segment Code
 describe_pdb: {
     .label p = stored_pdbs
-    .label n = $11
-    .label ss = 7
+    .label n = $13
+    .label ss = $11
     lda #<message
     sta.z print_to_screen.c
     lda #>message
@@ -174,7 +174,9 @@ describe_pdb: {
     cmp #0
     beq __b3
     cpx #$11
-    bcc __b2
+    bcs !__b2+
+    jmp __b2
+  !__b2:
   __b3:
     jsr print_newline
     lda #<message4
@@ -217,15 +219,20 @@ describe_pdb: {
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORED_STATE+1
     sta.z ss+1
     ldy #4*SIZEOF_WORD
-    lda (print_hex.value),y
-    pha
-    iny
-    lda (print_hex.value),y
-    sta.z print_hex.value+1
-    pla
+    lda (ss),y
     sta.z print_hex.value
+    iny
+    lda (ss),y
+    sta.z print_hex.value+1
     jsr print_hex
     jsr print_newline
+    ldy #4*SIZEOF_WORD
+    lda (ss),y
+    sta.z print_hex.value
+    iny
+    lda (ss),y
+    sta.z print_hex.value+1
+    jsr print_hex
     rts
   __b2:
     txa
@@ -258,22 +265,10 @@ print_char: {
     inc.z current_screen_x
     rts
 }
-print_newline: {
-    lda #$28
-    clc
-    adc.z current_screen_line
-    sta.z current_screen_line
-    bcc !+
-    inc.z current_screen_line+1
-  !:
-    lda #0
-    sta.z current_screen_x
-    rts
-}
 // print_hex(word zeropage(7) value)
 print_hex: {
     .label __3 = $13
-    .label __6 = $11
+    .label __6 = $15
     .label value = 7
     ldx #0
   __b1:
@@ -348,7 +343,7 @@ print_hex: {
 }
 .segment Code
 print_to_screen: {
-    .label c = $11
+    .label c = $13
   __b1:
     ldy #0
     lda (c),y
@@ -366,6 +361,18 @@ print_to_screen: {
     inc.z c+1
   !:
     jmp __b1
+}
+print_newline: {
+    lda #$28
+    clc
+    adc.z current_screen_line
+    sta.z current_screen_line
+    bcc !+
+    inc.z current_screen_line+1
+  !:
+    lda #0
+    sta.z current_screen_x
+    rts
 }
 // print_dhex(dword zeropage(2) value)
 print_dhex: {
@@ -392,8 +399,8 @@ print_dhex: {
 // Setup a new process descriptor block
 initialise_pdb: {
     .label p = stored_pdbs
-    .label pn = $13
-    .label ss = $11
+    .label pn = $11
+    .label ss = $13
     jsr next_free_pid
     lda.z next_free_pid.pid
     // Setup process ID
@@ -465,7 +472,7 @@ initialise_pdb: {
     bcc __b5
     // Set tandard CPU flags (8-bit stack, interrupts disabled)
     lda #$24
-    ldy #8
+    ldy #7
     sta (ss),y
     /*  XXX - Set the stack pointer to $01FF
   (This requires a bit of fiddly pointer arithmetic, so to save you 
@@ -509,9 +516,9 @@ initialise_pdb: {
     jmp __b1
 }
 next_free_pid: {
-    .label __2 = $13
+    .label __2 = $15
     .label pid = 6
-    .label p = $13
+    .label p = $15
     .label i = 7
     inc.z pid_counter
     // start with the next process ID
@@ -563,12 +570,12 @@ next_free_pid: {
     jmp __b2
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($11) str, byte register(X) c, word zeropage(7) num)
+// memset(void* zeropage($13) str, byte register(X) c, word zeropage(7) num)
 memset: {
     .label end = 7
-    .label dst = $11
+    .label dst = $13
     .label num = 7
-    .label str = $11
+    .label str = $13
     lda.z num
     bne !+
     lda.z num+1

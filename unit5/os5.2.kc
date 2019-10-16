@@ -147,6 +147,7 @@ void describe_pdb(unsigned char pdb_number)
   print_hex(ss[4]);
   print_newline();
 
+  print_hex(ss[4]);
 
 }
 
@@ -204,7 +205,7 @@ void initialise_pdb(unsigned char pdb_number,char *name)
   for(i=0;i<63;i++) ss[i] = $00;
 
   // Set tandard CPU flags (8-bit stack, interrupts disabled)
-  ss[8] = $24;
+  ss[7] = $24;
 
   /*  XXX - Set the stack pointer to $01FF
   (This requires a bit of fiddly pointer arithmetic, so to save you 
@@ -227,7 +228,7 @@ void initialise_pdb(unsigned char pdb_number,char *name)
   Hypervisor saved state registers in Appendix D of the MEGA65 User's
   Guide. */
 
-  *(unsigned short *)&ss[7] = $080D;
+  *(unsigned short *)&ss[7] = $080D + (((unsigned short)pdb_number)*$2000);
 
 
   return;
