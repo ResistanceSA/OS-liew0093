@@ -331,14 +331,13 @@ void RESET(){
     print_newline();
     initialise_pdb(0,"program1.prg");
     describe_pdb(0);
-/*	while(true){
+while(true){
 	  if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
 	  } else {
 	    *BGCOL=BLUE;
 	  }
-	} */
-	exit_hypervisor();
+	} 
 }
 
 #pragma data_seg(Syscall)

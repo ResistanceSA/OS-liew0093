@@ -555,6 +555,7 @@ void RESET(){
 	    *BGCOL=BLUE;
 	  }
 	  }*/
+exit_hypervisor();
 }
 
 #pragma data_seg(Syscall)
