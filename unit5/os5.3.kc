@@ -547,14 +547,14 @@ void RESET(){
     initialise_pdb(0,"program1.prg");
     load_program(0);
     resume_pdb(0);
-    describe_pdb(0);
+    /*    describe_pdb(0);
 	while(true){
 	  if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
 	  } else {
 	    *BGCOL=BLUE;
 	  }
-	}
+	  }*/
 }
 
 #pragma data_seg(Syscall)
