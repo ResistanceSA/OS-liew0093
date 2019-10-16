@@ -226,7 +226,7 @@ describe_pdb: {
     sta.z print_hex.value+1
     jsr print_hex
     jsr print_newline
-    ldy #4*SIZEOF_WORD
+    ldy #7*SIZEOF_WORD
     lda (ss),y
     sta.z print_hex.value
     iny
