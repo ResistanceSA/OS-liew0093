@@ -226,7 +226,15 @@ describe_pdb: {
     sta.z print_hex.value+1
     jsr print_hex
     jsr print_newline
-    ldy #7*SIZEOF_WORD
+    ldy #5*SIZEOF_WORD
+    lda (ss),y
+    sta.z print_hex.value
+    iny
+    lda (ss),y
+    sta.z print_hex.value+1
+    jsr print_hex
+    jsr print_newline
+    ldy #6*SIZEOF_WORD
     lda (ss),y
     sta.z print_hex.value
     iny

@@ -147,8 +147,9 @@ void describe_pdb(unsigned char pdb_number)
   print_hex(ss[4]);
   print_newline();
 
-  print_hex(ss[7]);
-
+  print_hex(ss[5]);
+  print_newline();
+  print_hex(ss[6]);
 }
 
 // Setup a new process descriptor block
