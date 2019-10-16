@@ -62,6 +62,8 @@ main: {
     rts
 }
 RESET: {
+    .label sc = $2f
+    .label msg = $d
     lda #$14
     sta VIC_MEMORY
     ldx #' '
@@ -88,6 +90,19 @@ RESET: {
     sta.z current_screen_line
     lda #>SCREEN
     sta.z current_screen_line+1
+    lda #<SCREEN+$28
+    sta.z sc
+    lda #>SCREEN+$28
+    sta.z sc+1
+    lda #<MESSAGE
+    sta.z msg
+    lda #>MESSAGE
+    sta.z msg+1
+  __b1:
+    ldy #0
+    lda (msg),y
+    cmp #0
+    bne __b2
     jsr print_newline
     jsr print_newline
     jsr print_newline
@@ -96,6 +111,19 @@ RESET: {
     jsr resume_pdb
     jsr exit_hypervisor
     rts
+  __b2:
+    ldy #0
+    lda (msg),y
+    sta (sc),y
+    inc.z sc
+    bne !+
+    inc.z sc+1
+  !:
+    inc.z msg
+    bne !+
+    inc.z msg+1
+  !:
+    jmp __b1
   .segment Data
     name: .text "program1.prg"
     .byte 0
@@ -111,10 +139,10 @@ resume_pdb: {
     .const pdb_number = 0
     .label p = stored_pdbs
     .label __7 = $45
-    .label ss = $4a
+    .label ss = $2f
     .label i = $d
-    .label __17 = $4c
-    .label __18 = $3f
+    .label __17 = $4a
+    .label __18 = $4c
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS
     sta.z dma_copy.src
     lda p+OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS+1
@@ -218,14 +246,14 @@ resume_pdb: {
   !:
     jmp __b1
 }
-// dma_copy(dword zeropage($45) src, dword zeropage(2) dest, word zeropage($d) length)
+// dma_copy(dword zeropage($45) src, dword zeropage(2) dest, word zeropage($2f) length)
 dma_copy: {
-    .label __0 = $2f
-    .label __2 = $33
-    .label __4 = $4c
-    .label __5 = $37
-    .label __7 = $3b
-    .label __9 = $3f
+    .label __0 = $31
+    .label __2 = $35
+    .label __4 = $4a
+    .label __5 = $39
+    .label __7 = $3d
+    .label __9 = $4c
     .label src = $45
     .label list_request_format0a = $16
     .label list_source_mb_option80 = $17
@@ -241,7 +269,7 @@ dma_copy: {
     .label list_dest_bank = $24
     .label list_modulo00 = $25
     .label dest = 2
-    .label length = $d
+    .label length = $2f
     lda #0
     sta.z list_request_format0a
     sta.z list_source_mb_option80
@@ -796,7 +824,7 @@ initialise_pdb: {
   if it were at $D641, x would be replaced with 1, and so on.
   XXX - Note that the MEGA65 User's Guide has been updated on FLO.
   You will required the latest version, as otherwise SPL is not listed. */
-    ldy #4
+    ldy #5
     lda #<$1ff
     sta (ss),y
     iny
@@ -809,7 +837,7 @@ initialise_pdb: {
   where x is the offset of the program counter low byte (PCL) in the
   Hypervisor saved state registers in Appendix D of the MEGA65 User's
   Guide. */
-    ldy #7
+    ldy #8
     lda #<$80d
     sta (ss),y
     iny
@@ -894,12 +922,12 @@ print_newline: {
     rts
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($4a) str, byte register(X) c, word zeropage($d) num)
+// memset(void* zeropage($2f) str, byte register(X) c, word zeropage($d) num)
 memset: {
     .label end = $d
-    .label dst = $4a
+    .label dst = $2f
     .label num = $d
-    .label str = $4a
+    .label str = $2f
     lda.z num
     bne !+
     lda.z num+1
@@ -1613,6 +1641,9 @@ SYSCALL00: {
     jsr exit_hypervisor
     rts
 }
+.segment Data
+  MESSAGE: .text "checkpoint 5.3"
+  .byte 0
 .segment Syscall
   SYSCALLS: .byte JMP
   .word SYSCALL00
