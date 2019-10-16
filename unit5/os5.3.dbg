@@ -2866,11 +2866,11 @@
       Code,$824a,b1
       Code,$824d,resume_pdb
       Code,$c000,p
-      Code,$0045,__8
+      Code,$0045,__7
       Code,$004a,ss
       Code,$000d,i
-      Code,$004c,__18
-      Code,$003f,__19
+      Code,$004c,__17
+      Code,$003f,__18
       Code,$82ce,__b1
       Code,$82e9,__b2
       Code,$8312,exit_hypervisor
