@@ -477,7 +477,7 @@ initialise_pdb: {
   if it were at $D641, x would be replaced with 1, and so on.
   XXX - Note that the MEGA65 User's Guide has been updated on FLO.
   You will required the latest version, as otherwise SPL is not listed. */
-    ldy #4
+    ldy #5
     lda #<$1fff
     sta (ss),y
     iny
@@ -490,7 +490,7 @@ initialise_pdb: {
   where x is the offset of the program counter low byte (PCL) in the
   Hypervisor saved state registers in Appendix D of the MEGA65 User's
   Guide. */
-    ldy #7
+    ldy #8
     lda #<$80d
     sta (ss),y
     iny
