@@ -534,24 +534,24 @@ void RESET(){
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	current_screen_line = SCREEN;
-	char* sc = SCREEN+40;
+/*	char* sc = SCREEN+40;
          char* msg = MESSAGE;
  while(*msg){
 	   *sc++ = *msg++;
-	 }
+	 } */
     print_newline();
     print_newline();
     print_newline(); 
     initialise_pdb(0,"program1.prg");
     load_program(0);
     resume_pdb(0);
-    describe_pdb(0);
+//   describe_pdb(0);
     while(true){
-	  if(*RASTER==54 || *RASTER==66){
+	 /* if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
 	  } else {
 	    *BGCOL=BLUE;
-	  }
+	  }*/
 	  }
 exit_hypervisor();
 }
