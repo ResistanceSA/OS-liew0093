@@ -204,7 +204,7 @@ void initialise_pdb(unsigned char pdb_number,char *name)
   for(i=0;i<63;i++) ss[i] = $00;
 
   // Set tandard CPU flags (8-bit stack, interrupts disabled)
-  ss[7] = $24;
+  ss[8] = $24;
 
   /*  XXX - Set the stack pointer to $01FF
   (This requires a bit of fiddly pointer arithmetic, so to save you 
@@ -217,7 +217,7 @@ void initialise_pdb(unsigned char pdb_number,char *name)
   XXX - Note that the MEGA65 User's Guide has been updated on FLO.
   You will required the latest version, as otherwise SPL is not listed. */
 
-  *(unsigned short *)&ss[4] = $080D + (((unsigned short)pdb_number)*$2000);
+  *(unsigned short *)&ss[4] = $1FFF + (((unsigned short)pdb_number)*$2000);
 
 /*  XXX - Set the program counter to $080D
   (This requires a bit of fiddly pointer arithmetic, so to save you 

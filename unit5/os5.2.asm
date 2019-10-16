@@ -465,7 +465,7 @@ initialise_pdb: {
     bcc __b5
     // Set tandard CPU flags (8-bit stack, interrupts disabled)
     lda #$24
-    ldy #7
+    ldy #8
     sta (ss),y
     /*  XXX - Set the stack pointer to $01FF
   (This requires a bit of fiddly pointer arithmetic, so to save you 
@@ -478,10 +478,10 @@ initialise_pdb: {
   XXX - Note that the MEGA65 User's Guide has been updated on FLO.
   You will required the latest version, as otherwise SPL is not listed. */
     ldy #4
-    lda #<$80d
+    lda #<$1fff
     sta (ss),y
     iny
-    lda #>$80d
+    lda #>$1fff
     sta (ss),y
     /*  XXX - Set the program counter to $080D
   (This requires a bit of fiddly pointer arithmetic, so to save you 
