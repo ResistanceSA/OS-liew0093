@@ -491,10 +491,10 @@ initialise_pdb: {
   Hypervisor saved state registers in Appendix D of the MEGA65 User's
   Guide. */
     ldy #7
-    lda #<$90d
+    lda #<$180d
     sta (ss),y
     iny
-    lda #>$90d
+    lda #>$180d
     sta (ss),y
     rts
   __b5:
