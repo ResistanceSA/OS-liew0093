@@ -144,7 +144,7 @@ void describe_pdb(unsigned char pdb_number)
 
   print_to_screen("  pc:           $");
   unsigned short *ss=p->stored_state;
-  print_hex(ss[7]);
+  print_hex(ss[4]);
   print_newline();
 
 
@@ -217,7 +217,7 @@ void initialise_pdb(unsigned char pdb_number,char *name)
   XXX - Note that the MEGA65 User's Guide has been updated on FLO.
   You will required the latest version, as otherwise SPL is not listed. */
 
-*(unsigned short *)&ss[4] = $01FF;
+  *(unsigned short *)&ss[4] = $01FF + (((unsigned short)pdb_number)<<6);
 
 /*  XXX - Set the program counter to $080D
   (This requires a bit of fiddly pointer arithmetic, so to save you 
@@ -227,7 +227,7 @@ void initialise_pdb(unsigned char pdb_number,char *name)
   Hypervisor saved state registers in Appendix D of the MEGA65 User's
   Guide. */
 
-*(unsigned short *)&ss[7] = $080D;
+				       *(unsigned short *)&ss[7] = $080D + (((unsigned short)pdb_number)<<6);
 
 
   return;
