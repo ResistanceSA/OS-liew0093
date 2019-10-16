@@ -1614,6 +1614,8 @@ SYSCALL03: {
     rts
 }
 SYSCALL02: {
+    ldx.z running_pdb
+    jsr describe_pdb
     jsr exit_hypervisor
     rts
 }
