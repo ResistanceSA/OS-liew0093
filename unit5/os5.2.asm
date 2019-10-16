@@ -478,10 +478,10 @@ initialise_pdb: {
   XXX - Note that the MEGA65 User's Guide has been updated on FLO.
   You will required the latest version, as otherwise SPL is not listed. */
     ldy #4
-    lda #<$1ff
+    lda #<$80d
     sta (ss),y
     iny
-    lda #>$1ff
+    lda #>$80d
     sta (ss),y
     /*  XXX - Set the program counter to $080D
   (This requires a bit of fiddly pointer arithmetic, so to save you 
