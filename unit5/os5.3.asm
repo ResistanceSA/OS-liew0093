@@ -91,12 +91,19 @@ RESET: {
     jsr initialise_pdb
     jsr load_program
     jsr resume_pdb
+    jsr exit_hypervisor
     rts
   .segment Data
     name: .text "program1.prg"
     .byte 0
 }
 .segment Code
+exit_hypervisor: {
+    // Exit hypervisor
+    lda #1
+    sta $d67f
+    rts
+}
 resume_pdb: {
     .const pdb_number = 0
     .label p = stored_pdbs
@@ -207,12 +214,6 @@ resume_pdb: {
     inc.z i+1
   !:
     jmp __b1
-}
-exit_hypervisor: {
-    // Exit hypervisor
-    lda #1
-    sta $d67f
-    rts
 }
 // dma_copy(dword zeropage($45) src, dword zeropage(2) dest, word zeropage($b) length)
 dma_copy: {
