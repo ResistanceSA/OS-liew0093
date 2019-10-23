@@ -80,6 +80,7 @@ void ipc_send(unsigned char to, unsigned char priority, unsigned char sequence_n
   m->to = to; m->priority=priority;m->sequence=sequence_number;
   for(unsigned char i=0;i<12;i++) m->message[i]=message[i];
 
+  // dma_copy((unsigned short)m,$0300, 16);
   enable_syscalls();
   *(unsigned char*)$D64A = $00;
 

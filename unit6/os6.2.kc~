@@ -519,7 +519,10 @@ void SYSCALL03(){
 describe_pdb(running_pdb);
 exit_hypervisor();}
 void SYSCALL04(){exit_hypervisor();}
-void SYSCALL05(){exit_hypervisor();}
+void SYSCALL05(){
+  resume_pdb(0);
+
+exit_hypervisor();}
 void SYSCALL06(){exit_hypervisor();}
 void SYSCALL07(){exit_hypervisor();}
 void SYSCALL08(){exit_hypervisor();}
@@ -550,7 +553,37 @@ struct process_descriptor_block *pdb
    }
 
 }
-void SYSCALL0A(){exit_hypervisor();}
+void SYSCALL0A(){
+
+struct process_descriptor_block *pdb
+ =(struct process_descriptor_block*)
+  ((unsigned short)stored_pdbs+(((unsigned 
+				  short)running_pdb<<8)));
+  
+ unsigned char caller_pid=pdb->process_id;
+ // Process ID
+ unsigned char from = pdb->process_id;
+
+   unsigned char message_id=get_next_message_id(caller_pid);
+
+   if(message_id!=0xFF){
+     //We have a message to return
+     struct ipc_message*m=get_pointer_to_message(message_id);
+     //copy it to the transfer area
+     dma_copy((unsigned short)m,$0300,16);
+     //de-queue the message
+     dequeue_message(message_id);
+     //return from OS back into the calling program
+     exit_hypervisor();
+   }else{
+     //we have no message to return, so set message to all $FFs
+     for(unsigned char i=0;i<16;i++)
+       *(unsigned char *)($0300+i)=0xff;
+     exit_hypervisor();
+   }
+
+
+}
 void SYSCALL0B(){exit_hypervisor();}
 void SYSCALL0C(){exit_hypervisor();}
 void SYSCALL0D(){exit_hypervisor();}
@@ -625,18 +658,20 @@ void RESET(){
 	   *sc++ = *msg++;
 	 } */
 
-//CPOINT6.1
+//CPOINT6.2
 //Start with empty msg queue
 	ipc_message_count =0;
-	//create msg from PID 0(OS) to PID 1
-	queue_message(0,1,1,1,"cpoint 6.1 ");
 	//initialise PDB slot 0 to hold program1
 	initialise_pdb(0,"program1.prg");
 	//load the program
 	load_program(0);
-	//run the program
-	resume_pdb(0);
-	//END CPOINT6.1
+	// initialise pdb slot 1 to hold program2 
+	initialise_pdb(1,"program2.prg");
+	//load program 1
+	load_program(1);
+	//resume
+	resume_pdb(1);
+	//END CPOINT6.2
 /* print_newline();
    print_newline();
    print_newline(); 

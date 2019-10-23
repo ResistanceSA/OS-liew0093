@@ -536,6 +536,7 @@ struct process_descriptor_block *pdb
 
    unsigned char message_id=get_next_message_id(caller_pid);
 
+ 
    if(message_id!=0xFF){
      //We have a message to return
      struct ipc_message*m=get_pointer_to_message(message_id);
@@ -558,11 +559,14 @@ void SYSCALL0A(){
 struct process_descriptor_block *pdb
  =(struct process_descriptor_block*)
   ((unsigned short)stored_pdbs+(((unsigned 
-				  short)running_pdb<<8)));
-  
+				  short)running_pdb<<8)));  
  unsigned char caller_pid=pdb->process_id;
  // Process ID
- unsigned char from = pdb->process_id;
+ // unsigned char from = pdb->process_id;
+ struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
+     queue_message(pdb->process_id, m->to, m->priority, m->sequence,m->message);
+
+ //  queue_message(caller_pid, to, priority, sequence, *message);
 
    unsigned char message_id=get_next_message_id(caller_pid);
 

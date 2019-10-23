@@ -16,6 +16,9 @@
   .const OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_END_ADDRESS = 8
   .const OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORED_STATE = $c
   .const OFFSET_STRUCT_IPC_MESSAGE_TO = 1
+  .const OFFSET_STRUCT_IPC_MESSAGE_PRIORITY = 2
+  .const OFFSET_STRUCT_IPC_MESSAGE_SEQUENCE = 3
+  .const OFFSET_STRUCT_IPC_MESSAGE_MESSAGE = 4
   .label VIC_MEMORY = $d018
   .label SCREEN = $400
   .label COLS = $d800
@@ -1404,11 +1407,13 @@ SYSCALL0B: {
     rts
 }
 SYSCALL0A: {
-    .label __1 = $6d
-    .label __2 = $6d
-    .label __9 = $6f
-    .label pdb = $6d
-    .label m = $71
+    .label __1 = $7a
+    .label __2 = $7a
+    .label __13 = $71
+    .label pdb = $7a
+    .label caller_pid = $6d
+    .label m = $7c
+    .label m1 = $73
     lda.z running_pdb
     sta.z __1
     lda #0
@@ -1426,6 +1431,38 @@ SYSCALL0A: {
     sta.z pdb+1
     ldy #0
     lda (pdb),y
+    sta.z caller_pid
+    lda.z ipc_message_count
+    asl
+    asl
+    asl
+    asl
+    clc
+    adc #<ipc_messages
+    sta.z m
+    lda #>ipc_messages
+    adc #0
+    sta.z m+1
+    lda #OFFSET_STRUCT_IPC_MESSAGE_MESSAGE
+    clc
+    adc.z m
+    sta.z queue_message.message
+    tya
+    adc.z m+1
+    sta.z queue_message.message+1
+    lda (pdb),y
+    tax
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_TO
+    lda (m),y
+    sta.z queue_message.to
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_PRIORITY
+    lda (m),y
+    sta.z queue_message.priority
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_SEQUENCE
+    lda (m),y
+    sta.z queue_message.sequence
+    jsr queue_message
+    lda.z caller_pid
     sta.z get_next_message_id.receiver
     jsr get_next_message_id
     lda.z get_next_message_id.best_message
@@ -1443,24 +1480,24 @@ SYSCALL0A: {
     txa
     clc
     adc #<$300
-    sta.z __9
+    sta.z __13
     lda #>$300
     adc #0
-    sta.z __9+1
+    sta.z __13+1
     lda #$ff
     ldy #0
-    sta (__9),y
+    sta (__13),y
     inx
     jmp __b2
   __b1:
     jsr get_pointer_to_message
     lda.z get_pointer_to_message.return
-    sta.z m
+    sta.z m1
     lda.z get_pointer_to_message.return+1
-    sta.z m+1
-    lda.z m
+    sta.z m1+1
+    lda.z m1
     sta.z dma_copy.src
-    lda.z m+1
+    lda.z m1+1
     sta.z dma_copy.src+1
     lda #0
     sta.z dma_copy.src+2
@@ -1485,9 +1522,9 @@ SYSCALL0A: {
 }
 // dequeue_message(byte register(A) message_num)
 dequeue_message: {
-    .label __2 = $73
-    .label dest = $74
-    .label src = $76
+    .label __2 = $75
+    .label dest = $76
+    .label src = $78
     cmp.z ipc_message_count
     bcc __b1
     rts
@@ -1540,7 +1577,7 @@ dequeue_message: {
 }
 // get_pointer_to_message(byte register(Y) id)
 get_pointer_to_message: {
-    .label return = $74
+    .label return = $76
     tya
     asl
     asl
@@ -1554,10 +1591,10 @@ get_pointer_to_message: {
     sta.z return+1
     rts
 }
-// get_next_message_id(byte zeropage($73) receiver)
+// get_next_message_id(byte zeropage($75) receiver)
 get_next_message_id: {
-    .label m = $76
-    .label receiver = $73
+    .label m = $78
+    .label receiver = $75
     .label best_message = $14
     lda #$ff
     sta.z best_message
@@ -1590,12 +1627,71 @@ get_next_message_id: {
     inx
     jmp __b1
 }
+// queue_message(byte register(X) from, byte zeropage($6e) to, byte zeropage($6f) priority, byte zeropage($70) sequence, byte* zeropage($71) message)
+queue_message: {
+    .label __10 = $7c
+    .label m = $7a
+    .label to = $6e
+    .label priority = $6f
+    .label sequence = $70
+    .label message = $71
+    lda.z ipc_message_count
+    cmp #$f+1
+    bcc __b1
+    rts
+  __b1:
+    lda.z ipc_message_count
+    asl
+    asl
+    asl
+    asl
+    clc
+    adc #<ipc_messages
+    sta.z m
+    lda #>ipc_messages
+    adc #0
+    sta.z m+1
+    txa
+    ldy #0
+    sta (m),y
+    lda.z to
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_TO
+    sta (m),y
+    lda.z priority
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_PRIORITY
+    sta (m),y
+    lda.z sequence
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_SEQUENCE
+    sta (m),y
+    ldx #0
+  __b2:
+    cpx #$c
+    bcc __b3
+    lda #1
+    sta.z ipc_message_count
+    rts
+  __b3:
+    lda #OFFSET_STRUCT_IPC_MESSAGE_MESSAGE
+    clc
+    adc.z m
+    sta.z __10
+    lda #0
+    adc.z m+1
+    sta.z __10+1
+    stx.z $ff
+    txa
+    tay
+    lda (message),y
+    sta (__10),y
+    inx
+    jmp __b2
+}
 SYSCALL09: {
-    .label __1 = $78
-    .label __2 = $78
-    .label __9 = $7a
-    .label pdb = $78
-    .label m = $7c
+    .label __1 = $7e
+    .label __2 = $7e
+    .label __9 = $80
+    .label pdb = $7e
+    .label m = $82
     lda.z running_pdb
     sta.z __1
     lda #0
@@ -1700,10 +1796,10 @@ SYSCALL03: {
 }
 // describe_pdb(byte register(X) pdb_number)
 describe_pdb: {
-    .label __1 = $7e
-    .label __2 = $7e
-    .label p = $7e
-    .label n = $80
+    .label __1 = $84
+    .label __2 = $84
+    .label p = $84
+    .label n = $86
     .label ss = $19
     txa
     sta.z __1
@@ -2007,8 +2103,8 @@ print_newline: {
 }
 // print_hex(word zeropage($19) value)
 print_hex: {
-    .label __3 = $80
-    .label __6 = $82
+    .label __3 = $86
+    .label __6 = $88
     .label value = $19
     ldx #0
   __b1:
@@ -2084,7 +2180,7 @@ print_hex: {
 .segment Code
 // print_dhex(dword zeropage($1b) value)
 print_dhex: {
-    .label __0 = $84
+    .label __0 = $8a
     .label value = $1b
     lda #0
     sta.z __0+2
