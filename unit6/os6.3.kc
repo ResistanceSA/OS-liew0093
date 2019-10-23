@@ -458,30 +458,33 @@ struct ipc_message{
   unsigned char sequence;
   unsigned char[12] message;
 };
+
+
 //We will have 16 slots of 16 bytes at $CB00-$CBFF
 const unsigned char *ipc_messages = $CB00;
-volatile unsigned char ipc_message_count;
-//volatile unsigned char queue;
+volatile unsigned char ipc_message_count=0;
+volatile unsigned short size=15;
+
 void queue_message(unsigned char from, unsigned char to, unsigned char priority, unsigned char sequence, unsigned char *message)
 {
+  unsigned char front=-1, rear=-1;
+  unsigned char *queue;
+
   if(ipc_message_count>15)return;
-  // if(sequence + queue < 16)
- struct ipc_message *m=(struct ipc_message *)
-    (ipc_messages+ipc_message_count*16);
- volatile unsigned char *queue;
- queue = $0300;
- for(unsigned char x=0;x<16;x++){
-   queue[x]= m->from=from; to; m->priority=priority; m->sequence=sequence;
- for(unsigned char i =0;i<12; i++){ 
-   m->message[i]=message[i];
-   
+struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16); 
+ m->from=from;m->to=to;m->priority=priority;m->sequence=sequence;
+   for(unsigned char i =0;i<12; i++){ 
+     m->message[i]=message[i];
    }
- }
- //queue+=sequence;
+   if(rear == size-1) return;
+   else{
+    if(front == -1) front=0;
+    rear++;
+    queue[rear] = *message;
+   }
  ipc_message_count=1;
-  
- // message_id++;
 }
+
 void dequeue_message(unsigned char message_num)
 {
   if(message_num>=ipc_message_count) return;
@@ -579,8 +582,7 @@ unsigned char sequence = m->sequence;
      queue_message(pdb->process_id, m->to, m->priority, sequence,m->message);
      
  //  queue_message(caller_pid, to, priority, sequence, *message);
-
-   unsigned char message_id=get_next_message_id(caller_pid);
+ /*   unsigned char message_id=get_next_message_id(caller_pid);
 
    if(message_id!=0xFF){
      //We have a message to return
@@ -594,12 +596,12 @@ unsigned char sequence = m->sequence;
    }else{
      //we have no message to return, so set message to all $FFs
      for(unsigned char i=0;i<16;i++)
-       *(unsigned char *)($0300+i)=0xff;
+     *(unsigned char *)($0300+i)=0xff;*/
      exit_hypervisor();
    }
 
 
-}
+//}
 void SYSCALL0B(){exit_hypervisor();}
 void SYSCALL0C(){exit_hypervisor();}
 void SYSCALL0D(){exit_hypervisor();}

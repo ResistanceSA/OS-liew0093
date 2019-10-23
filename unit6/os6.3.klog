@@ -9,7 +9,7 @@ Writing prg file: /home/student/repo/unit6/os6.3.prg
 Memory Map
 ----------
 Default-segment:
-  $2000-$201d Default
+  $2000-$2025 Default
 
 XMega65Bin-segment:
 
@@ -17,10 +17,10 @@ Syscall-segment:
   $8000-$81bf Syscall
 
 Code-segment:
-  $8200-$8eaa Code
+  $8200-$8e24 Code
 
 Data-segment:
-  $8eab-$8f78 Data
+  $8e25-$8ef2 Data
 
 Stack-segment:
 

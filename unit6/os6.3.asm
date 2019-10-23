@@ -15,10 +15,10 @@
   .const OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_START_ADDRESS = 4
   .const OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORAGE_END_ADDRESS = 8
   .const OFFSET_STRUCT_PROCESS_DESCRIPTOR_BLOCK_STORED_STATE = $c
+  .const OFFSET_STRUCT_IPC_MESSAGE_TO = 1
   .const OFFSET_STRUCT_IPC_MESSAGE_PRIORITY = 2
   .const OFFSET_STRUCT_IPC_MESSAGE_SEQUENCE = 3
   .const OFFSET_STRUCT_IPC_MESSAGE_MESSAGE = 4
-  .const OFFSET_STRUCT_IPC_MESSAGE_TO = 1
   .label VIC_MEMORY = $d018
   .label SCREEN = $400
   .label COLS = $d800
@@ -42,12 +42,13 @@
   .label ipc_messages = $cb00
   .const JMP = $4c
   .const NOP = $ea
-  .label running_pdb = $39
+  .label running_pdb = $36
   .label pid_counter = $10
-  .label lpeek_value = $3a
-  .label current_screen_line = $18
-  .label current_screen_x = $17
-  .label ipc_message_count = $16
+  .label lpeek_value = $37
+  .label current_screen_line = $17
+  .label current_screen_x = $16
+  .label ipc_message_count = $14
+  .label size = $38
   // Which is the current running process?
   lda #$ff
   sta.z running_pdb
@@ -63,6 +64,10 @@
   lda #0
   sta.z current_screen_x
   sta.z ipc_message_count
+  lda #<$f
+  sta.z size
+  lda #>$f
+  sta.z size+1
   jsr main
   rts
 .segment Code
@@ -140,15 +145,15 @@ RESET: {
 .segment Code
 // resume_pdb(byte zeropage(2) pdb_number)
 resume_pdb: {
-    .label __1 = $3b
-    .label __2 = $3b
-    .label __7 = $3d
-    .label p = $3b
-    .label ss = $41
+    .label __1 = $3a
+    .label __2 = $3a
+    .label __7 = $3c
+    .label p = $3a
+    .label ss = $40
     .label i = 3
     .label pdb_number = 2
-    .label __17 = $43
-    .label __18 = $45
+    .label __17 = $42
+    .label __18 = $44
     lda.z pdb_number
     sta.z __1
     lda #0
@@ -286,26 +291,26 @@ exit_hypervisor: {
 }
 // dma_copy(dword zeropage($b) src, dword zeropage(7) dest, word zeropage(5) length)
 dma_copy: {
-    .label __0 = $47
-    .label __2 = $4b
-    .label __4 = $4f
-    .label __5 = $51
-    .label __7 = $55
-    .label __9 = $59
+    .label __0 = $46
+    .label __2 = $4a
+    .label __4 = $4e
+    .label __5 = $50
+    .label __7 = $54
+    .label __9 = $58
     .label src = $b
-    .label list_request_format0a = $20
-    .label list_source_mb_option80 = $21
-    .label list_source_mb = $22
-    .label list_dest_mb_option81 = $23
-    .label list_dest_mb = $24
-    .label list_end_of_options00 = $25
-    .label list_cmd = $26
-    .label list_size = $27
-    .label list_source_addr = $29
-    .label list_source_bank = $2b
-    .label list_dest_addr = $2c
-    .label list_dest_bank = $2e
-    .label list_modulo00 = $2f
+    .label list_request_format0a = $1f
+    .label list_source_mb_option80 = $20
+    .label list_source_mb = $21
+    .label list_dest_mb_option81 = $22
+    .label list_dest_mb = $23
+    .label list_end_of_options00 = $24
+    .label list_cmd = $25
+    .label list_size = $26
+    .label list_source_addr = $28
+    .label list_source_bank = $2a
+    .label list_dest_addr = $2b
+    .label list_dest_bank = $2d
+    .label list_modulo00 = $2e
     .label dest = 7
     .label length = 5
     lda #0
@@ -442,19 +447,19 @@ dma_copy: {
 }
 // load_program(byte register(A) pdb_number)
 load_program: {
-    .label __1 = $63
-    .label __2 = $63
-    .label __30 = $5f
-    .label __31 = $5f
-    .label __34 = $67
-    .label __35 = $67
-    .label pdb = $63
-    .label n = $65
+    .label __1 = $62
+    .label __2 = $62
+    .label __30 = $5e
+    .label __31 = $5e
+    .label __34 = $66
+    .label __35 = $66
+    .label pdb = $62
+    .label n = $64
     .label i = $11
-    .label new_address = $6b
-    .label address = $67
-    .label length = $34
-    .label dest = $5b
+    .label new_address = $6a
+    .label address = $66
+    .label length = $33
+    .label dest = $5a
     .label match = $f
     sta.z __1
     lda #0
@@ -748,10 +753,10 @@ load_program: {
     inc.z i
     jmp __b2
 }
-// lpeek(dword zeropage($5b) address)
+// lpeek(dword zeropage($5a) address)
 lpeek: {
-    .label t = $30
-    .label address = $5b
+    .label t = $2f
+    .label address = $5a
     // Work around all sorts of fun problems in KickC
     //  dma_copy(address,$BF00+((unsigned short)<&lpeek_value),1);  
     lda #<lpeek_value
@@ -821,20 +826,20 @@ lpeek: {
 // Setup a new process descriptor block
 // initialise_pdb(byte zeropage($f) pdb_number, byte* zeropage($12) name)
 initialise_pdb: {
-    .label __1 = $63
-    .label __2 = $63
-    .label __9 = $67
-    .label __10 = $67
-    .label __11 = $67
-    .label __12 = $6b
-    .label __13 = $6b
-    .label __14 = $6b
-    .label __15 = $6f
-    .label __16 = $6f
-    .label __17 = $6f
-    .label p = $63
-    .label pn = $65
-    .label ss = $63
+    .label __1 = $62
+    .label __2 = $62
+    .label __9 = $66
+    .label __10 = $66
+    .label __11 = $66
+    .label __12 = $6a
+    .label __13 = $6a
+    .label __14 = $6a
+    .label __15 = $6e
+    .label __16 = $6e
+    .label __17 = $6e
+    .label p = $62
+    .label pn = $64
+    .label ss = $62
     .label pdb_number = $f
     .label name = $12
     lda.z pdb_number
@@ -1075,10 +1080,10 @@ initialise_pdb: {
     jmp __b1
 }
 next_free_pid: {
-    .label __2 = $6f
+    .label __2 = $6e
     .label pid = $11
-    .label p = $6f
-    .label i = $65
+    .label p = $6e
+    .label i = $64
     inc.z pid_counter
     // Start with the next process ID
     lda.z pid_counter
@@ -1129,12 +1134,12 @@ next_free_pid: {
     jmp __b2
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($65) str, byte register(X) c, word zeropage($12) num)
+// memset(void* zeropage($64) str, byte register(X) c, word zeropage($12) num)
 memset: {
     .label end = $12
-    .label dst = $65
+    .label dst = $64
     .label num = $12
-    .label str = $65
+    .label str = $64
     lda.z num
     bne !+
     lda.z num+1
@@ -1402,19 +1407,137 @@ SYSCALL0C: {
     jsr exit_hypervisor
     rts
 }
+//}
 SYSCALL0B: {
     jsr exit_hypervisor
     rts
 }
 SYSCALL0A: {
-    .label __1 = $7e
-    .label __2 = $7e
-    .label __13 = $75
-    .label pdb = $7e
-    .label caller_pid = $71
+    .label __1 = $77
+    .label __2 = $77
+    .label pdb = $77
+    .label m = $70
+    .label x = $35
+    lda.z running_pdb
+    sta.z __1
+    lda #0
+    sta.z __1+1
+    lda.z __2
+    sta.z __2+1
+    lda #0
+    sta.z __2
+    clc
+    lda.z pdb
+    adc #<stored_pdbs
+    sta.z pdb
+    lda.z pdb+1
+    adc #>stored_pdbs
+    sta.z pdb+1
+    lda.z ipc_message_count
+    asl
+    asl
+    asl
+    asl
+    clc
+    adc #<ipc_messages
+    sta.z m
+    lda #>ipc_messages
+    adc #0
+    sta.z m+1
+    lda #0
+    sta.z x
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_SEQUENCE
+    lda (m),y
+    tax
+    lda #OFFSET_STRUCT_IPC_MESSAGE_MESSAGE
+    clc
+    adc.z m
+    sta.z queue_message.message
+    lda #0
+    adc.z m+1
+    sta.z queue_message.message+1
+    ldy #0
+    lda (pdb),y
+    sta.z queue_message.from
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_TO
+    lda (m),y
+    sta.z queue_message.to
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_PRIORITY
+    lda (m),y
+    sta.z queue_message.priority
+    jsr queue_message
+    jsr exit_hypervisor
+    rts
+}
+// queue_message(byte zeropage($74) from, byte zeropage($75) to, byte zeropage($76) priority, byte register(X) sequence, byte* zeropage($72) message)
+queue_message: {
+    .label queue = 0
+    .label __14 = $79
+    .label m = $77
+    .label from = $74
+    .label to = $75
+    .label priority = $76
+    .label message = $72
+    lda.z ipc_message_count
+    cmp #$f+1
+    bcc __b1
+    rts
+  __b1:
+    lda.z ipc_message_count
+    asl
+    asl
+    asl
+    asl
+    clc
+    adc #<ipc_messages
+    sta.z m
+    lda #>ipc_messages
+    adc #0
+    sta.z m+1
+    lda.z from
+    ldy #0
+    sta (m),y
+    lda.z to
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_TO
+    sta (m),y
+    lda.z priority
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_PRIORITY
+    sta (m),y
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_SEQUENCE
+    txa
+    sta (m),y
+    ldx #0
+  __b3:
+    cpx #$c
+    bcc __b4
+    ldy #OFFSET_STRUCT_IPC_MESSAGE_MESSAGE
+    lda (SYSCALL0A.m),y
+    sta queue
+    lda #1
+    sta.z ipc_message_count
+    rts
+  __b4:
+    lda #OFFSET_STRUCT_IPC_MESSAGE_MESSAGE
+    clc
+    adc.z m
+    sta.z __14
+    lda #0
+    adc.z m+1
+    sta.z __14+1
+    stx.z $ff
+    txa
+    tay
+    lda (message),y
+    sta (__14),y
+    inx
+    jmp __b3
+}
+SYSCALL09: {
+    .label __1 = $7c
+    .label __2 = $7c
+    .label __9 = $7e
+    .label pdb = $7c
     .label m = $80
-    .label x = $38
-    .label m1 = $77
     lda.z running_pdb
     sta.z __1
     lda #0
@@ -1432,39 +1555,6 @@ SYSCALL0A: {
     sta.z pdb+1
     ldy #0
     lda (pdb),y
-    sta.z caller_pid
-    lda.z ipc_message_count
-    asl
-    asl
-    asl
-    asl
-    clc
-    adc #<ipc_messages
-    sta.z m
-    lda #>ipc_messages
-    adc #0
-    sta.z m+1
-    tya
-    sta.z x
-    ldy #OFFSET_STRUCT_IPC_MESSAGE_SEQUENCE
-    lda (m),y
-    tax
-    lda #OFFSET_STRUCT_IPC_MESSAGE_MESSAGE
-    clc
-    adc.z m
-    sta.z queue_message.message
-    lda #0
-    adc.z m+1
-    sta.z queue_message.message+1
-    ldy #0
-    lda (pdb),y
-    sta.z queue_message.from
-    ldy #OFFSET_STRUCT_IPC_MESSAGE_PRIORITY
-    lda (m),y
-    sta.z queue_message.priority
-    stx.z queue_message.sequence
-    jsr queue_message
-    lda.z caller_pid
     sta.z get_next_message_id.receiver
     jsr get_next_message_id
     lda.z get_next_message_id.best_message
@@ -1482,24 +1572,21 @@ SYSCALL0A: {
     txa
     clc
     adc #<$300
-    sta.z __13
+    sta.z __9
     lda #>$300
     adc #0
-    sta.z __13+1
+    sta.z __9+1
     lda #$ff
     ldy #0
-    sta (__13),y
+    sta (__9),y
     inx
     jmp __b2
   __b1:
+    tya
     jsr get_pointer_to_message
-    lda.z get_pointer_to_message.return
-    sta.z m1
-    lda.z get_pointer_to_message.return+1
-    sta.z m1+1
-    lda.z m1
+    lda.z m
     sta.z dma_copy.src
-    lda.z m1+1
+    lda.z m+1
     sta.z dma_copy.src+1
     lda #0
     sta.z dma_copy.src+2
@@ -1517,28 +1604,27 @@ SYSCALL0A: {
     lda #>$10
     sta.z dma_copy.length+1
     jsr dma_copy
-    tya
     jsr dequeue_message
     jsr exit_hypervisor
     rts
 }
-// dequeue_message(byte register(A) message_num)
+// dequeue_message(byte register(Y) message_num)
 dequeue_message: {
-    .label __2 = $79
-    .label dest = $7a
-    .label src = $7c
-    cmp.z ipc_message_count
+    .label dest = $7c
+    .label src = $7e
+    cpy.z ipc_message_count
     bcc __b1
     rts
   __b1:
     ldx.z ipc_message_count
     dex
-    stx.z __2
-    cmp.z __2
+    stx.z $ff
+    cpy.z $ff
     bne __b2
     dec.z ipc_message_count
     rts
   __b2:
+    tya
     asl
     asl
     asl
@@ -1577,10 +1663,9 @@ dequeue_message: {
     inx
     jmp __b4
 }
-// get_pointer_to_message(byte register(Y) id)
+// get_pointer_to_message(byte register(A) id)
 get_pointer_to_message: {
-    .label return = $7a
-    tya
+    .label return = $80
     asl
     asl
     asl
@@ -1593,11 +1678,11 @@ get_pointer_to_message: {
     sta.z return+1
     rts
 }
-// get_next_message_id(byte zeropage($79) receiver)
+// get_next_message_id(byte zeropage($7b) receiver)
 get_next_message_id: {
-    .label m = $7c
-    .label receiver = $79
-    .label best_message = $14
+    .label m = $80
+    .label receiver = $7b
+    .label best_message = $15
     lda #$ff
     sta.z best_message
     ldx #0
@@ -1628,164 +1713,6 @@ get_next_message_id: {
   __b3:
     inx
     jmp __b1
-}
-//volatile unsigned char queue;
-// queue_message(byte zeropage($72) from, byte zeropage($73) priority, byte zeropage($74) sequence, byte* zeropage($75) message)
-queue_message: {
-    .label __11 = $80
-    .label m = $7e
-    .label queue = $36
-    .label x = $15
-    .label from = $72
-    .label priority = $73
-    .label sequence = $74
-    .label message = $75
-    lda.z ipc_message_count
-    cmp #$f+1
-    bcc __b1
-    rts
-  __b1:
-    lda.z ipc_message_count
-    asl
-    asl
-    asl
-    asl
-    clc
-    adc #<ipc_messages
-    sta.z m
-    lda #>ipc_messages
-    adc #0
-    sta.z m+1
-    lda #<0
-    sta.z queue
-    sta.z queue+1
-    lda #<$300
-    sta.z queue
-    lda #>$300
-    sta.z queue+1
-    lda #0
-    sta.z x
-  __b2:
-    lda.z x
-    cmp #$10
-    bcc __b3
-    //queue+=sequence;
-    lda #1
-    sta.z ipc_message_count
-    rts
-  __b3:
-    lda.z from
-    ldy #0
-    sta (m),y
-    lda (m),y
-    ldy.z x
-    sta (queue),y
-    lda.z priority
-    ldy #OFFSET_STRUCT_IPC_MESSAGE_PRIORITY
-    sta (m),y
-    lda.z sequence
-    ldy #OFFSET_STRUCT_IPC_MESSAGE_SEQUENCE
-    sta (m),y
-    ldx #0
-  __b5:
-    cpx #$c
-    bcc __b6
-    inc.z x
-    jmp __b2
-  __b6:
-    lda #OFFSET_STRUCT_IPC_MESSAGE_MESSAGE
-    clc
-    adc.z m
-    sta.z __11
-    lda #0
-    adc.z m+1
-    sta.z __11+1
-    stx.z $ff
-    txa
-    tay
-    lda (message),y
-    sta (__11),y
-    inx
-    jmp __b5
-}
-SYSCALL09: {
-    .label __1 = $82
-    .label __2 = $82
-    .label __9 = $84
-    .label pdb = $82
-    .label m = $86
-    lda.z running_pdb
-    sta.z __1
-    lda #0
-    sta.z __1+1
-    lda.z __2
-    sta.z __2+1
-    lda #0
-    sta.z __2
-    clc
-    lda.z pdb
-    adc #<stored_pdbs
-    sta.z pdb
-    lda.z pdb+1
-    adc #>stored_pdbs
-    sta.z pdb+1
-    ldy #0
-    lda (pdb),y
-    sta.z get_next_message_id.receiver
-    jsr get_next_message_id
-    ldy.z get_next_message_id.best_message
-    cpy #$ff
-    bne __b1
-    ldx #0
-  //we have no message to return, so set message to all $FFs
-  __b2:
-    cpx #$10
-    bcc __b3
-    jsr exit_hypervisor
-    rts
-  __b3:
-    txa
-    clc
-    adc #<$300
-    sta.z __9
-    lda #>$300
-    adc #0
-    sta.z __9+1
-    lda #$ff
-    ldy #0
-    sta (__9),y
-    inx
-    jmp __b2
-  __b1:
-    jsr get_pointer_to_message
-    lda.z get_pointer_to_message.return
-    sta.z m
-    lda.z get_pointer_to_message.return+1
-    sta.z m+1
-    lda.z m
-    sta.z dma_copy.src
-    lda.z m+1
-    sta.z dma_copy.src+1
-    lda #0
-    sta.z dma_copy.src+2
-    sta.z dma_copy.src+3
-    lda #<$300
-    sta.z dma_copy.dest
-    lda #>$300
-    sta.z dma_copy.dest+1
-    lda #<$300>>$10
-    sta.z dma_copy.dest+2
-    lda #>$300>>$10
-    sta.z dma_copy.dest+3
-    lda #<$10
-    sta.z dma_copy.length
-    lda #>$10
-    sta.z dma_copy.length+1
-    jsr dma_copy
-    tya
-    jsr dequeue_message
-    jsr exit_hypervisor
-    rts
 }
 SYSCALL08: {
     jsr exit_hypervisor
@@ -1818,11 +1745,11 @@ SYSCALL03: {
 }
 // describe_pdb(byte register(X) pdb_number)
 describe_pdb: {
-    .label __1 = $88
-    .label __2 = $88
-    .label p = $88
-    .label n = $8a
-    .label ss = $1a
+    .label __1 = $82
+    .label __2 = $82
+    .label p = $82
+    .label n = $84
+    .label ss = $19
     txa
     sta.z __1
     lda #0
@@ -2085,7 +2012,7 @@ describe_pdb: {
 }
 .segment Code
 print_to_screen: {
-    .label c = $1a
+    .label c = $19
   __b1:
     ldy #0
     lda (c),y
@@ -2123,11 +2050,11 @@ print_newline: {
     sta.z current_screen_x
     rts
 }
-// print_hex(word zeropage($1a) value)
+// print_hex(word zeropage($19) value)
 print_hex: {
-    .label __3 = $8a
-    .label __6 = $8c
-    .label value = $1a
+    .label __3 = $84
+    .label __6 = $86
+    .label value = $19
     ldx #0
   __b1:
     cpx #8
@@ -2200,10 +2127,10 @@ print_hex: {
     hex: .fill 5, 0
 }
 .segment Code
-// print_dhex(dword zeropage($1c) value)
+// print_dhex(dword zeropage($1b) value)
 print_dhex: {
-    .label __0 = $8e
-    .label value = $1c
+    .label __0 = $88
+    .label value = $1b
     lda #0
     sta.z __0+2
     sta.z __0+3

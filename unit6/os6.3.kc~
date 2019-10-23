@@ -458,20 +458,33 @@ struct ipc_message{
   unsigned char sequence;
   unsigned char[12] message;
 };
+
+
 //We will have 16 slots of 16 bytes at $CB00-$CBFF
 const unsigned char *ipc_messages = $CB00;
 volatile unsigned char ipc_message_count;
+volatile unsigned char *queue;
+unsigned char a = 0;
+
 
 void queue_message(unsigned char from, unsigned char to, unsigned char priority, unsigned char sequence, unsigned char *message)
 {
   if(ipc_message_count>15)return;
-  struct ipc_message *m=(struct ipc_message *)
-    (ipc_messages+ipc_message_count*16);
+  if(ipc_message_count<16){
+ struct ipc_message *m=(struct ipc_message *)
+    (ipc_messages+ipc_message_count*16); 
+ m->from=from; to; m->priority=priority; m->sequence=sequence;
+ for(unsigned char i =0;i<12; i++){ 
+m->message[i]=message[i];
+   }
 
-m->from=from; m->to=to; m->priority=priority; m->sequence=sequence;
- for(unsigned char i =0;i<12; i++) m->message[i]=message[i];
- ipc_message_count=1;
+ ipc_message_count++;
+  }
 }
+
+
+
+
 void dequeue_message(unsigned char message_num)
 {
   if(message_num>=ipc_message_count) return;
@@ -564,11 +577,12 @@ struct process_descriptor_block *pdb
  // Process ID
  // unsigned char from = pdb->process_id;
  struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
-     queue_message(pdb->process_id, m->to, m->priority, m->sequence,m->message);
-
+ volatile unsigned char x; 
+unsigned char sequence = m->sequence;
+     queue_message(pdb->process_id, m->to, m->priority, sequence,m->message);
+     
  //  queue_message(caller_pid, to, priority, sequence, *message);
-
-   unsigned char message_id=get_next_message_id(caller_pid);
+ /*   unsigned char message_id=get_next_message_id(caller_pid);
 
    if(message_id!=0xFF){
      //We have a message to return
@@ -582,12 +596,12 @@ struct process_descriptor_block *pdb
    }else{
      //we have no message to return, so set message to all $FFs
      for(unsigned char i=0;i<16;i++)
-       *(unsigned char *)($0300+i)=0xff;
+     *(unsigned char *)($0300+i)=0xff;*/
      exit_hypervisor();
    }
 
 
-}
+//}
 void SYSCALL0B(){exit_hypervisor();}
 void SYSCALL0C(){exit_hypervisor();}
 void SYSCALL0D(){exit_hypervisor();}
@@ -666,11 +680,11 @@ void RESET(){
 //Start with empty msg queue
 	ipc_message_count =0;
 	//initialise PDB slot 0 to hold program1
-	initialise_pdb(0,"program1.prg");
+	initialise_pdb(0,"program3.prg");
 	//load the program
 	load_program(0);
 	// initialise pdb slot 1 to hold program2 
-	initialise_pdb(1,"program2.prg");
+	initialise_pdb(1,"program4.prg");
 	//load program 1
 	load_program(1);
 	//resume
