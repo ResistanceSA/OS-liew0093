@@ -72,3 +72,15 @@ struct ipc_message *ipc_read(){
   //return address of return buffer
   return ipc_buffer;
 }
+
+void ipc_send(unsigned char to, unsigned char priority, unsigned char sequence_number, unsigned char *message){
+  const unsigned char *ipc_messages = $CB00; 
+  volatile unsigned char ipc_message_count;
+  struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
+  m->to = to; m->priority=priority;m->sequence=sequence_number;
+  for(unsigned char i=0;i<12;i++) m->message[i]=message[i];
+
+  enable_syscalls();
+  *(unsigned char*)$D64A = $00;
+
+}
