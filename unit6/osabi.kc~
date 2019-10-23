@@ -48,3 +48,28 @@ void exec(char *program_name)
 	*(unsigned char *)$D648 = $00;
 	asm { nop }
 }
+
+// Message structure: 16 bytes in total
+struct ipc_message{
+  unsigned char from;
+  unsigned char to;
+  unsigned priority;
+  unsigned char priority;
+  unsigned char sequence;
+  unsigned char[12] message;
+};
+
+struct ipc_message[1] ipc_buffer;
+struct ipc_message *ipc_read(){
+  enable_syscalls();
+  *(unsigned char *)$D649 = $00;
+  asm { nop }
+  // Copy returned structure in to return buffer
+  unsigned char *a = (unsigned char *)ipc_buffer;
+  unsigned char *b = (unsigned char *)$0300;
+
+  for(unsigned char i=0;i<16;i++) a[i]=b[i];
+
+  //return address of return buffer
+  return ipc_buffer;
+}

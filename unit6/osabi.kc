@@ -53,7 +53,6 @@ void exec(char *program_name)
 struct ipc_message{
   unsigned char from;
   unsigned char to;
-  unsigned priority;
   unsigned char priority;
   unsigned char sequence;
   unsigned char[12] message;

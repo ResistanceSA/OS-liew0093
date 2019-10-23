@@ -463,7 +463,31 @@ void SYSCALL05(){exit_hypervisor();}
 void SYSCALL06(){exit_hypervisor();}
 void SYSCALL07(){exit_hypervisor();}
 void SYSCALL08(){exit_hypervisor();}
-void SYSCALL09(){exit_hypervisor();}
+void SYSCALL09(){
+struct process_descriptor_block *pdb
+  = (struct process_descriptor_block*)
+  ((unsigned short)stored_pdbs+(((unsigned short)running_pdb<<8));
+   unsigned char caller_pid=pdb->process_id;
+
+   unsigned char message_id=get_next_message_id(caller_pid);
+
+   if(message_id!=0xFF){
+     //We have a message to return
+     struct ipc_message*m=get_pointer_to_message(message_id);
+     //copy it to the transfer area
+     dma_copy((unsigned short)m,$0300,16);
+     //de-queue the message
+     dequeue_message(message_id);
+     //return from OS back into the calling program
+     exit_hypervisor();
+   }else{
+     //we have no message to return, so set message to all $FFs
+     for(unsigned char i=0;i<16;i++)
+       *(unsigned char *)($0300+i)=0xff;
+     exit_hypervisor();
+   }
+
+}
 void SYSCALL0A(){exit_hypervisor();}
 void SYSCALL0B(){exit_hypervisor();}
 void SYSCALL0C(){exit_hypervisor();}
@@ -526,26 +550,39 @@ void VF011RD(){exit_hypervisor();}
 void VF011WR(){exit_hypervisor();}
 void undefined_trap(){exit_hypervisor();}
 void CPUKIL(){exit_hypervisor();}
-
-
-
 void RESET(){
 	*VIC_MEMORY = 0x14;
 	memset(SCREEN,' ',40*25);
 	memset(COLS,WHITE,40*25);
 	current_screen_line = SCREEN;
+
+
 /*	char* sc = SCREEN+40;
          char* msg = MESSAGE;
  while(*msg){
 	   *sc++ = *msg++;
 	 } */
-    print_newline();
-    print_newline();
-    print_newline(); 
-    initialise_pdb(0,"program1.prg");
-    load_program(0);
-    resume_pdb(0);
-    //   describe_pdb(0);
+
+//CPOINT6.1
+//Start with empty msg queue
+	ipc_message_count =0;
+	//create msg from PID 0(OS) to PID 1
+	queue_message(0,1,1,1,"cpoint 6.1 ");
+	//initialise PDB slot 0 to hold program1
+	intialise_pdb(0,"program.prg");
+	//load the program
+	load_program(0);
+	//run the program
+	resume_pdb(0);
+	//END CPOINT6.1
+/* print_newline();
+   print_newline();
+   print_newline(); 
+   initialise_pdb(0,"program1.prg");
+   load_program(0);
+   resume_pdb(0);
+   describe_pdb(0); */
+
     while(true){
 	 /* if(*RASTER==54 || *RASTER==66){
 	    *BGCOL = WHITE;
@@ -554,6 +591,64 @@ void RESET(){
 	  }*/
 	  }
 exit_hypervisor();
+}
+
+//Message structure: 16 bytes in total
+struct ipc_message{ 
+  unsigned char from;
+  unsigned ch ar to;
+  unsigned char priority;
+  unsigned char sequence;
+  unsigned char[12] message;
+};
+//We will have 16 slots of 16 bytes at $CB00-$CBFF
+const unsigned char *ipc_messages = $CB00;
+volatile unsigned char ipc_message_count;
+
+void queue_message(unsigned char from, unsigned char to, unsigned char priority, unsigned char sequence, unsigned char *message)
+{
+  if(ipc_message_count>15)return;
+  struct ipc_message *m=(struct ipc_message *)
+    (ipc_messages+ipc_message_count*16);
+
+m->from=from; m->to=to; m->priority=priority; m->sequence=sequence;
+ for(unsigned char i =0;i<12; i++) m->message[i]=message[i];
+ ipc_message_count=1;
+}
+void dequeue_message(unsigned char message_num)
+{
+  if(message_num>=ipc_message_count) return;
+  if(message_num == (ipc_message_count-1)){
+    ipc_message_count--;return;
+  }
+  unsigned char *dest=(unsigned char *)
+    ((unsigned short)ipc_messages+message_num*16);
+  unsigned char *src = (unsigned char *)
+    ((unsigned short)ipc_messages+(ipc_message_count-1)*16);
+  for(unsigned char i=0;i<16;i++) dest[i]=src[i];
+  ipc_message_count--;
+
+}
+
+unsigned char get_next_message_id(unsigned char receiver)
+{
+  unsigned char best_message=0xff; 
+  
+  for(unsigned char i=0;i<16;i++){
+    struct ipc_message *m=(struct ipc_message *)
+      (ipc_messages+i*16);
+    if(m->to==receiver){
+      if(best_message == 0xff){
+	best_message =i;
+      }
+    }
+  }
+  return best_message;
+}
+struct ipc_message *get_pointer_to_message(unsigned char id)
+{
+  return (struct ipc_message *)
+    (ipc_messages+id*16);
 }
 
 #pragma data_seg(Syscall)
