@@ -59,7 +59,7 @@ void wu7_examine_file_system(void)
 
   // Then read the first sector of the FAT32 partition, and use extract_uint32(), extract_uint16()
   // or simply reading bytes from sector_buffer[] to get the values for:
-  sdcard_readsector(p_start);
+  sdcard_readsector(0);
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
      if(p_start == 0x800){
  f_reserved_sectors = extract_uint32(p_start+0x03);
