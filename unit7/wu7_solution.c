@@ -64,9 +64,9 @@ void wu7_examine_file_system(void)
      if(p_start == $800){
  f_reserved_sectors = extract_uint32(p_start+0x03);
 
-  f_sectors_per_cluster = extract_uint32(i+0x010);
-          f_sectors_per_fat = extract_uint32(i+0x21);
-     f_rootdir_cluster = extract_uint32(i+0x02C);
+  f_sectors_per_cluster = extract_uint32(p_start+0x010);
+          f_sectors_per_fat = extract_uint32(p_start+0x21);
+     f_rootdir_cluster = extract_uint32(p_start+0x02C);
     
      // return;
     }
