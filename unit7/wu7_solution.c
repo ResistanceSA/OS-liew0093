@@ -66,8 +66,8 @@ void wu7_examine_file_system(void)
   f_rootdir_cluster = sector_buffer[0x02C + 4];
   f_reserved_sectors = sector_buffer[0x03+2];
   f_sectors_per_cluster = sector_buffer[0x024];
-  return;  
-     }
+  //return;}  
+     
  }
   // Then use those values to compute the values of f_fat1_Sector, f_fat2_sector, f_rootdir_sector
   // and f_clusters (this last one can be calculated simple as the number of sectors per fat multiplied
