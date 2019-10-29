@@ -71,7 +71,7 @@ void wu7_examine_file_system(void)
   f_sectors_per_cluster=(0x00d);
  // f_clusters=1;
 
- f_fat1_sector= ;
+ f_fat1_sector= 0;
  f_fat2_sector=0;
  f_rootdir_sector=0;
 
