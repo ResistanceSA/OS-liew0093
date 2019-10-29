@@ -65,15 +65,16 @@ void wu7_examine_file_system(void)
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
 
   sdcard_readsector(0);
-  f_reserved_sectors= sector_buffer[0x00e + 0];
-    //extract_uint32(0x00E);
- f_sectors_per_fat=2;
- f_clusters=1;
- f_sectors_per_cluster=0;
- f_fat1_sector= 101010;
+  f_reserved_sectors= extract_uint32(0x00e);
+  f_sectors_per_fat=extract_uint32(0x024);
+  f_rootdir_cluster= extract_uint32(0x02c);
+  f_sectors_per_cluster=(0x00d);
+ // f_clusters=1;
+
+ f_fat1_sector= ;
  f_fat2_sector=0;
  f_rootdir_sector=0;
- f_rootdir_cluster=0;
+
 
    for(int i = 446; i<= 494;i+=16){
       if(extract_uint32(i+0x4) == 0x0c){
