@@ -70,7 +70,7 @@ void wu7_examine_file_system(void)
   //for(p_start; p_start<=p_size;p_start++){
 if(p_start != 0 ){
     int i = p_start;
-    /*char*/  f_reserved_sectors= extract_uint32(i+0x0e);
+    /*char*/  f_reserved_sectors= extract_uint32(i+0x00e);
   f_sectors_per_fat=extract_uint32(i+ 0x024);
   f_rootdir_cluster= extract_uint32(p_start+0x02c);
   f_sectors_per_cluster=(p_start+0x00d);
@@ -81,12 +81,8 @@ if(p_start != 0 ){
  f_rootdir_sector=0;
  // }
   }
-   for(int i = 446; i<= 494;i+=16){
-      if(extract_uint32(i+0x4) == 0x0c){
-	p_start =  extract_uint32(i+0x8);
 
-      }
-   }
+
   // Then use those values to compute the values of f_fat1_Sector, f_fat2_sector, f_rootdir_sector
   // and f_clusters (this last one can be calculated simple as the number of sectors per fat multiplied
   // by the number of 32-bit values (i.e., 4 bytes long each) that can be packed into a 512 byte sector).
