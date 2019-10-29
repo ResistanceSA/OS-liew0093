@@ -70,7 +70,7 @@ void wu7_examine_file_system(void)
     
      // return;
     }
-  }
+
   // Then use those values to compute the values of f_fat1_Sector, f_fat2_sector, f_rootdir_sector
   // and f_clusters (this last one can be calculated simple as the number of sectors per fat multiplied
   // by the number of 32-bit values (i.e., 4 bytes long each) that can be packed into a 512 byte sector).
