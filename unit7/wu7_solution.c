@@ -64,7 +64,7 @@ void wu7_examine_file_system(void)
    if(extract_uint32(i+0x4) == 0x0c){
   f_sectors_per_fat = sector_buffer[0x1FE];
   f_rootdir_cluster = sector_buffer[0x1E8];
-  f_reserved_sectors = sector_buffer[0x03];
+  f_reserved_sectors = sector_buffer[0x03+2];
   f_sectors_per_cluster = sector_buffer[0x024];
   return;  
      }
