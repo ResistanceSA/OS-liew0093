@@ -78,7 +78,6 @@ void wu7_examine_file_system(void)
  f_rootdir_sector=0;
       }
   }
-  }
    for(int i = 446; i<= 494;i+=16){
       if(extract_uint32(i+0x4) == 0x0c){
 	p_start =  extract_uint32(i+0x8);
