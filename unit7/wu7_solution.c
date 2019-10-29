@@ -67,7 +67,7 @@ void wu7_examine_file_system(void)
  for(int i = 446; i<= 494;i+=16){
       if(extract_uint32(i+0x4) == 0x0c){
 
- f_reserved_sectors = sector_buffer[0x03+2];
+ f_reserved_sectors = $238;
   f_sectors_per_cluster = extract_uint32(0x00B);
           f_sectors_per_fat = extract_uint32(p_start+0x21);
      f_rootdir_cluster = extract_uint32(p_start+0x02C);
