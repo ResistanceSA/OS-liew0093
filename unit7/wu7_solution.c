@@ -42,7 +42,7 @@ void extract_filename(int offset, char *dest)
 
 void wu7_examine_file_system(void)
 {
-u_int32_t f_reserved_sectors= 2;
+f_reserved_sectors= 2;
 u_int32_t f_sectors_per_fat=0;
 u_int32_t f_clusters=0;
 unsigned char f_sectors_per_cluster=0;
