@@ -53,7 +53,7 @@ void wu7_examine_file_system(void)
       p_size = extract_uint32(i+0xC);
       return;
     }
-   }
+  }
   // Complexity guide: My solution was 6 lines long.
 
   // Then read the first sector of the FAT32 partition, and use extract_uint32(), extract_uint16()
@@ -62,13 +62,13 @@ void wu7_examine_file_system(void)
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
   for(p_start;p_start<p_size;p++){
 
-    //if(extract_uint32(i+0x4) == 0x0c){
+    if(extract_uint32(i+0x4) == 0x0c){
   f_sectors_per_cluster = extract_uint32(i+0x010);
 
 	 f_sectors_per_fat = extract_uint32(i+0x21);
      f_rootdir_cluster = extract_uint32(i+0x02C);
      f_reserved_sectors = extract_uint32(i+0x03);
-
+     return;}
   }
   // Then use those values to compute the values of f_fat1_Sector, f_fat2_sector, f_rootdir_sector
   // and f_clusters (this last one can be calculated simple as the number of sectors per fat multiplied
