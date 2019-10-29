@@ -52,6 +52,7 @@ void wu7_examine_file_system(void)
       if(extract_uint32(i+0x4) == 0x0c){
       p_start =  extract_uint32(i+0x8);
       p_size = extract_uint32(i+0xC);
+     printf("%x",p_start & 0xff);
        return;
     }
   }
@@ -76,7 +77,7 @@ void wu7_examine_file_system(void)
   // and f_clusters (this last one can be calculated simple as the number of sectors per fat multiplied
   // by the number of 32-bit values (i.e., 4 bytes long each) that can be packed into a 512 byte sector).
   // Complexity guide: My solution was 11 lines long.
-     printf("%x",p_start & 0xff);
+
 }
 
 u_int32_t dir_sector=0;
