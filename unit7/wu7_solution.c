@@ -43,7 +43,7 @@ void extract_filename(int offset, char *dest)
 void wu7_examine_file_system(void)
 {
   // XXX - First, read the Master Boot Record, which is in the first sector of the disk.
-  sdcard_readsector(p_start);
+  sdcard_readsector(0);
   // Within that, find the partition entry that has a FAT32 partition in it (partition type
   // will be 0x0c), and then use extract_uint32() to get the start and size of the partition
   // into p_start and p_size.
@@ -58,7 +58,7 @@ void wu7_examine_file_system(void)
 
   // Then read the first sector of the FAT32 partition, and use extract_uint32(), extract_uint16()
   // or simply reading bytes from sector_buffer[] to get the values for:
-  sdcard_readsector(2);
+  sdcard_readsector(p_start);
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
   for(int i = 446; i<= 494;i+=16){
     if(extract_uint32(i+0x4) == 0x0c){
