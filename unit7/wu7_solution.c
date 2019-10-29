@@ -68,7 +68,7 @@ void wu7_examine_file_system(void)
   //for(int i = 446; i<= 494;i+=16){
     //  if(extract_uint32(i+0x4) == 0x0c){
   //for(p_start; p_start<=p_size;p_start++){
-if(p_start != 0 ){
+if(p_start == 0 ){
   char i = 0x800;
     /*char*/  f_reserved_sectors= extract_uint32(i+0x00e);
   f_sectors_per_fat=extract_uint32(i+ 0x024);
