@@ -60,7 +60,7 @@ void wu7_examine_file_system(void)
   // or simply reading bytes from sector_buffer[] to get the values for:
   sdcard_readsector(1);
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
-  f_sectors_per_fat = sdcard_readsector(sector_buffer[0x1FE]);
+  f_sectors_per_fat = sector_buffer[0x1FE];
   f_rootdir_cluster = sector_buffer[0x1E8];
   f_reserved_sectors = sector_buffer[0x03];
   f_sectors_per_cluster = sector_buffer[0x024];
