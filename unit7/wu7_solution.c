@@ -56,7 +56,7 @@ void wu7_examine_file_system(void)
       //  printf("%x",p_start & 0xff);
       // return;
     }
-  }
+      //}
   // Complexity guide: My solution was 6 lines long.
 
   // Then read the first sector of the FAT32 partition, and use extract_uint32(), extract_uint16()
@@ -65,7 +65,7 @@ void wu7_examine_file_system(void)
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
 
   sdcard_readsector(0);
-  f_reserved_sectors= extract_uint32(0x00e);
+  f_reserved_sectors= extract_uint32(i+0x00e);
   f_sectors_per_fat=extract_uint32(0x024);
   f_rootdir_cluster= extract_uint32(0x02c);
   f_sectors_per_cluster=(0x00d);
