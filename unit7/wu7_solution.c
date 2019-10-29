@@ -42,6 +42,14 @@ void extract_filename(int offset, char *dest)
 
 void wu7_examine_file_system(void)
 {
+u_int32_t f_reserved_sectors= 2;
+u_int32_t f_sectors_per_fat=0;
+u_int32_t f_clusters=0;
+unsigned char f_sectors_per_cluster=0;
+u_int32_t f_fat1_sector= 101010;
+u_int32_t f_fat2_sector=0;
+u_int32_t f_rootdir_sector=0;
+u_int32_t f_rootdir_cluster=0;
   // XXX - First, read the Master Boot Record, which is in the first sector of the disk.
   sdcard_readsector(0);
   // Within that, find the partition entry that has a FAT32 partition in it (partition type
@@ -88,14 +96,7 @@ u_int32_t f_rootdir_cluster=0;
   // and f_clusters (this last one can be calculated simple as the number of sectors per fat multiplied
   // by the number of 32-bit values (i.e., 4 bytes long each) that can be packed into a 512 byte sector).
   // Complexity guide: My solution was 11 lines long.
-u_int32_t f_reserved_sectors= 2;
-u_int32_t f_sectors_per_fat=0;
-u_int32_t f_clusters=0;
-unsigned char f_sectors_per_cluster=0;
-u_int32_t f_fat1_sector= 101010;
-u_int32_t f_fat2_sector=0;
-u_int32_t f_rootdir_sector=0;
-u_int32_t f_rootdir_cluster=0;
+
 
 
 }
