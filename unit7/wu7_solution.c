@@ -61,6 +61,10 @@ void wu7_examine_file_system(void)
   sdcard_readsector(1);
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
   f_sectors_per_fat = sector_buffer[8];
+  f_rootdir_cluster = ;
+  f_reserved_sectors = sector_buffer[0x00E];
+  f_sectors_per_cluster = sector_buffer[0x024];
+
   // Then use those values to compute the values of f_fat1_Sector, f_fat2_sector, f_rootdir_sector
   // and f_clusters (this last one can be calculated simple as the number of sectors per fat multiplied
   // by the number of 32-bit values (i.e., 4 bytes long each) that can be packed into a 512 byte sector).
