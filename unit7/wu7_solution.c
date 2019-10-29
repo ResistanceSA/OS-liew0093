@@ -58,7 +58,9 @@ void wu7_examine_file_system(void)
 
   // Then read the first sector of the FAT32 partition, and use extract_uint32(), extract_uint16()
   // or simply reading bytes from sector_buffer[] to get the values for:
+  sdcard_readsector(1);
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
+  f_sectors_per_fat = section_buffer[8];
   // Then use those values to compute the values of f_fat1_Sector, f_fat2_sector, f_rootdir_sector
   // and f_clusters (this last one can be calculated simple as the number of sectors per fat multiplied
   // by the number of 32-bit values (i.e., 4 bytes long each) that can be packed into a 512 byte sector).
