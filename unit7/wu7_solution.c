@@ -53,7 +53,7 @@ void wu7_examine_file_system(void)
       p_size = extract_uint32(i+0xC);
       return;
     }
-  }
+    //  }
   // Complexity guide: My solution was 6 lines long.
 
   // Then read the first sector of the FAT32 partition, and use extract_uint32(), extract_uint16()
