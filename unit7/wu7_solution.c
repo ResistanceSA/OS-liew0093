@@ -68,7 +68,7 @@ void wu7_examine_file_system(void)
  for(int i = 446; i<= 494;i+=16){
       if(extract_uint32(i+0x4) == 0x0c){
 
-	u_int32_t f_reserved_sectors= extract_uint32(0x03);
+	u_int32_t f_reserved_sectors= 2;
 u_int32_t f_sectors_per_fat=0;
 u_int32_t f_clusters=0;
 unsigned char f_sectors_per_cluster=0;
