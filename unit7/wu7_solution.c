@@ -67,7 +67,7 @@ void wu7_examine_file_system(void)
      f_reserved_sectors = extract_uint32(p_start+0x03);
   f_sectors_per_cluster = sector_buffer[0x024];
   // return;}
-  //  }  
+    }  
      
 
   // Then use those values to compute the values of f_fat1_Sector, f_fat2_sector, f_rootdir_sector
