@@ -62,7 +62,7 @@ void wu7_examine_file_system(void)
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
   for(int i = 446; i<= 494;i+=16){
     // if(extract_uint32(i+0x4) == 0x0c){
-    if(extract_uint32(i+0x4) == 0x0c){
+    if(extract_uint32(i+0x25) == 0x0c){
   f_sectors_per_cluster = extract_uint32(i+0x010);
 
 	 f_sectors_per_fat = extract_uint32(i+0x21);
