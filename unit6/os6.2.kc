@@ -567,13 +567,12 @@ struct process_descriptor_block *pdb
   ((unsigned short)stored_pdbs+(((unsigned 
 				  short)running_pdb<<8)));  
  unsigned char caller_pid=pdb->process_id;
-struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
- unsigned char to = (char *)$0300;
- unsigned char priority = (char *) $0301;
- unsigned char sequence = (char *) $0302;
- unsigned char *message = (char *) $0303;
+ unsigned char to = *(unsigned char*)$0300;
+ unsigned char priority =*(unsigned char*) $0301;
+ unsigned char sequence =  *(unsigned char*)$0302;
+ unsigned char[12] message = (char*)$0303;
  // for(unsigned short i=0;i<12;i++){
- // message[i] = (( char*)$0303)[i];
+ // message[i] = ($0303)[i];
  // } 
 queue_message(caller_pid, to, priority, sequence, *message);
  // Process ID

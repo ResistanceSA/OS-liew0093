@@ -555,39 +555,40 @@ struct process_descriptor_block *pdb
 
 }
 void SYSCALL0A(){
+  /*  unsigned char to = (unsigned char*)$0313;
+  unsigned char priority = (unsigned char*)$0314;
+  unsigned char sequence_number =( unsigned char*)$0315;
+  unsigned char message = (unsigned char*)$0316;*/
+
+
 
 struct process_descriptor_block *pdb
  =(struct process_descriptor_block*)
   ((unsigned short)stored_pdbs+(((unsigned 
 				  short)running_pdb<<8)));  
  unsigned char caller_pid=pdb->process_id;
+struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
+ unsigned char to = (char *)$0300;
+ unsigned char priority = (char *) $0301;
+ unsigned char sequence = (char *) $0302;
+ unsigned char *message = (char *) $0303;
+ // for(unsigned short i=0;i<12;i++){
+ // message[i] = (( char*)$0303)[i];
+ // } 
+queue_message(caller_pid, to, priority, sequence, *message);
  // Process ID
  // unsigned char from = pdb->process_id;
- struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
-     queue_message(pdb->process_id, m->to, m->priority, m->sequence,m->message);
+ //struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
+ //   queue_message(pdb->process_id, m->to, m->priority, m->sequence,m->message);
 
- //  queue_message(caller_pid, to, priority, sequence, *message);
+ 
 
-   unsigned char message_id=get_next_message_id(caller_pid);
 
-   if(message_id!=0xFF){
-     //We have a message to return
-     struct ipc_message*m=get_pointer_to_message(message_id);
-     //copy it to the transfer area
-     dma_copy((unsigned short)m,$0300,16);
-     //de-queue the message
-     dequeue_message(message_id);
-     //return from OS back into the calling program
      exit_hypervisor();
-   }else{
-     //we have no message to return, so set message to all $FFs
-     for(unsigned char i=0;i<16;i++)
-       *(unsigned char *)($0300+i)=0xff;
-     exit_hypervisor();
-   }
-
-
 }
+
+
+
 void SYSCALL0B(){exit_hypervisor();}
 void SYSCALL0C(){exit_hypervisor();}
 void SYSCALL0D(){exit_hypervisor();}

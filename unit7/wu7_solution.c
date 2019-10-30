@@ -71,8 +71,8 @@ void wu7_examine_file_system(void)
   f_rootdir_cluster= extract_uint32(0x02c/*+4*/);
   f_sectors_per_cluster=(0x00d/*+1*/);
   f_clusters= f_sectors_per_fat + 0x200000 ;
-  f_fat1_sector=(0x1b+p_start);
-  f_fat2_sector=(0x1b+p_start);
+  f_fat1_sector=(0x1be+p_start);
+  f_fat2_sector=(0x1bc+p_start);
  f_rootdir_sector=f_fat1_sector + p_start;
  return;
 

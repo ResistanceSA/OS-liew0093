@@ -77,11 +77,11 @@ void ipc_send(unsigned char to, unsigned char priority, unsigned char sequence_n
   //struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
   // m->to = to; m->priority=priority;m->sequence=sequence_number;
 
-   (unsigned char *)$0300 = to;
-  (unsigned char *)$0301 = priority;
-  ( unsigned char *)$0302 = sequence_number;
+   $0300 = to;
+   $0301 = priority;
+   $0302 = sequence_number;
   for(unsigned short i=0;i<12;i++){
-    ((unsigned char *)$0303)[i] = message[i];
+    $0303[i] = message[i];
     }
 
   /*
