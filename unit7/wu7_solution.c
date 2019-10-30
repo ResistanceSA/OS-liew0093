@@ -69,8 +69,9 @@ void wu7_examine_file_system(void)
   //  for(int i = 446; i<= 494;i+=16){
   //   if(extract_uint32(i+0x4) == 0x0c){
   for(int i= 0x1be;i<0x1ce;i++){
-       //  if(extract_uint32(0x1be+0xC)){
-    /*char*/  f_reserved_sectors= extract_uint32(i+0x0e);
+    // if(extract_uint32(0x1be+0xC)){
+    if(*i == 0x1be){
+/*char*/  f_reserved_sectors= extract_uint32(i+0x0e);
   f_sectors_per_fat=extract_uint32(i+ 0x024);
   f_rootdir_cluster= extract_uint32(i+44 /*0x02c*/);
   f_sectors_per_cluster=(i+0x00d);
@@ -79,7 +80,7 @@ void wu7_examine_file_system(void)
  f_fat1_sector= 0;
  f_fat2_sector=0;
  f_rootdir_sector=0;
- // }
+  }
   }
 
 
