@@ -66,8 +66,8 @@ void wu7_examine_file_system(void)
 
   sdcard_readsector(0);
 
-  //  for(int i = 446; i<= 494;i+=16){
-  //   if(extract_uint32(i+0x4) == 0x0c){
+   for(int i = 446; i<= 494;i+=16){
+    if(extract_uint32(i+0x4) == 0x0c){
   for(int i= 0x1be;i<0x1ce;i++){
     // if(extract_uint32(0x1be+0xC)){
     if(i == 0x1be){
@@ -76,11 +76,11 @@ void wu7_examine_file_system(void)
   f_rootdir_cluster= extract_uint32(i+44 /*0x02c*/);
   f_sectors_per_cluster=(i+0x00d);
  // f_clusters=1;
-       printf("%x",p_start & 0xff);
  f_fat1_sector= 0;
  f_fat2_sector=0;
  f_rootdir_sector=0;
   }
+  }}
   }
 
 
