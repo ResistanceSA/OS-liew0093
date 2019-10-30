@@ -74,11 +74,20 @@ struct ipc_message *ipc_read(){
 }
 
 void ipc_send(unsigned char to, unsigned char priority, unsigned char sequence_number, unsigned char *message){
-  const unsigned char *ipc_messages = $CB00; 
-  volatile unsigned char ipc_message_count;
+  //struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
+  // m->to = to; m->priority=priority;m->sequence=sequence_number;
+
+   (unsigned char *)$0300 = to;
+  (unsigned char *)$0301 = priority;
+  ( unsigned char *)$0302 = sequence_number;
+  for(unsigned short i=0;i<12;i++){
+    ((unsigned char *)$0303)[i] = message[i];
+    }
+
+  /*
   struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
   m->to = to; m->priority=priority;m->sequence=sequence_number;
-  for(unsigned char i=0;i<12;i++) m->message[i]=message[i];
+  for(unsigned char i=0;i<12;i++) m->message[i]=message[i];*/
 
   // dma_copy((unsigned short)m,$0300, 16);
   enable_syscalls();
