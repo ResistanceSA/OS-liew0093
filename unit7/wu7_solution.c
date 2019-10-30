@@ -70,7 +70,7 @@ void wu7_examine_file_system(void)
   // char i = 0x800;
   for(int i = 446; i<= 494;i+=16){
       if(extract_uint32(i+0x4) == 0x0c){
-	i = i+0x4;
+	i = p_start+i;
     /*char*/  f_reserved_sectors= extract_uint32(i+0x03);
   f_sectors_per_fat=extract_uint32(i+ 0x024);
   f_rootdir_cluster= extract_uint32(p_start+0x02c);
