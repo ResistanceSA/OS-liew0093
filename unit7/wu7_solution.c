@@ -64,25 +64,18 @@ void wu7_examine_file_system(void)
 
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
 
-  sdcard_readsector(0);
+  sdcard_readsector(p_start);
 
-   for(int i = 446; i<= 494;i+=16){
-    if(extract_uint32(i+0x4) == 0x0c){
-  for(int i= 0x1be;i<0x1ce;i++){
-    // if(extract_uint32(0x1be+0xC)){
-    if(extract_uint32(0x1be)==i){
-/*char*/  f_reserved_sectors= extract_uint32(i+0x0e);
-  f_sectors_per_fat=extract_uint32(i+ 0x024);
-  f_rootdir_cluster= extract_uint32(i+44 /*0x02c*/);
-  f_sectors_per_cluster=(i+0x00d);
- // f_clusters=1;
- f_fat1_sector= 0;
- f_fat2_sector=0;
- f_rootdir_sector=0;
+  /*char*/  f_reserved_sectors= extract_uint16(0x0e/*+2*/);
+  f_sectors_per_fat=extract_uint32(0x024/*+1*/);
+  f_rootdir_cluster= extract_uint32(0x02c/*+4*/);
+  f_sectors_per_cluster=(0x00d/*+1*/);
+  f_clusters= f_sectors_per_fat + 0x200000 ;
+  f_fat1_sector=(0x1b+p_start);
+  f_fat2_sector=(0x1b+p_start);
+ f_rootdir_sector=f_fat1_sector + p_start;
  return;
-  }
-  }}
-  }
+
 
 
   // Then use those values to compute the values of f_fat1_Sector, f_fat2_sector, f_rootdir_sector
