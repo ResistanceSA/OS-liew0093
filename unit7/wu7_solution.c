@@ -77,7 +77,7 @@ void wu7_examine_file_system(void)
   f_rootdir_cluster= extract_uint32(j+44 /*0x02c*/);
   f_sectors_per_cluster=(j+0x00d);
  // f_clusters=1;
-
+       printf("%x",p_start & 0xff);
  f_fat1_sector= 0;
  f_fat2_sector=0;
  f_rootdir_sector=0;
