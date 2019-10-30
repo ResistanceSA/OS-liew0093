@@ -79,6 +79,7 @@ void wu7_examine_file_system(void)
  f_fat1_sector= 0;
  f_fat2_sector=0;
  f_rootdir_sector=0;
+ return;
   }
   }}
   }
