@@ -54,7 +54,7 @@ void wu7_examine_file_system(void)
       p_start =  extract_uint32(i+0x8);
       p_size = extract_uint32(i+0xC);
       //  printf("%x",p_start & 0xff);
-      // return;
+       return;
     }
      }
   // Complexity guide: My solution was 6 lines long.
@@ -64,7 +64,7 @@ void wu7_examine_file_system(void)
 
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
 
-  sdcard_readsector(1);
+  sdcard_readsector(0);
 
   //if(p_start != 0 ){
   // char i = 0x800;
