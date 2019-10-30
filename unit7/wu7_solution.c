@@ -64,7 +64,7 @@ void wu7_examine_file_system(void)
 
   // f_sectors_per_fat, f_rootdir_cluster, f_reserved_sectors and f_sectors_per_cluster.
 
-  sdcard_readsector(0);
+  sdcard_readsector(1);
 
   //if(p_start != 0 ){
   // char i = 0x800;
