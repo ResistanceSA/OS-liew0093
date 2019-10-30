@@ -66,11 +66,9 @@ void wu7_examine_file_system(void)
 
   sdcard_readsector(0);
 
-  //if(p_start != 0 ){
-  // char i = 0x800;
-  for(int i = 446; i<= 494;i+=16){
-     if(extract_uint32(i+0x4) == 0x0c){
-       int j = 0x1be;
+  //  for(int i = 446; i<= 494;i+=16){
+  //   if(extract_uint32(i+0x4) == 0x0c){
+  for(i= 0x1be;i<0x1ce;i++){
        //  if(extract_uint32(0x1be+0xC)){
     /*char*/  f_reserved_sectors= extract_uint32(0x0e*2);
   f_sectors_per_fat=extract_uint32(i+ 0x024);
