@@ -462,28 +462,28 @@ struct ipc_message{
 
 //We will have 16 slots of 16 bytes at $CB00-$CBFF
 const unsigned char *ipc_messages = $CB00;
-volatile unsigned char ipc_message_count;
-volatile unsigned char *queue;
-unsigned char a = 0;
-
+volatile unsigned char ipc_message_count=0;
+volatile unsigned short size=15;
 
 void queue_message(unsigned char from, unsigned char to, unsigned char priority, unsigned char sequence, unsigned char *message)
 {
+  unsigned char front=-1, rear=-1;
+  unsigned char *queue;
+
   if(ipc_message_count>15)return;
-  if(ipc_message_count<16){
- struct ipc_message *m=(struct ipc_message *)
-    (ipc_messages+ipc_message_count*16); 
- m->from=from; to; m->priority=priority; m->sequence=sequence;
- for(unsigned char i =0;i<12; i++){ 
-m->message[i]=message[i];
+struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16); 
+ m->from=from;m->to=to;m->priority=priority;m->sequence=sequence;
+   for(unsigned char i =0;i<12; i++){ 
+     m->message[i]=message[i];
    }
-
- ipc_message_count++;
-  }
+   if(rear == size-1) return;
+   else{
+    if(front == -1) front=0;
+    rear++;
+    queue[rear] = *message;
+   }
+ ipc_message_count=1;
 }
-
-
-
 
 void dequeue_message(unsigned char message_num)
 {

@@ -476,12 +476,12 @@ struct ipc_message *m=(struct ipc_message *)(ipc_messages+ipc_message_count*16);
    for(unsigned char i =0;i<12; i++){ 
      m->message[i]=message[i];
    }
-   if(rear == size-1) return;
+     if(rear == front-1) return;
    else{
     if(front == -1) front=0;
     rear++;
     queue[rear] = *message;
-   }
+    }
  ipc_message_count=1;
 }
 
